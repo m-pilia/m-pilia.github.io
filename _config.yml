@@ -4,7 +4,7 @@
 # baseurl is the website's URL without the hostname
 
 # If you are building a simple GitHub user page (http://username.github.io) then use these settings:
-url: "http://username.github.io"
+url: "http://m-pilia.github.io"
 baseurl: ""
 
 # If you are building a GitHub project page then use these settings:
@@ -14,21 +14,18 @@ baseurl: ""
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: My website
+title: Martino's home
 
 # Short description of your site
-description: A virtual proof that name is awesome!
+description: Martino Pilia
 
 # --- Navigation bar options --- #
 
 # List of links in the navigation bar
 navbar-links:
-  About Me: "aboutme"
-  Resources:
-    - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
-    - Learn markdown: "http://www.markdowntutorial.com/"
-    - GitHub Pages: "https://pages.github.com/"
-  Author's home: "http://deanattali.com"
+  Posts: "posts"
+  GitHub: "https://github.com/m-pilia"
+  AUR: "https://aur.archlinux.org/packages/?SeB=m&K=m-pilia"
 
 # Image to show in the navigation bar - image must be a square (width = height)
 # Remove this parameter if you don't want an image in the navbar
@@ -42,13 +39,13 @@ avatar: "/img/avatar-icon.png"
 
 # Personalize the colors in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#F5F5F5"
+navbar-col: "#60E0FF"
 navbar-text-col: "#404040"
 navbar-children-col: "#F5F5F5"
 page-col: "#FFFFFF"
 link-col: "#008AFF"
 hover-col: "#0085A1"
-footer-col: "#F5F5F5"
+footer-col: "#60E0FF"
 footer-text-col: "#777777"
 footer-link-col: "#404040"
 
@@ -58,13 +55,13 @@ footer-link-col: "#404040"
 # navbar-img: "/img/bgimage.png"
 # footer-img: "/img/bgimage.png"
 # page-img: "/img/bgimage.png"
-
 # --- Footer options --- #
+
 
 # Change all these values or delete the ones you don't want.
 # Important: you must keep the "name" parameter, everything else you can remove
 author:
-  name: Some Person
+  name: Martino Pilia 
 
 # Select your active Social Network Links.
 # Uncomment the links you want to show in the footer and add your information to each link.
@@ -72,34 +69,19 @@ author:
 # If you want to add a new link that isn't here, you'll need to also edit the file _data/SocialNetworks.yml
 social-network-links:
   rss: true
-  email: "someone@example.com"
-  facebook: daattali
-  github: daattali
-  twitter: daattali
-#  reddit: yourname
-#  google-plus: +DeanAttali
-#  linkedin: daattali
-#  xing: yourname
-#  stackoverflow: "3943160/daattali"
-#  snapchat: deanat78
-#  instagram: deanat78
-#  youtube: user/deanat78
-#  spotify: yourname
-#  telephone: +14159998888
-#  steam: deanat78
-#  twitch: yourname
-#  yelp: yourname
+  email: "martino.pilia@gmail.com"
+  github: m-pilia
 
 # Select which share links to show in posts
 share-links-active:
   twitter: true
   facebook: true
-  google: false
+  google: true
   linkedin: true
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "MyWebsite.com"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "m-pilia.github.io"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Web Statistics Section --- #
 
@@ -139,8 +121,9 @@ title-separator: "-"
 timezone: "America/Vancouver"
 markdown: kramdown
 highlighter: rouge
-permalink: /:year-:month-:day-:title/
+# permalink: /:year-:month-:day-:title/
 paginate: 5
+paginate_path: "/posts/page:num/"
 
 kramdown:
   input: GFM
@@ -178,7 +161,7 @@ exclude:
 
 # prose.io config
 prose:
-  rooturl: '_posts'
+  rooturl: 'posts/_posts'
   media: 'img'
   ignore:
     - 404.html
