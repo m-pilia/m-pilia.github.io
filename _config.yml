@@ -17,13 +17,14 @@ baseurl: ""
 title: Martino Pilia
 
 # Short description of your site
-description: sparse thoughts about Computer Science and more
+description: sparse thoughts on computer science
 
 # --- Navigation bar options --- #
 
 # List of links in the navigation bar
 navbar-links:
-  Posts: "posts"
+  About me: "aboutme"
+  # Posts: "posts"
   GitHub: "https://github.com/m-pilia"
   AUR: "https://aur.archlinux.org/packages/?SeB=m&K=m-pilia"
 

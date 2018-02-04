@@ -3,6 +3,26 @@ layout: page
 title: Martino's home
 subtitle: Computer Science stuff and more 
 use-site-title: true
+
+bigimg: 
+  - "/img/malaren-1.jpg"          : "Lake Mälaren, Uppsala"
+  - "/img/akademikvarnen.jpg"     : "Akademikvarnen, Uppsala"
+  - "/img/trehorningen.jpg"       : "Trehörningen, Marielund"
+  - "/img/malaren-2.jpg"          : "Lake Mälaren, Uppsala"
+  - "/img/polacksbacken-2.jpg"    : "Polacksbacken, Uppsala"
+  - "/img/uppsala-slottet.jpg"    : "Uppsala Slottet"
+  - "/img/frozen-fyrisan.jpg"     : "Fyrisån during winter, Uppsala"
+  - "/img/angstrom.jpg"           : "Ångströmlaboratoriet, Uppsala"
+  - "/img/domkyrkan.jpg"          : "Uppsala Domkyrkan"
+  - "/img/stora-kapellsalen.jpg"  : "Stora Kapellsalen, Musicum, Uppsala"
+  - "/img/malaren-3.jpg"          : "Lake Mälaren, Uppsala"
+  - "/img/storvreta.jpg"          : "Storvreta"
+  - "/img/polacksbacken-1.jpg"    : "Polacksbacken, Uppsala"
+  - "/img/vattholmavagen.jpg"     : "Vattholmavägen, Uppsala"
+  - "/img/granby.jpg"             : "Gränby, Uppsala"
+  - "/img/riksdagshuset.jpg"      : "Riksdagshuset, Stockholm"
+  - "/img/gamla-uppsalagatan.jpg" : "Gamla Uppsalagatan"
+
 ---
 
 I like to do things that involve mathematics and computers. I especially love
