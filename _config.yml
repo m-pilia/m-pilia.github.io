@@ -14,10 +14,10 @@ baseurl: ""
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: Martino's home
+title: Martino Pilia
 
 # Short description of your site
-description: Martino Pilia
+description: sparse thoughts about Computer Science and more
 
 # --- Navigation bar options --- #
 
@@ -81,7 +81,7 @@ share-links-active:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "m-pilia.github.io"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "martinopilia.com"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Web Statistics Section --- #
 
@@ -158,6 +158,7 @@ exclude:
   - LICENSE
   - README.md
   - Vagrantfile
+  - makefile
 
 # prose.io config
 prose:
