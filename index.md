@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Martino's home
-subtitle: Computer Science stuff and more 
+title: Martino's page
+subtitle: Useful things and scattered thoughts 
 use-site-title: true
 
 bigimg: 
