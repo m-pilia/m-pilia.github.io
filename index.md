@@ -5,17 +5,11 @@ subtitle: Useful things and scattered thoughts
 use-site-title: true
 
 bigimg: 
-  - "/img/malaren-1.jpg"          : "Lake Mälaren, Uppsala"
-  - "/img/akademikvarnen.jpg"     : "Akademikvarnen, Uppsala"
   - "/img/trehorningen.jpg"       : "Trehörningen, Marielund"
   - "/img/malaren-2.jpg"          : "Lake Mälaren, Uppsala"
-  - "/img/uppsala-slottet.jpg"    : "Uppsala Slottet"
   - "/img/frozen-fyrisan.jpg"     : "Fyrisån during winter, Uppsala"
-  - "/img/domkyrkan.jpg"          : "Uppsala Domkyrkan"
   - "/img/malaren-3.jpg"          : "Lake Mälaren, Uppsala"
   - "/img/storvreta.jpg"          : "Storvreta"
-  - "/img/polacksbacken-1.jpg"    : "Polacksbacken, Uppsala"
-  - "/img/vattholmavagen.jpg"     : "Vattholmavägen, Uppsala"
   - "/img/granby.jpg"             : "Gränby, Uppsala"
   - "/img/riksdagshuset.jpg"      : "Riksdagshuset, Stockholm"
   - "/img/gamla-uppsalagatan.jpg" : "Gamla Uppsalagatan"
