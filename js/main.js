@@ -4,6 +4,7 @@ var main = {
 
   bigImgEl : null,
   numImgs : null,
+  imgIndex : null,
 
   init : function() {
     // Shorten the navbar after scrolling a little bit down
@@ -73,6 +74,7 @@ var main = {
     if ($("#header-big-imgs").length > 0) {
       main.bigImgEl = $("#header-big-imgs");
       main.numImgs = main.bigImgEl.attr("data-num-img");
+      main.imgIndex = Math.floor((Math.random() * main.numImgs) + 1);
 
           // 2fc73a3a967e97599c9763d05e564189
 	  // set an initial image
@@ -115,9 +117,9 @@ var main = {
   },
 
   getImgInfo : function() {
-  	var randNum = Math.floor((Math.random() * main.numImgs) + 1);
-    var src = main.bigImgEl.attr("data-img-src-" + randNum);
-	var desc = main.bigImgEl.attr("data-img-desc-" + randNum);
+    main.imgIndex = main.imgIndex + 1 - (main.imgIndex == main.numImgs) * main.numImgs;
+    var src = main.bigImgEl.attr("data-img-src-" + main.imgIndex);
+	var desc = main.bigImgEl.attr("data-img-desc-" + main.imgIndex);
 
 	return {
 	  src : src,
