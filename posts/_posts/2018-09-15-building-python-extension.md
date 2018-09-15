@@ -147,16 +147,15 @@ the Python interpreter.
 # Digression: Wrapping a library
 
 While the Python C API is straightforward to use, the lack of high-level
-functionalities in C can make it tedious to manually write some types of
-libraries, especially when it boils down to write middleware to glue some
-pre-existing library to an extension module.  Many frameworks and automated
-tools come to help in the task of writing a Python extension module. Creating
-Python bindings for an existing C/C++ library is straightforward thanks to the
-[Simplified Wrapper and Interface Generator (SWIG)](http://www.swig.org/), a
-tool that allows to generate a Python API for an existing library interface in
-a mostly automatic fashion. As a bonus, once SWIG is set up and in place it can
-also generate bindings for a multitude of other languages, such as R, Perl,
-Java, C#, Ruby, and others.
+functionalities in C can make it tedious to manually write some extensions,
+especially when it boils down to write middleware to glue some pre-existing
+library to an extension module.  However, many frameworks and automated tools
+come to help. In particular, creating Python bindings for an existing C/C++
+library is straightforward thanks to the [Simplified Wrapper and Interface
+Generator (SWIG)](http://www.swig.org/), a tool that allows to generate a
+Python API for an existing library interface in a mostly automatic fashion. As
+a bonus, once SWIG is set up and in place it can also generate bindings for a
+multitude of other languages, such as R, Perl, Java, C#, Ruby, and others.
 
 # Building a Python extension
 
