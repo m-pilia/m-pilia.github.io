@@ -134,7 +134,7 @@ it can be imported and used, for example from the Python REPL:
 >>> mymath.division(4, 0)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-ValueError: Dividing 4 by zero!
+ZeroDivisionError: Dividing 4 by zero!
 ```
 
 So far, everything is implemented in pristine C. Libraries such as
