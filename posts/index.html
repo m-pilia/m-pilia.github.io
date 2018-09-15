@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Posts
-subtitle: Sparse stuff
+subtitle:  
 use-site-title: true
 paginate: 5
 paginage_path: "/posts/page:num/"
@@ -11,7 +11,7 @@ plugins: jekyll-paginate
 <div class="posts-list">
   {% for post in paginator.posts %}
   <article class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
+    <a class="post-heading" href="{{ post.url | prepend: site.baseurl }}">
 	  <h2 class="post-title">{{ post.title }}</h2>
 
 	  {% if post.subtitle %}
@@ -28,9 +28,9 @@ plugins: jekyll-paginate
     <div class="post-entry-container">
       {% if post.image %}
       <div class="post-image">
-        <a href="{{ post.url | prepend: site.baseurl }}">
+        <!-- <a href="{{ post.url | prepend: site.baseurl }}"> -->
           <img src="{{ post.image }}">
-        </a>
+        <!-- </a> -->
       </div>
       {% endif %}
       <div class="post-entry">
