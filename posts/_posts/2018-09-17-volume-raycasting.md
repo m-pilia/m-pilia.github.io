@@ -545,10 +545,11 @@ public:
 The Qt example applications include [a nice implementation of a
 trackball](http://doc.qt.io/qt-5/qtwidgets-graphicsview-boxes-trackball-h.html),
 available under the BSD license, that we can include to allow rotating the
-volume with the mouse. With Qt Designer we can easily set up the main window
-and a docking widget containing some controls. This already gives us a nice
-skeleton application, that can be very easily extended in a modular way. The
-complete source code is [available on
+volume with the mouse. I also implemented a small reader that allows to open
+volumes from files in the VTK structured points legacy format. With Qt Designer
+we can easily set up the main window and a docking widget containing some
+controls. This already gives us a nice skeleton application, that can be very
+easily extended in a modular way. The complete source code is [available on
 GitHub](https://github.com/m-pilia/volume-raycasting). Enjoy!
 
 <img src="/posts/img/raycaster/gui.png"
