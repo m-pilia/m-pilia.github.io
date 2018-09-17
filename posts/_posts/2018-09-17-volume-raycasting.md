@@ -164,7 +164,7 @@ void main()
 
 ## Single-pass raycasting
 
-While being very simple to implement, single-pass raycasting is suboptimal.
+While being very simple to implement, two-pass raycasting is suboptimal.
 Apart from the obvious overhead of two rendering passes, during the second
 pass we need two texture samplings, which are not cheap operations, just to
 recover the entry and exit points.  Moreover, due to the full-screen quad
