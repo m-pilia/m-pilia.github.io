@@ -16,10 +16,9 @@ bigimg:
 
 ---
 
-I am a computer scientist with focus is on image analysis, programming theory,
-and machine learning.  I like to do things that involve mathematics and
-computers.  I especially love when I can use computers to solve my mathematical
-problems.
+I am a computer scientist with focus on image analysis, programming theory, and
+machine learning.  I like to do things that involve mathematics and computers.
+I especially love when I can use computers to solve my mathematical problems.
 
 Here you can find some contents related to my work.
 
