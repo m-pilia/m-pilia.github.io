@@ -112,8 +112,8 @@ The resulting textures will look more or less like this:
 </div>
 
 Once the entry and exit points are computed, we are ready for the second pass.
-This time we will render a full-screen quad, binding the entry end exit points
-to a couple of texture units. For each fragment we will sample the entry end
+This time we will render a full-screen quad, binding the entry and exit points
+to a couple of texture units. For each fragment we will sample the entry and
 exit points, compute the ray direction, given by their difference, and gather
 samples along the path of the ray through the volume. We set a step length
 defining the distance between the samples, whose value offers a compromise
