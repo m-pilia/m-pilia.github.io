@@ -5,13 +5,13 @@ subtitle: Ph.D. student in digital image analysis
 use-site-title: true
 
 bigimg:
-  - "/img/trehorningen.jpg"       : "Trehörningen, Marielund"
-  - "/img/malaren-2.jpg"          : "Lake Mälaren, Uppsala"
-  - "/img/frozen-fyrisan.jpg"     : "Fyrisån during winter, Uppsala"
-  - "/img/malaren-3.jpg"          : "Lake Mälaren, Uppsala"
+  - "/img/trehorningen.jpg"       : "Trehörningen"
+  - "/img/malaren-2.jpg"          : "Lake Mälaren"
+  - "/img/frozen-fyrisan.jpg"     : "Fyrisån during winter"
+  - "/img/malaren-3.jpg"          : "Lake Mälaren"
   - "/img/storvreta.jpg"          : "Storvreta"
-  - "/img/granby.jpg"             : "Gränby, Uppsala"
-  - "/img/riksdagshuset.jpg"      : "Riksdagshuset, Stockholm"
+  - "/img/granby.jpg"             : "Gränby"
+  - "/img/riksdagshuset.jpg"      : "Riksdagshuset"
   - "/img/gamla-uppsalagatan.jpg" : "Gamla Uppsalagatan"
 
 ---
