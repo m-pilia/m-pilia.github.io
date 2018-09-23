@@ -41,10 +41,10 @@ are optimised simultaneously.
 
 Having one transform for each moving image implies that the size of the search
 space grows at least linearly with the number of moving images registered
-together. This has a cost in terms of memory and computing time that especially
-when working with volume images can soon become prohibitive, and for this
-reason parametric models and subsampling techniques are often employed in this
-context.
+together. This has a cost in terms of memory and computing time that,
+especially when working with volume images, can soon become prohibitive. For
+this reason, parametric models and subsampling techniques are often employed in
+this context.
 
 The target of the optimisation is a similarity function defined over the whole
 set of images: one of the simplest, that works well for normalised images that
@@ -208,18 +208,19 @@ point is to have a look at the implementation of the
 [`CorrespondingPointsEuclideanDistanceMetric`](http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html).
 Elastix metrics implement the main logic within a class in the `itk` namespace,
 and the registration-related logic in a subclass of the latter, in the
-`elastix` namespace, so for example we see a
+`elastix` namespace, so for example we see the
 [`itk::CorrespondingPointsEuclideanDistancePointMetric`](http://elastix.isi.uu.nl/doxygen/classitk_1_1CorrespondingPointsEuclideanDistancePointMetric.html)
-that inherits from
-[`itk::SingleValuedPointSetToPointSetMetric`](http://elastix.isi.uu.nl/doxygen/classitk_1_1SingleValuedPointSetToPointSetMetric.html),
-and that is inherited by [`elastix::CorrespondingPointsEuclideanDistanceMetric`.](http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html)
+class, that inherits from
+[`itk::SingleValuedPointSetToPointSetMetric`](http://elastix.isi.uu.nl/doxygen/classitk_1_1SingleValuedPointSetToPointSetMetric.html)
+and that is inherited by
+[`elastix::CorrespondingPointsEuclideanDistanceMetric`.](http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html)
 
 A simple solution is to use the same approach for our new metric. The obvious
 drawback is that, being a subclass of
 `itk::SingleValuedPointSetToPointSetMetric`, it will require two point set
 input files, one for the fixed and one for the moving points. The solution is
 to leave things as they are, and just pass a dummy file for the fixed points
-when calling Elastix, whose content will be simply ignored. This same approach
+when calling Elastix, whose content will simply be ignored. This same approach
 is already used in the implementation of the groupwise registration image
 metrics, that require to pass a dummy fixed image as input.
 
@@ -290,9 +291,9 @@ negligible cost when the derivative is also computed together, it makes sense
 to simply call `GetValueAndDerivative` in the implementation of
 `GetDerivative`.
 
-Since the energy is expressed as a sum over the
-points, all of whom provide an independent contribution, the key part will
-naturally be a loop over the all the points.
+Since the energy is expressed as a sum over the points, all of whom provide an
+independent contribution, the key part will naturally be a loop over all the
+points.
 
 ```c++
 PointIterator pointItMoving = movingPointSet->GetPoints()->Begin();
