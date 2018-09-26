@@ -34,7 +34,7 @@ $$
 # Groupwise registration in a nutshell
 
 There are different approaches to groupwise registration, and the most popular
-ones involves the use of an implicit reference space, without using any
+ones involve the use of an implicit reference space, without using any
 explicitly selected template. Such space is implicitly defined by a collection
 of transforms that map from reference space to the moving images, and that are
 are optimised simultaneously.
