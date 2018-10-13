@@ -20,12 +20,11 @@ undoable](https://en.wikipedia.org/wiki/Global_interpreter_lock) in pure Python
 While Python's mainstream popularity is due to its high-level minimalism, the
 strength behind its success in contexts where performance matters, such as most
 scientific applications, is due to the extreme ease to invoke native library
-calls from Python, thanks to the
-[ctype](https://docs.python.org/3.7/library/ctypes.html) module, and to the
-low-level [Python C API](https://docs.python.org/3.7/c-api/index.html), which
-allows to easily write arbitrary C libraries (known as *Python C extension
-modules*) whose members can be called directly from Python and behave mostly
-like pure Python packages.
+calls from Python thanks to the low-level [Python C
+API](https://docs.python.org/3.7/c-api/index.html), which allows to easily
+write arbitrary C libraries (known as *Python C extension modules*) whose
+members can be called directly from Python and behave mostly like pure Python
+packages.
 
 This post presents a brief overview of Python C extensions and the most common
 tools available for their development, and it shows a way to build a C
@@ -34,8 +33,10 @@ setting, using a concrete example from my work.
 
 # Calling native functions from Python
 
-If we want to use the C function `printf` within the Python REPL, we can do it
-with the following three lines of code
+As an example, let assume we want to call the C function `printf` directly from
+within the Python REPL. We can do it using the
+[ctypes](https://docs.python.org/3.7/library/ctypes.html) module, with the
+following three lines of code
 
 ```python
 >>> from ctypes import CDLL
@@ -297,8 +298,8 @@ class cmake_build_ext(build_ext):
                 # Ask CMake to place the resulting library in the directory
                 # containing the extension
                 '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir),
-                # Other intermediate static libraries are placed in a temporary
-                # build directory instead
+                # Other intermediate static libraries are placed in a
+                # temporary build directory instead
                 '-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), self.build_temp),
                 # Hint CMake to use the same Python executable that
                 # is launching the build, prevents possible mismatching if
