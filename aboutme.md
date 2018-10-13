@@ -17,10 +17,6 @@ I love opera and classical music.  I am an enthusiast [Arch
 Linux](https://www.archlinux.org/), [KDE](https://www.kde.org/), and
 [vim](http://www.vim.org/) user.
 
-I am not into social media, but you can still find on the web some activities
-related to my work:
+I am not into social media, but on this website you can find some
+resources related to my activity.
 
-- My [PGP
-    key](https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17).
-- My [GitHub profile](https://github.com/m-pilia).
-- The [packages I maintain](https://aur.archlinux.org/packages/?SeB=m&K=m-pilia) on the [Arch Linux User Repository](https://aur.archlinux.org/) (AUR).

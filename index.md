@@ -15,10 +15,7 @@ bigimg:
   - "/img/gamla-uppsalagatan.jpg" : "Gamla Uppsalagatan"
 
 ---
-
-I am a computer scientist with focus on image analysis, programming theory, and
-machine learning.  I like to do things that involve mathematics and computers.
-I especially love when I can use computers to solve my mathematical problems.
-
-Here you can find some contents related to my work.
-
+<style>
+div[role="main"] {display: none;}
+footer {margin-top: 0; padding: 30px;}
+</style>
