@@ -79,7 +79,7 @@ telephone:
 rss:
   name: "RSS"
   baseURL: "{{ '/feed.xml' | prepend: site.baseurl }}"
-  icon: "fa-rss-square"
+  icon: "fa-rss"
 
 steam:
   name: "Steam"
