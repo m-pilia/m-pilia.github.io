@@ -8,7 +8,7 @@ mathjax: true
 tags: [raycasting, visualisation, Qt, OpenGL, GLSL]
 ---
 
-Visualisation is a complementary but very important part of my work in image
+Visualisation is a complementary but very important part of my work on image
 analysis. And since I work mainly with tridimensional volume images,
 visualisation is inherently a more complicated task compared to image analysis
 in only two dimensions. To help my work, I decided to implement a small tool
