@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Martino's page
-subtitle: Ph.D. student in digital image analysis
+subtitle: Computer scientist
 use-site-title: true
 
 bigimg:
