@@ -772,3 +772,8 @@ td.gutter {
   font-style: italic;
   font-size: 16px;
 }
+
+/* Content */
+.content-image-padded {
+  padding: 10px;
+}
