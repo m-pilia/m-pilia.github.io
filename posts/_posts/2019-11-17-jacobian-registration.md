@@ -315,7 +315,7 @@ displacement, therefore it is possible to perform gradient descent to minimise
 it. It is also possible to add a regularisation term to penalise non-smooth and
 physically unfeasible deformations, if necessary [[13](#13)].
 
-Given a displacement $$d(x,y,z) = \left(f(x,y,z), g(x,y,z), e(x,y,z) \right)$$,
+Given a displacement $$d(x,y,z) = \left(f(x,y,z), g(x,y,z), h(x,y,z) \right)$$,
 the partial derivatives in the expression of the Jacobian can be discretised
 with central differences of step length $$(\delta_x, \delta_y, \delta_z)$$,
 allowing to write the gradient of $$E$$ in closed form. The partial derivative
@@ -334,37 +334,37 @@ $$
         \approx&\frac{e^{x-1,y,z}}{\delta_x}
         \begin{vmatrix}
             g_y^{x-1,y,z}  &  f_z^{x-1,y,z} \\
-            e_y^{x-1,y,z}  &  e_z^{x-1,y,z} \\
+            h_y^{x-1,y,z}  &  h_z^{x-1,y,z} \\
         \end{vmatrix}
         -
         \frac{e^{x+1,y,z}}{\delta_x}
         \begin{vmatrix}
             g_y^{x+1,y,z}  &  f_z^{x+1,y,z} \\
-            e_y^{x+1,y,z}  &  e_z^{x+1,y,z} \\
+            h_y^{x+1,y,z}  &  h_z^{x+1,y,z} \\
         \end{vmatrix}
         - \\
         &\frac{e^{x,y-1,z}}{\delta_y}
         \begin{vmatrix}
             g_y^{x,y-1,z}  &  f_z^{x,y-1,z} \\
-            e_y^{x,y-1,z}  &  e_z^{x,y-1,z} \\
+            h_y^{x,y-1,z}  &  h_z^{x,y-1,z} \\
         \end{vmatrix}
         +
         \frac{e^{x,y+1,z}}{\delta_y}
         \begin{vmatrix}
             g_y^{x,y+1,z}  &  f_z^{x,y+1,z} \\
-            e_y^{x,y+1,z}  &  e_z^{x,y+1,z} \\
+            h_y^{x,y+1,z}  &  h_z^{x,y+1,z} \\
         \end{vmatrix}
         + \\
         &\frac{e^{x,y,z-1}}{\delta_z}
         \begin{vmatrix}
             g_y^{x,y,z-1}  &  f_z^{x,y,z-1} \\
-            e_y^{x,y,z-1}  &  e_z^{x,y,z-1} \\
+            h_y^{x,y,z-1}  &  h_z^{x,y,z-1} \\
         \end{vmatrix}
         -
         \frac{e^{x,y,z+1}}{\delta_z}
         \begin{vmatrix}
             g_y^{x,y,z+1}  &  f_z^{x,y,z+1} \\
-            e_y^{x,y,z+1}  &  e_z^{x,y,z+1} \\
+            h_y^{x,y,z+1}  &  h_z^{x,y,z+1} \\
         \end{vmatrix}
 \end{align*}
 $$
