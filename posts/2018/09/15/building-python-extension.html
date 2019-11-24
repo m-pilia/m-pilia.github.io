@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Building a Python C extension module with CMake</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Extending Python, with automatic cross-platform configuration">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Building a Python C extension module with CMake" />
+  
+
+   
+  <meta property="og:description" content="Extending Python, with automatic cross-platform configuration">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2018/09/15/building-python-extension.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2018/09/15/building-python-extension.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Building a Python C extension module with CMake" />
+  
+
+  
+  <meta name="twitter:description" content="Extending Python, with automatic cross-platform configuration">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=14
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Trehörningen"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/malaren-2.jpg"
+		  data-img-desc-2="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/lindholmen.jpg"
+		  data-img-desc-3="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/frozen-fyrisan.jpg"
+		  data-img-desc-4="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/majorna.jpg"
+		  data-img-desc-5="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/malaren-3.jpg"
+		  data-img-desc-6="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/storvreta.jpg"
+		  data-img-desc-7="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/granby.jpg"
+		  data-img-desc-8="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/riksdagshuset.jpg"
+		  data-img-desc-9="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-10="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/gottsunda-3.jpg"
+		  data-img-desc-11="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/gula-stigen.jpg"
+		  data-img-desc-12="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/kungsportsbron.jpg"
+		  data-img-desc-13="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/gottsunda-1.jpg"
+		  data-img-desc-14="Gottsunda"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Building a Python C extension module with CMake</h1>
+		  
+		    
+			<h2 class="post-subheading">Extending Python, with automatic cross-platform configuration</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on September 15, 2018
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+15 minutes
+
+read (2666 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Building a Python C extension module with CMake</h1>
+		  
+		    
+			<h2 class="post-subheading">Extending Python, with automatic cross-platform configuration</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on September 15, 2018</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Python is a high-level programming language whose extremely simple and elegant
+yet very powerful and expressive syntax has granted it enormous popularity in
+most programming contexts. Scientific applications are no exception on this
+respect, and this may look strange at a first glance, given that Python’s
+runtime is painfully slow and unsuitable for any high-performance computing,
+and even elementary parallelism is <a href="https://en.wikipedia.org/wiki/Global_interpreter_lock">basically
+undoable</a> in pure Python
+(or, at least, in its reference implementation,
+<a href="https://en.wikipedia.org/wiki/CPython">CPython</a>).</p>
+
+<p>While Python’s mainstream popularity is due to its high-level minimalism, the
+strength behind its success in contexts where performance matters, such as most
+scientific applications, is due to the extreme ease to invoke native library
+calls from Python thanks to the low-level <a href="https://docs.python.org/3.7/c-api/index.html">Python C
+API</a>, which allows to easily
+write arbitrary C libraries (known as <em>Python C extension modules</em>) whose
+members can be called directly from Python and behave mostly like pure Python
+packages.</p>
+
+<p>This post presents a brief overview of Python C extensions and the most common
+tools available for their development, and it shows a way to build a C
+extension using CMake to generate the configuration in a cross-platform
+setting, using a concrete example from my work.</p>
+
+<h1 id="calling-native-functions-from-python">Calling native functions from Python</h1>
+
+<p>As an example, let assume we want to call the C function <code class="highlighter-rouge">printf</code> directly from
+within the Python REPL. We can do it using the
+<a href="https://docs.python.org/3.7/library/ctypes.html">ctypes</a> module, with the
+following three lines of code</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">CDLL</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span> <span class="o">=</span> <span class="n">CDLL</span><span class="p">(</span><span class="s">'libc.so.6'</span><span class="p">)</span> <span class="c"># The exact filename may vary on your system</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">b</span><span class="s">"We compute </span><span class="si">%</span><span class="s">d + </span><span class="si">%</span><span class="s">d = </span><span class="si">%</span><span class="s">d!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+<p>whose output, unsurprisingly, is</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We compute 1 + 2 = 3!
+22
+</code></pre></div></div>
+<p>where <code class="highlighter-rouge">22</code> is the return value of the function, <a href="https://www.gnu.org/software/libc/manual/html_node/Formatted-Output-Functions.html">corresponding to the
+number of characters printed</a>.</p>
+
+<h1 id="writing-a-python-c-extension">Writing a Python C extension</h1>
+
+<p>While <code class="highlighter-rouge">ctypes</code> is a great tool for individual low level function calls, it is
+not a practical solution to systematically wrap a large API. Here the Python C
+API comes to the rescue, allowing to implement an arbitrarily complex module
+directly in C. This of course allows to implement components in C++ as well, as
+long as C linkage is used for the functions effectively called in the module.</p>
+
+<p>The Python API can be accessed from the header <code class="highlighter-rouge">Python.h</code>, that should be
+included with a CPython installation. The <a href="https://docs.python.org/3/extending/index.html">official
+documentation</a> contains a
+<a href="https://docs.python.org/3/extending/extending.html">tutorial</a> showing how to
+structure the basics of a C extension. Here I am writing a very minimal
+example, whose code should be pretty self-explanatory, implementing a module
+that exports a single function to perform integer division.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;Python.h&gt;
+</span>
+<span class="c1">// This is the definition of a method
+</span><span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">division</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">long</span> <span class="n">dividend</span><span class="p">,</span> <span class="n">divisor</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">"ll"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dividend</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">divisor</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="n">divisor</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">PyErr_Format</span><span class="p">(</span><span class="n">PyExc_ZeroDivisionError</span><span class="p">,</span> <span class="s">"Dividing %d by zero!"</span><span class="p">,</span> <span class="n">dividend</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">PyLong_FromLong</span><span class="p">(</span><span class="n">dividend</span> <span class="o">/</span> <span class="n">divisor</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Exported methods are collected in a table
+</span><span class="n">PyMethodDef</span> <span class="n">method_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="s">"division"</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">division</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">"Method docstring"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span> <span class="c1">// Sentinel value ending the table
+</span><span class="p">};</span>
+
+<span class="c1">// A struct contains the definition of a module
+</span><span class="n">PyModuleDef</span> <span class="n">mymath_module</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
+    <span class="s">"mymath"</span><span class="p">,</span> <span class="c1">// Module name
+</span>    <span class="s">"This is the module docstring"</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>   <span class="c1">// Optional size of the module state memory
+</span>    <span class="n">method_table</span><span class="p">,</span>
+    <span class="nb">NULL</span><span class="p">,</span> <span class="c1">// Optional slot definitions
+</span>    <span class="nb">NULL</span><span class="p">,</span> <span class="c1">// Optional traversal function
+</span>    <span class="nb">NULL</span><span class="p">,</span> <span class="c1">// Optional clear function
+</span>    <span class="nb">NULL</span>  <span class="c1">// Optional module deallocation function
+</span><span class="p">};</span>
+
+<span class="c1">// The module init function
+</span><span class="n">PyMODINIT_FUNC</span> <span class="nf">PyInit_mymath</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mymath_module</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The module is defined in a standard <a href="https://docs.python.org/3.7/distutils/setupscript.html">setup.py</a> script, here in a very minimal form. Calling the setup script allows to build, package, or install a Python module (regardless of the fact that it includes a C extension or not).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"mymath"</span><span class="p">,</span>
+      <span class="n">version</span> <span class="o">=</span> <span class="s">"0.1"</span><span class="p">,</span>
+      <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s">"mymath"</span><span class="p">,</span> <span class="p">[</span><span class="s">"mymath.c"</span><span class="p">])]</span>
+      <span class="p">);</span>
+</code></pre></div></div>
+
+<p>In case a C extension module is included, the source files specified in the
+call to <code class="highlighter-rouge">setup()</code> will be automatically compiled when calling <code class="highlighter-rouge">python setup.py
+build</code>: the Python interpreter will take care of invoking the C compiler with
+proper flags and to link against the proper libraries.  The result is a shared
+library: on Linux the file is called <code class="highlighter-rouge">mymath.cpython-37m-x86_64-linux-gnu.so</code>,
+with a very self-explanatory file name; on Windows the extension is usually
+<code class="highlighter-rouge">.pyd</code>. This shared object can be treated mostly as a pure Python module, and
+it can be imported and used, for example from the Python REPL:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; import mymath
+&gt;&gt;&gt; mymath.division(4, 2)
+2
+&gt;&gt;&gt; mymath.division(4, 0)
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+ZeroDivisionError: Dividing 4 by zero!
+</code></pre></div></div>
+
+<p>So far, everything is implemented in pristine C. Libraries such as
+<a href="https://github.com/pybind/pybind11">pybind11</a> and
+<a href="https://www.boost.org/doc/libs/1_68_0/libs/python/doc/html/index.html">Boost.Python</a>
+simplify the creation of a Python extension module ex-novo in C++, handling all
+the tedious parts related to the boilerplate code required to integrate with
+the Python interpreter.</p>
+
+<h1 id="digression-wrapping-a-library">Digression: Wrapping a library</h1>
+
+<p>While the Python C API is straightforward to use, the lack of high-level
+functionalities in C can make it tedious to manually write some extensions,
+especially when it boils down to write middleware to glue some pre-existing
+library to an extension module.  However, many frameworks and automated tools
+come to help. In particular, creating Python bindings for an existing C/C++
+library is straightforward thanks to the <a href="http://www.swig.org/">Simplified Wrapper and Interface
+Generator (SWIG)</a>, a tool that allows to generate a
+Python API for an existing library interface in a mostly automatic fashion. As
+a bonus, once SWIG is set up and in place it can also generate bindings for a
+multitude of other languages, such as R, Perl, Java, C#, Ruby, and others.</p>
+
+<h1 id="building-a-python-extension">Building a Python extension</h1>
+
+<p>Python includes in its standard library the
+<a href="https://docs.python.org/3/library/distutils.html">distutils</a> package,
+which handles the creation of Python modules and provides a portable
+API to build native C extensions in a cross-platform setup. However, the
+distutils package is usually not accessed directly, and most packagers use
+an extended toolkit,
+<a href="https://setuptools.readthedocs.io/en/latest/">setuptools</a>, that
+provides a consistent interface for configuration, dependency handling,
+and other simple and advanced features.</p>
+
+<p>As seen before, distutils (and setuptools) can automatically build a Python
+extension, taking care of invoking the compiler with suitable flags. This works
+well for simple extensions without external dependencies, while for more
+elaborated projects it may be necessary to use a custom extension builder, that
+allows to tinker with the compiler settings and build options. This can be done
+by creating a subclass of <code class="highlighter-rouge">setuptools.command.build_ext</code>, and then passing an
+instance of this class to the <code class="highlighter-rouge">setup()</code> function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<span class="kn">from</span> <span class="nn">setuptools.command.build_ext</span> <span class="kn">import</span> <span class="n">build_ext</span>
+
+<span class="k">class</span> <span class="nc">my_build_ext</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">"Visual Studio is not supported"</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">extra_compile_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'--pedantic'</span><span class="p">]</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">extra_link_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-lgomp'</span><span class="p">]</span>
+
+        <span class="n">build_ext</span><span class="o">.</span><span class="n">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"mymath"</span><span class="p">,</span>
+      <span class="n">version</span> <span class="o">=</span> <span class="s">"0.1"</span><span class="p">,</span>
+      <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s">"mymath"</span><span class="p">,</span> <span class="p">[</span><span class="s">"mymath.c"</span><span class="p">])],</span>
+      <span class="n">cmdclass</span> <span class="o">=</span> <span class="p">{</span><span class="s">'build_ext'</span><span class="p">:</span> <span class="n">my_build_ext</span><span class="p">},</span>
+      <span class="p">);</span>
+</code></pre></div></div>
+
+<h1 id="building-with-cmake">Building with CMake</h1>
+
+<p>For complex projects, however, this may not be enough, especially when large
+libraries are involved. For instance, setting robust build options for a
+cross-platform build of a CUDA or <a href="https://itk.org/">ITK</a>-based application or
+library can be a challenging task if done manually. This is when
+<a href="https://cmake.org/">CMake</a> comes into play. CMake is a cross-platform build
+configuration generator tool, originally designed to build the ITK itself and
+quickly adopted as one of the most popular build systems in the open-source
+ecosystem. It allows to easily handle configuration, automatically discover
+build settings for most of the common tools and libraries on different
+platforms, and it allows to seamlessly integrate within a project any other
+build dependency that uses CMake for its configuration.</p>
+
+<p>Let assume we are building a C library with non-trivial dependencies, and that
+we want to turn this library into a Python C extension module. As we have seen
+so far, there is a wide variety of tools at our disposal for this purpose. If
+our library is already configured with CMake, one option is to let CMake handle
+the build of the Python extension module itself. After all, an extension module
+is just a shared library that exports some specific symbols.</p>
+
+<p>First of all, we ask CMake to find the Python interpreter and libs. We can
+specify a minimum version if we want, which is 3.5 in this example.</p>
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cmake_minimum_required</span><span class="p">(</span>VERSION 3.10<span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span>mymath<span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span>PythonInterp 3.5 REQUIRED<span class="p">)</span>
+
+<span class="c1"># This goes after, since it uses PythonInterp as hint</span>
+<span class="nb">find_package</span><span class="p">(</span>PythonLibs 3.5 REQUIRED<span class="p">)</span>
+</code></pre></div></div>
+<p>In case we need to pass arrays forth and back between C and Python, the <a href="https://docs.scipy.org/doc/numpy/reference/c-api.html">NumPy C
+API</a> is probably the
+best option. Once Python is ready, it is easy to locate the required NumPy
+headers:</p>
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This comes to hand if we also need to use the NumPy C API</span>
+<span class="nb">exec_program</span><span class="p">(</span><span class="si">${</span><span class="nv">PYTHON_EXECUTABLE</span><span class="si">}</span>
+             ARGS <span class="s2">"-c </span><span class="se">\"</span><span class="s2">import numpy; print(numpy.get_include())</span><span class="se">\"</span><span class="s2">"</span>
+             OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
+             RETURN_VALUE NUMPY_NOT_FOUND
+            <span class="p">)</span>
+<span class="nb">if</span><span class="p">(</span>NUMPY_NOT_FOUND<span class="p">)</span>
+    <span class="nb">message</span><span class="p">(</span>FATAL_ERROR <span class="s2">"NumPy headers not found"</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div></div>
+<p>Next we define a target for the extension itself. As said before, the extension
+module is a shared library: here <code class="highlighter-rouge">${SRCS}</code> is the list of source files. It is
+important to specify C linkage among the target properties.</p>
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">add_library</span><span class="p">(</span>mymath SHARED <span class="si">${</span><span class="nv">SRCS</span><span class="si">}</span><span class="p">)</span>
+
+<span class="nb">set_target_properties</span><span class="p">(</span>
+    mymath
+    PROPERTIES
+        PREFIX <span class="s2">""</span>
+        OUTPUT_NAME <span class="s2">"mymath"</span>
+        LINKER_LANGUAGE C
+    <span class="p">)</span>
+</code></pre></div></div>
+<p>At this point the extension is modeled as a regular CMake target, and this
+allows to integrate it freely with other targets.</p>
+
+<p>We may still want to let Python launch the build and take care of the
+installation or packaging of our extension. To do this, we can write a custom
+<code class="highlighter-rouge">build_ext</code> that launches the CMake build. For the sake of clarity, it is
+possible to define a custom extension class that allows to specify the root
+folder of the CMake project (<code class="highlighter-rouge">cmake_lists_dir</code>). Moreover, we set the <code class="highlighter-rouge">sources</code>
+parameter to an empty list, since in the base class it is not an optional
+argument, but we do not want setuptools to directly compile any file for us.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CMakeExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmake_lists_dir</span><span class="o">=</span><span class="s">'.'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwa</span><span class="p">):</span>
+        <span class="n">Extension</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmake_lists_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cmake_lists_dir</span><span class="p">)</span>
+</code></pre></div></div>
+<p>We can then proceed to define the actual <code class="highlighter-rouge">build_ext</code> subclass that is in charge
+to launch CMake.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">cmake_build_ext</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Ensure that CMake is present and working</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--version'</span><span class="p">])</span>
+        <span class="k">except</span> <span class="nb">OSError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'Cannot find CMake executable'</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+
+            <span class="n">extdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ext_fullpath</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="s">'Debug'</span> <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s">'--debug'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'ON'</span> <span class="k">else</span> <span class="s">'Release'</span>
+
+            <span class="n">cmake_args</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s">'-DCMAKE_BUILD_TYPE=</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">cfg</span><span class="p">,</span>
+                <span class="c"># Ask CMake to place the resulting library in the directory</span>
+                <span class="c"># containing the extension</span>
+                <span class="s">'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
+                <span class="c"># Other intermediate static libraries are placed in a</span>
+                <span class="c"># temporary build directory instead</span>
+                <span class="s">'-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">),</span>
+                <span class="c"># Hint CMake to use the same Python executable that</span>
+                <span class="c"># is launching the build, prevents possible mismatching if</span>
+                <span class="c"># multiple versions of Python are installed</span>
+                <span class="s">'-DPYTHON_EXECUTABLE={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">),</span>
+                <span class="c"># Add other project-specific CMake arguments if needed</span>
+                <span class="c"># ...</span>
+            <span class="p">]</span>
+
+            <span class="c"># We can handle some platform-specific settings at our discretion</span>
+            <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">'Windows'</span><span class="p">:</span>
+                <span class="n">plat</span> <span class="o">=</span> <span class="p">(</span><span class="s">'x64'</span> <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'64bit'</span> <span class="k">else</span> <span class="s">'Win32'</span><span class="p">)</span>
+                <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="c"># These options are likely to be needed under Windows</span>
+                    <span class="s">'-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE'</span><span class="p">,</span>
+                    <span class="s">'-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
+                <span class="p">]</span>
+                <span class="c"># Assuming that Visual Studio and MinGW are supported compilers</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
+                    <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
+                        <span class="s">'-DCMAKE_GENERATOR_PLATFORM=</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">plat</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
+                        <span class="s">'-G'</span><span class="p">,</span> <span class="s">'MinGW Makefiles'</span><span class="p">,</span>
+                    <span class="p">]</span>
+
+            <span class="n">cmake_args</span> <span class="o">+=</span> <span class="n">cmake_cmd_args</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">)</span>
+
+            <span class="c"># Config</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="n">ext</span><span class="o">.</span><span class="n">cmake_lists_dir</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmake_args</span><span class="p">,</span>
+                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">)</span>
+
+            <span class="c"># Build</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--build'</span><span class="p">,</span> <span class="s">'.'</span><span class="p">,</span> <span class="s">'--config'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">],</span>
+                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>A real-life example of Python extension built this way is the
+<a href="https://github.com/m-pilia/disptools">disptools</a> (displacement-tools), a small
+library for the generation of displacement fields with known volume changes,
+that I implemented and made available on GitHub.</p>
+
+<h1 id="automating-further">Automating further</h1>
+
+<p>Additional support for scientific computing extensions is provided by
+<a href="https://github.com/scikit-build/scikit-build">scikit-build</a>, a Python package
+providing a build tool alternative to setuptools, that simplifies the build of
+extensions written in C, C++, Cython, and Fortran. Scikit-build offers a bridge
+between the <code class="highlighter-rouge">setup.py</code> and CMake, and it provides CMake modules to
+automatically find Cython, NumPy, and F2PY.</p>
+
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#Python">Python</a>
+          
+            <a href="/tags#CMake">CMake</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Building+a+Python+C+extension+module+with+CMake+https://martinopilia.com/posts/2018/09/15/building-python-extension.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2018/09/15/building-python-extension.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+  <!--- Share on Google Plus -->
+    <a href="https://plus.google.com/share?url=https://martinopilia.com/posts/2018/09/15/building-python-extension.html"
+      class="btn btn-social-icon btn-google" title="Share on Google+">
+      <span class="fa fa-fw fa-google-plus" aria-hidden="true"></span>
+      <span class="sr-only">Google+</span>
+    </a>
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2018/09/15/building-python-extension.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        
+        <li class="next">
+          <a href="/posts/2018/09/17/volume-raycasting.html" data-toggle="tooltip" data-placement="top" title="GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2019
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

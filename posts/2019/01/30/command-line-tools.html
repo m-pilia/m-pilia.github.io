@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Useful command line tools</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Improved workflow on the shell">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Useful command line tools" />
+  
+
+   
+  <meta property="og:description" content="Improved workflow on the shell">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2019/01/30/command-line-tools.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2019/01/30/command-line-tools.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Useful command line tools" />
+  
+
+  
+  <meta name="twitter:description" content="Improved workflow on the shell">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=14
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Trehörningen"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/malaren-2.jpg"
+		  data-img-desc-2="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/lindholmen.jpg"
+		  data-img-desc-3="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/frozen-fyrisan.jpg"
+		  data-img-desc-4="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/majorna.jpg"
+		  data-img-desc-5="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/malaren-3.jpg"
+		  data-img-desc-6="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/storvreta.jpg"
+		  data-img-desc-7="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/granby.jpg"
+		  data-img-desc-8="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/riksdagshuset.jpg"
+		  data-img-desc-9="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-10="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/gottsunda-3.jpg"
+		  data-img-desc-11="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/gula-stigen.jpg"
+		  data-img-desc-12="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/kungsportsbron.jpg"
+		  data-img-desc-13="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/gottsunda-1.jpg"
+		  data-img-desc-14="Gottsunda"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Useful command line tools</h1>
+		  
+		    
+			<h2 class="post-subheading">Improved workflow on the shell</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on January 30, 2019
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+16 minutes
+
+read (2876 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Useful command line tools</h1>
+		  
+		    
+			<h2 class="post-subheading">Improved workflow on the shell</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on January 30, 2019</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This post is meant to be a brief introduction to some productivity tools that
+can make a command line workflow smoother and more efficient. While well known,
+standard tools with similar function already exist (e.g. bash, grep, find,
+etc.), the tools presented hereafter have a handy user interface with sensible
+default behaviour, simpler options that are easy to remember, and are optimised
+for speed, making them useful tools for interactive usage, especially when
+working on large projects.</p>
+
+<p>It must be noted that such tools are not standardised, and hence less portable
+than their POSIX counterparts (grep, find, etc.), so they should never replace
+standard command line utilities in the context of shell scripting.</p>
+
+<p>What follows is only a collection of suggestions for a general purpose
+workflow, and it is not supposed to be an exhaustive list, moreover the tools
+mentioned here are not silver bullets, but only a few among many other valuable
+alternatives available in their respective categories.</p>
+
+<h1 id="fzf">Fzf</h1>
+
+<p><img src="/posts/img/shell_tools/fzf.gif" class="pull-right" style="width:49%;" /></p>
+
+<p><a href="https://github.com/junegunn/fzf">Fzf</a> is a fuzzy search tool for the command
+line. <a href="https://en.wikipedia.org/wiki/Approximate_string_matching">Fuzzy
+matching</a> allows to
+search for strings that correspond to a given pattern only approximately;
+with fzf, a string will match a pattern as long as it contains all the
+characters from the pattern, in the given order. This allows to find things
+very quickly, with a limited number of keystrokes (if you are not familiar with
+this search approach, it will become straightforward after a minimal amount of
+practice, and then you will never look back…). Fzf is optimised for speed and
+it works well even when dealing with very large text corpora.</p>
+
+<p>Fzf can be used to search for files, file content, processes, variables, and
+more. Default shell key bindings (for bash, Zsh, and fish) are available to
+search for files and folders (<kbd>ctrl</kbd> + <kbd>t</kbd>), commands from
+the history (<kbd>ctrl</kbd> + <kbd>r</kbd>), and fuzzy change directory
+(<kbd>alt</kbd> + <kbd>c</kbd>). Integrations with the major text editors
+exist, and fzf can be easily used as a base for custom tools (many <a href="https://github.com/junegunn/fzf/wiki/examples">examples
+from the community</a> are
+available).</p>
+
+<p>Key bindings can be enabled by sourcing the provided install scripts, e.g. for
+Zsh source in <code class="highlighter-rouge">.zshrc</code> as follows:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact path may depend on your installation</span>
+<span class="nb">.</span> /usr/share/fzf/key-bindings.zsh
+<span class="nb">.</span> /usr/share/fzf/completion.zsh
+</code></pre></div></div>
+
+<h1 id="ripgrep">Ripgrep</h1>
+
+<p><a href="https://github.com/BurntSushi/ripgrep">Ripgrep</a> (rg) is a line search tool
+that recursively searches for regex patterns within files, with a behaviour
+similar to <code class="highlighter-rouge">grep -r</code>. It has a simple and convenient syntax, and by default it
+respects <code class="highlighter-rouge">.gitignore</code>, ignores hidden files, and offers coloured output. It
+supports Perl regular expressions (PCRE2), non-UTF-8 text encodings, search
+inside compressed archives, and input preprocessing filters. It is optimised
+for speed and it can be <a href="https://blog.burntsushi.net/ripgrep/">significantly
+faster</a> than GNU grep when searching
+through large text corpora.</p>
+
+<p>A large amount of introduction material can be found in the
+<a href="https://github.com/BurntSushi/ripgrep/blob/master/README.md">readme</a>, <a href="https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md">user
+guide</a>, and
+<a href="https://github.com/BurntSushi/ripgrep/blob/master/FAQ.md">FAQ</a> pages.</p>
+
+<p>It must be noted that ripgrep is not the only alternative to GNU grep, and a
+number of well-known grep-like tools exist, such as <a href="https://git-scm.com/docs/git-grep">git
+grep</a>, <a href="https://beyondgrep.com/">ack</a>,
+<a href="https://github.com/gvansickle/ucg">ucg</a>,
+<a href="https://github.com/svent/sift">sift</a>,
+<a href="https://github.com/ggreer/the_silver_searcher">ag</a>, and
+<a href="https://github.com/monochromegane/the_platinum_searcher">pt</a>. A helpful
+summary can be found in a <a href="https://beyondgrep.com/feature-comparison/">comparison
+table</a> compiled by Andy Lester,
+main author of ack.</p>
+
+<h1 id="gnu-parallel">GNU Parallel</h1>
+
+<p><a href="https://www.gnu.org/software/parallel/">GNU Parallel</a> is a tool to run
+multiple jobs in parallel. It can take commands to be run either from arguments
+or from the standard input, with a syntax similar to <code class="highlighter-rouge">xargs</code>. The simplest use
+case is to provide a list of commands in input, and Parallel will take care of
+distributing them between different processes:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>list_of_jobs | parallel
+</code></pre></div></div>
+
+<p>If the number of jobs exceeds the number of available workers (by default equal
+to the number of CPUs), Parallel will organise a queue. Among the basic
+options, it is possible to specify the desired number of workers with the
+<code class="highlighter-rouge">--jobs</code> argument, and it is even possible to distribute jobs across different
+machines via <code class="highlighter-rouge">ssh</code>, using the <code class="highlighter-rouge">--sshlogin</code> flag.</p>
+
+<p>Parallel does not just allow to run commands, but also to build them, taking
+one or multiple lists of arguments and allowing to combine them. A list of
+arguments is always introduced by the separator <code class="highlighter-rouge">:::</code>. For instance, the
+following is a trivial example that outputs all possible binary numbers of
+three digits, by feeding all possible combinations of <code class="highlighter-rouge">0</code> and <code class="highlighter-rouge">1</code> as arguments
+to <code class="highlighter-rouge">echo</code>:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>parallel <span class="nb">echo</span> ::: 0 1 ::: 0 1 ::: 0 1
+0 0 0
+0 0 1
+0 1 0
+0 1 1
+1 0 0
+1 0 1
+1 1 0
+1 1 1
+</code></pre></div></div>
+
+<p>Parallel is a powerful and feature-rich tool, that goes well beyond the scope
+of this post. The <a href="https://www.gnu.org/software/parallel/parallel_tutorial.html">official tutorial</a> is a good starting point to get familiar with its functionalities.</p>
+
+<h1 id="fd">Fd</h1>
+
+<p><a href="https://github.com/sharkdp/fd">Fd</a> is a file search tool, with a use case
+similar to <code class="highlighter-rouge">find</code>. Compared to the latter, it offers a very handy syntax: a
+simple search by file name inside the current folder can be done by just
+writing <code class="highlighter-rouge">fd foo</code>, whereas a minimal find command would look like <code class="highlighter-rouge">find . -name
+foo</code>.</p>
+
+<p>Fd has sensible defaults oriented towards interactive use (smart-case, coloured
+output, respects <code class="highlighter-rouge">.gitignore</code>, ignores hidden files and directories), it offers
+Unicode support, and optimisation for speed (especially when performing
+regex-based search, it can be significantly faster than <code class="highlighter-rouge">find</code>).</p>
+
+<p>It has built-in support for parallel execution, with a syntax similar to GNU
+Parallel. For instance, the following command finds all JPEG images and
+converts them to PNG in parallel</p>
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fd <span class="nt">-e</span> jpg <span class="nt">-x</span> convert <span class="o">{}</span> <span class="o">{</span>.<span class="o">}</span>.png
+</code></pre></div></div>
+<p>and it is equivalent to</p>
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find <span class="nb">.</span> <span class="nt">-name</span> <span class="s1">'*.jpg'</span> | parallel convert <span class="o">{}</span> <span class="o">{</span>.<span class="o">}</span>.png
+</code></pre></div></div>
+
+<p>Fd can be used in combination with other tools, for instance as default input
+source for fzf by setting the following environment variable:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">FZF_DEFAULT_COMMAND</span><span class="o">=</span><span class="s1">'fd --type f'</span>
+</code></pre></div></div>
+
+<h1 id="command-auto-correction">Command auto-correction</h1>
+
+<p>Any command line user has experienced countless times the mixed feeling of
+surprise and frustration when a command fails because of a typo. Or because of
+a <a href="https://twitter.com/liamosaur/status/506975850596536320">forgotten sudo</a>
+before some administrative command requiring root privileges. Some shells are
+able to detect certain categories of mistakes and suggest a possible
+correction, for instance Zsh can correct typos in commands and arguments for
+some commands, after enabling the relative options:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setopt correct    <span class="c"># Enable built-in command auto-correction</span>
+setopt correctall <span class="c"># Enable argument auto-correction</span>
+</code></pre></div></div>
+
+<p>At this point, the interaction will look like this:</p>
+
+<p><img src="/posts/img/shell_tools/zsh_correct.png" class="center-block" style="width:100%;" /></p>
+
+<p>Auto-correction can be however rather inaccurate when enabling <code class="highlighter-rouge">setopt
+correctall</code>, and sometimes it may wrongly suggest to replace an actually
+correct argument with a file name that looks similar. Moreover, this mechanism
+can only catch a limited amount of mistakes, for instance it cannot help in
+presence of a misspelled git command. Luckily, git offers its own
+auto-correction mechanism, that can be enabled in <code class="highlighter-rouge">.gitconfig</code> by assigning to
+<code class="highlighter-rouge">autocorrect</code> a value in tenths of seconds, representing a wait time before
+actual auto-correction happens.</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[<span class="n">help</span>]
+	<span class="n">autocorrect</span> = <span class="m">20</span>
+</code></pre></div></div>
+
+<p>Now the result of a misspelled git command will look like:</p>
+
+<p><img src="/posts/img/shell_tools/git_autocorrect.png" class="center-block" style="width:100%;" /></p>
+
+<p>Unfortunately, not all programs offer an auto-correction mechanism as git does.
+But nowadays the frustration is over thanks to
+<a href="https://github.com/nvbn/thefuck">Thefuck</a>, a utility whose colourful name well
+summarises the typical reaction of a shell user in front of a command failing
+because of a typo. It relies on a
+<a href="https://nvbn.github.io/2015/10/08/how-thefuck-works/">rule-based</a> correction
+mechanism, and custom rules can be easily added, or existing rules can be
+excluded.</p>
+
+<p>The application can be installed by evaluating in the shell the output of
+<code class="highlighter-rouge">thefuck --alias</code>, that defines an alias which will perform all the required
+magic under the hood. Since the default value for the alias name is a <a href="https://en.wikipedia.org/wiki/Seven_dirty_words">type of
+word</a> that one may not always
+want to leave around in the history of their machines, it is possible to set a
+custom alias name, for instance <code class="highlighter-rouge">fixit</code>:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>thefuck <span class="nt">--alias</span> fixit<span class="k">)</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>Now it is possible to autocorrect a failed command by simply typing <code class="highlighter-rouge">fixit</code>.
+The application will show a prompt allowing to accept the suggested fix, scroll
+through alternative suggestions, or abort:</p>
+
+<p><img src="/posts/img/shell_tools/thefuck.png" class="center-block" style="width:100%;" /></p>
+
+<p>No need to say that this utility needs to be used with caution and
+never blindly, since in less trivial cases the correction may not be the one
+expected and putting together <code class="highlighter-rouge">sudo</code> and random commands is a perfect recipe
+for disaster.</p>
+
+<h1 id="zsh">Zsh</h1>
+
+<p>While bash is the ubiquitous shell and the most sensible option for portable
+scripting, modern alternative shells exists, such as fish or Zsh, offering
+handy built-ins and a large ecosystem of plugins that make them suitable to
+replace bash for interactive use. Personally I opt for Zsh because of its
+richness of features and large plugin ecosystem, but the choice of a shell is
+also a matter of taste and many great alternatives exist, for which similar
+considerations hold.</p>
+
+<p>Zsh can be set as the login shell by using the
+<a href="https://en.wikipedia.org/wiki/Chsh">chsh</a> (change shell) Unix tool, which is
+most likely present in your system. What follows is not intended as a tutorial
+nor an introduction to Zsh, which could easily take not just a blog post but
+rather a book on its own. It is instead a display of some useful features and
+extensions available, and for the curious reader further details are available
+in the respective documentations and tutorials.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Similarly to bash, Zsh sources a series of files at startup, that can be used
+to control the environment and settings. Each file can be present in system
+space (inside <code class="highlighter-rouge">/etc</code>) and user space (a dot-file inside <code class="highlighter-rouge">$ZDOTDIR</code>, which is
+<code class="highlighter-rouge">~/</code> by default), and system files are always sourced before user files. The
+first file to be sourced is <code class="highlighter-rouge">zshenv</code>, followed by <code class="highlighter-rouge">zprofile</code> (only for login
+shells), <code class="highlighter-rouge">zshrc</code> (only for interactive shells), and <code class="highlighter-rouge">zlogin</code> (only for login
+shells).</p>
+
+<p>In a post about Zsh it is impossible to avoid mentioning <a href="https://github.com/robbyrussell/oh-my-zsh">Oh My
+Zsh</a>, a popular framework for Zsh
+configuration and plugin management. However, handling the configuration
+manually is also very easy, and many Zsh plugins may be already shipped as
+packages with your Linux distribution. What follows is an example <code class="highlighter-rouge">.zshrc</code> file
+containing some useful basic settings.</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># A large and neat history is valuable when using some tools</span>
+<span class="nb">export </span><span class="nv">HISTFILE</span><span class="o">=</span>~/.zsh_history
+<span class="nb">export </span><span class="nv">HISTSIZE</span><span class="o">=</span>10000
+<span class="nb">export </span><span class="nv">SAVEHIST</span><span class="o">=</span><span class="k">${</span><span class="nv">HISTSIZE</span><span class="k">}</span>
+setopt inc_append_history   <span class="c"># Write immediately to history file</span>
+setopt share_history        <span class="c"># Share history among sessions</span>
+setopt hist_reduce_blanks   <span class="c"># Trim whitespace</span>
+setopt hist_ignore_all_dups <span class="c"># Ignore duplicates</span>
+setopt hist_ignore_space    <span class="c"># Ignore entries starting with space</span>
+
+bindkey <span class="nt">-v</span> <span class="c"># Enable vi-mode (use only if familiar with vi)</span>
+
+<span class="c"># Some useful keybindings</span>
+bindkey <span class="s2">"^[[3~"</span> delete-char
+bindkey <span class="s2">"^[[H"</span> beginning-of-line
+bindkey <span class="s2">"^[[F"</span> end-of-line
+bindkey <span class="s2">"^[[A"</span> up-line-or-history
+bindkey <span class="s2">"^[[B"</span> down-line-or-history
+bindkey <span class="s1">'^[[1;5C'</span> emacs-forward-word
+bindkey <span class="s1">'^[[1;5D'</span> emacs-backward-word
+bindkey <span class="s1">'^w'</span> backward-kill-word
+bindkey <span class="s1">'^r'</span> history-incremental-search-backward
+</code></pre></div></div>
+
+<h2 id="custom-prompt">Custom prompt</h2>
+
+<p>While the default shell prompt has a simple and reassuring look that remained
+mostly unchanged through decades, some customisations can make it much more
+informative, speeding up the workflow. Of course, Zsh allows to specify a
+prompt template to be expanded, through the
+<a href="http://zsh.sourceforge.net/Intro/intro_14.html"><code class="highlighter-rouge">PROMPT</code></a> variable. Many
+themes from the community are available, and an example gallery with themes to
+please all tastes can be found in the <a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes">oh-my-zsh
+wiki</a>.</p>
+
+<p>A theme I personally like is
+<a href="https://github.com/denysdovhan/spaceship-prompt">Spaceship</a>, which packs many
+useful features in a minimalistic, elegant, and unobtrusive look. Features
+include automatic hostname and username display, highlight of exit status,
+execution time, status indicator for git, mercurial, virtual environments, and
+many more.</p>
+
+<p><img src="/posts/img/shell_tools/spaceship_prompt.png" class="center-block" style="width:90%;" /></p>
+
+<p>Installation is as simple as sourcing a script in <code class="highlighter-rouge">.zshrc</code>, and a
+<a href="https://github.com/denysdovhan/spaceship-prompt/blob/master/docs/Options.md">large number of
+options</a>
+can be changed by setting proper environment variables:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
+<span class="nb">.</span> /usr/lib/spaceship-prompt/spaceship.zsh
+
+<span class="c"># Customise some options</span>
+<span class="nv">SPACESHIP_CHAR_SYMBOL</span><span class="o">=</span><span class="s1">'%% '</span>
+<span class="nv">SPACESHIP_USER_SHOW</span><span class="o">=</span>always
+</code></pre></div></div>
+
+<h2 id="completion">Completion</h2>
+
+<p>It is well known that the shell offers command completion via the
+<kbd>Tab</kbd> key. Through custom completion functions, any program can
+instruct the shell on how to complete its arguments. Zsh supports both its own
+completion function syntax and <code class="highlighter-rouge">bash</code> completion functions, and many completion
+scripts <a href="https://github.com/zsh-users/zsh-completions">are available</a>.</p>
+
+<p>The completion system for Zsh can be initialised through a guided wizard by
+calling <code class="highlighter-rouge">autoload -Uz compinstall &amp;&amp; compinstall</code>, which will write relevant
+code to <code class="highlighter-rouge">~/.zshrc</code>, or manually by inserting relevant commands in the
+<code class="highlighter-rouge">~/.zshrc</code>, similarly to the following:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Initialise the completion system</span>
+autoload <span class="nt">-U</span> +X compinit <span class="o">&amp;&amp;</span> compinit
+autoload <span class="nt">-U</span> +X bashcompinit <span class="o">&amp;&amp;</span> bashcompinit
+
+<span class="c"># Show completion menu if at least two options are available</span>
+zstyle <span class="s1">':completion:*'</span> menu <span class="k">select</span><span class="o">=</span>2
+</code></pre></div></div>
+
+<p>Last but not least, fzf offers a <a href="https://github.com/junegunn/fzf#fuzzy-completion-for-bash-and-zsh">context-aware fuzzy completion
+mechanism</a>
+for command arguments, that can be used by inserting a trigger sequence (by
+default a double asterisk, <code class="highlighter-rouge">**</code>) followed by a <kbd>Tab</kbd> pressure. For
+instance, to fuzzy-search a file from a given directory, to be passed as a
+positional argument to vim:</p>
+
+<p><img src="/posts/img/shell_tools/fzf_completion.png" class="center-block" style="width:40%;" /></p>
+
+<h2 id="autosuggestions">Autosuggestions</h2>
+
+<p>While command completion is a great feature, command prediction can be an even
+better feature. A solution in this sense is offered by
+<a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a>, which
+proposes a completion for the commands as you type, based on the shell history.</p>
+
+<p>Autosuggestions are showed as greyed text, and can be accepted entirely by
+pressing <kbd>End</kbd> or <kbd>→</kbd>, or one word at a time by pressing a
+key combination bound to <code class="highlighter-rouge">forward-word</code> (<kbd>ctrl</kbd> +
+<kbd>→</kbd> if using the example configuration from above).</p>
+
+<p><img src="/posts/img/shell_tools/autosuggestions.gif" class="center-block" style="width:90%;" /></p>
+
+<p>Also in this case, installation is as simple as sourcing a script in <code class="highlighter-rouge">.zshrc</code>
+and, optionally, choosing a shortcut to accept the suggestions or configuring
+other
+<a href="https://github.com/zsh-users/zsh-autosuggestions#Configuration">settings</a>:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
+<span class="nb">.</span> /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey <span class="s1">'^ '</span> autosuggest-accept
+</code></pre></div></div>
+
+<h2 id="autojump">Autojump</h2>
+
+<p>When moving around in the filesystem from the command line, having to type
+exact paths can be rather annoying, and even autocompletion helps only up to a
+certain extent. But also in this case, predicting can be faster than completing
+thanks to <a href="https://github.com/wting/autojump">autojump</a>, a tool that keeps
+track of visited directories, and allows to jump to a destination by specifying
+a part of the name (opting, in case of ambiguity, for the most visited among
+the matching alternatives).</p>
+
+<p>Autojump is implemented in Python, and its functionalities are conveniently
+exposed through a set of wrapping shell functions, available after sourcing its
+install script:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
+<span class="nb">.</span> /etc/profile.d/autojump.zsh
+</code></pre></div></div>
+
+<p>The syntax is unsurprisingly concise, given that saving keystrokes is the exact
+purpose of the tool. A function named <code class="highlighter-rouge">j</code> allows to jump to a directory, and
+its sisters <code class="highlighter-rouge">jc</code> and <code class="highlighter-rouge">jo</code> allow to jump to a child directory and to open a
+directory in the file manager respectively.</p>
+
+<p><img src="/posts/img/shell_tools/autojump.png" class="center-block" style="width:90%;" /></p>
+
+<h2 id="syntax-highlighting">Syntax highlighting</h2>
+
+<p>Syntax highlighting is an essential helper when programming, so why should the
+terminal shell be an exception? The
+<a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a>
+plugin adds colour to the command line. Besides usual syntax highlighting
+features, such as literal and variable highlight, it provides a very useful
+visual feedback by highlighting valid commands in green, and invalid ones in
+red, and it underlines valid file names and patterns.</p>
+
+<p>To enable syntax highlighting, it is enough to source its installation script.
+This should be done at the end of the <code class="highlighter-rouge">.zshrc</code> file, otherwise widgets defined
+after it will not update the syntax highlighting.</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
+<span class="nb">.</span> /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+</code></pre></div></div>
+
+<h2 id="alias-tips">Alias tips</h2>
+
+<p><a href="http://zsh.sourceforge.net/Intro/intro_8.html">Aliasing</a> is a well-known shell
+feature that allows to define shorter or easier to memorise shortcuts for
+commands, and it can be a valid ally to save keystrokes in the everyday
+routine. When making abundant use of aliasing, it may happen to quickly forget
+the less used ones, or it may take some time to memorise the new ones. The
+<a href="https://github.com/djui/alias-tips">alias-tips</a> plugin overcomes this
+annoyance by showing a friendly reminder every time a full-length shell or git
+command is used while there is an alias defined for it.</p>
+
+<p><img src="/posts/img/shell_tools/alias_tips.png" class="center-block" style="width:90%;" /></p>
+
+<p>Also in this case, installation is a matter of sourcing the script from
+<code class="highlighter-rouge">.zshrc</code>:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
+<span class="nb">.</span> /usr/share/zsh/plugins/alias-tips/alias-tips.plugin.zsh
+</code></pre></div></div>
+
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#linux">linux</a>
+          
+            <a href="/tags#shell">shell</a>
+          
+            <a href="/tags#productivity">productivity</a>
+          
+            <a href="/tags#workflow">workflow</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Useful+command+line+tools+https://martinopilia.com/posts/2019/01/30/command-line-tools.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2019/01/30/command-line-tools.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+  <!--- Share on Google Plus -->
+    <a href="https://plus.google.com/share?url=https://martinopilia.com/posts/2019/01/30/command-line-tools.html"
+      class="btn btn-social-icon btn-google" title="Share on Google+">
+      <span class="fa fa-fw fa-google-plus" aria-hidden="true"></span>
+      <span class="sr-only">Google+</span>
+    </a>
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2019/01/30/command-line-tools.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2018/09/23/goupwise-landmark-registration.html" data-toggle="tooltip" data-placement="top" title="Landmark-based groupwise registration with SGD and B-splines">&larr; Previous Post</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="/posts/2019/11/17/jacobian-registration.html" data-toggle="tooltip" data-placement="top" title="Image registration guided by zero-average volume changes">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2019
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

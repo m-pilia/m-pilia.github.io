@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Implementing a simple, yet easy to extend visualiser">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL" />
+  
+
+   
+  <meta property="og:description" content="Implementing a simple, yet easy to extend visualiser">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2018/09/17/volume-raycasting.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2018/09/17/volume-raycasting.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL" />
+  
+
+  
+  <meta name="twitter:description" content="Implementing a simple, yet easy to extend visualiser">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=14
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Trehörningen"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/malaren-2.jpg"
+		  data-img-desc-2="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/lindholmen.jpg"
+		  data-img-desc-3="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/frozen-fyrisan.jpg"
+		  data-img-desc-4="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/majorna.jpg"
+		  data-img-desc-5="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/malaren-3.jpg"
+		  data-img-desc-6="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/storvreta.jpg"
+		  data-img-desc-7="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/granby.jpg"
+		  data-img-desc-8="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/riksdagshuset.jpg"
+		  data-img-desc-9="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-10="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/gottsunda-3.jpg"
+		  data-img-desc-11="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/gula-stigen.jpg"
+		  data-img-desc-12="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/kungsportsbron.jpg"
+		  data-img-desc-13="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/gottsunda-1.jpg"
+		  data-img-desc-14="Gottsunda"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL</h1>
+		  
+		    
+			<h2 class="post-subheading">Implementing a simple, yet easy to extend visualiser</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on September 17, 2018
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+24 minutes
+
+read (4336 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL</h1>
+		  
+		    
+			<h2 class="post-subheading">Implementing a simple, yet easy to extend visualiser</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on September 17, 2018</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Visualisation is a complementary but very important part of my work on image
+analysis. And since I work mainly with tridimensional volume images,
+visualisation is inherently a more complicated task compared to image analysis
+in only two dimensions. To help my work, I decided to implement a small tool
+for volumetric rendering, aimed to be minimal and very lightweight, fast, and
+easy to extend.</p>
+
+<p>One may wonder why to start a new tool from scratch, when quite good options
+for scientific visualisation are already available, for instance
+<a href="https://www.paraview.org/">ParaView</a> or <a href="https://www.slicer.org/">3D Slicer</a>.
+The answer is that those tools, despite being feature-rich, are slow, heavy,
+and non-trivial to extend. On the other hand, what I would like to have is a
+bare-bone, very lightweight tool, that allows me to write and use custom
+shaders and possibly CUDA kernels to directly operate on the volumes GPU-side.
+This tool aims to be a sort of simple application skeleton that can be easily
+customised as needed.</p>
+
+<p>Given these requisites, C++ is a reasonable language option, and the toolkit
+of choice for this project is Qt, which is very complete and feature-rich, but
+at the same time simple to use, and it comes with a fairly good IDE, QtCreator.
+It also offers a reasonably good OpenGL interface, allowing to easily integrate
+an OpenGL canvas within an application.</p>
+
+<h1 id="the-principles-of-raycasting">The principles of raycasting</h1>
+
+<p><img src="/posts/img/raycaster/raycasting.svg" class="pull-right" style="width:49%;" /></p>
+
+<p>Raycasting is a visualisation technique for volume rendering. In a nutshell, it
+consists of casting rays from the camera through each pixel of the viewport.
+Each ray draws a path through the volume, and intensity samples are collected
+along this path and used to render the pixel corresponding to the ray.</p>
+
+<p>Given a volume, in order to perform raycasting we need to cast a ray for each
+pixel in the viewport, and for each ray we need to determine the coordinates of
+its entry and exit points with respect to the volume. Once these two points are
+known, it is trivial to sample the volume and use the collected values to
+perform shading.</p>
+
+<h2 id="two-pass-raycasting">Two-pass raycasting</h2>
+
+<p>The simplest technique for volumetric raycasting is the so-called two-pass
+raycasting. The name comes from the fact that rendering is performed in two GPU
+passes: a first pass to compute the bounding geometry, i.e. the entry and exit
+points of the rays generated by each pixel in the viewport, rendering them to a
+couple of textures, and a second pass to perform the actual sampling and
+shading.</p>
+
+<p>In the first pass, the trick is to render to a framebuffer the bounding box of
+the volume, defined as a two-unit cube. A model transform will compensate for
+differences in size among the axes, anisotropy, and spatial orientation. The
+framebuffer will have two colour attachments bound to it: one will collect the
+spatial coordinates of the entry points, given by the front-face of the cube,
+the other will collect the exit points, given by the back-face. This can be
+easily achieved by applying the desired model-view-projection transform in the
+vertex shader, while passing to the fragment shader the non-transformed
+coordinates of the vertex. A very simple fragment shader allows to store them
+in the correct texture of the framebuffer, according to whether the fragment
+belongs to a front face or not, and performs a conversion from two-unit cube
+coordinates (range <script type="math/tex">[-1, 1]</script>) to texture coordinates (range <script type="math/tex">[0, 1]</script>).</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#version 130
+</span>
+<span class="k">in</span> <span class="kt">vec3</span> <span class="n">position</span><span class="p">;</span>
+<span class="k">out</span> <span class="kt">vec3</span> <span class="n">start_point</span><span class="p">;</span>
+<span class="k">out</span> <span class="kt">vec3</span> <span class="n">end_point</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">gl_FrontFacing</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">start_point</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span> <span class="o">*</span> <span class="p">(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">start_point</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span> <span class="o">*</span> <span class="p">(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this to work, it is necessary to enable <code class="highlighter-rouge">GL_BLEND</code> before rendering the
+cube, and use two render targets, one for each attachment:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glEnable</span><span class="p">(</span><span class="n">GL_BLEND</span><span class="p">);</span>
+<span class="n">glBlendFunc</span><span class="p">(</span><span class="n">GL_ONE</span><span class="p">,</span> <span class="n">GL_ONE</span><span class="p">);</span>
+<span class="n">GLenum</span> <span class="n">renderTargets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">GL_COLOR_ATTACHMENT0</span><span class="p">,</span> <span class="n">GL_COLOR_ATTACHMENT1</span><span class="p">};</span>
+<span class="n">glDrawBuffers</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">renderTargets</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<p>The resulting textures will look more or less like this:</p>
+
+<div class="center-block">
+    <img src="/posts/img/raycaster/frontface.png" style="width:49%;" />
+    <img src="/posts/img/raycaster/backface.png" style="width:49%;" />
+</div>
+
+<p>Once the entry and exit points are computed, we are ready for the second pass.
+This time we will render a full-screen quad, binding the entry and exit points
+to a couple of texture units. For each fragment we will sample the entry and
+exit points, compute the ray direction, given by their difference, and gather
+samples along the path of the ray through the volume. We set a step length
+defining the distance between the samples, whose value offers a compromise
+between quality and speed: a large step length gives a fast computation with a
+poor quality result, and vice versa a small step length has a high cost but
+produces a better result.</p>
+
+<p>Since we are rendering a full-screen quad, some rays may not intersect the
+volume at all. We can easily recognise and discard them. Since we are sampling
+from already discretised data, it is a good idea to apply a stochastic jitter
+to the starting position of the ray, that we can compute on the CPU as random
+noise and pass to the GPU in a texture, in order to reduce wood grain
+artifacts.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">vec3</span> <span class="n">ray_start</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">front_face</span><span class="p">,</span> <span class="n">fragment_coordinates</span><span class="p">).</span><span class="n">xyz</span><span class="p">;</span>
+    <span class="kt">vec3</span> <span class="n">ray_stop</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">back_face</span><span class="p">,</span> <span class="n">fragment_coordinates</span><span class="p">).</span><span class="n">xyz</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ray_start</span> <span class="o">==</span> <span class="n">ray_stop</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">discard</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">vec3</span> <span class="n">ray</span> <span class="o">=</span> <span class="n">ray_stop</span> <span class="o">-</span> <span class="n">ray_start</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">ray_length</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">ray</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">step_vector</span> <span class="o">=</span> <span class="n">step_length</span> <span class="o">*</span> <span class="n">ray</span> <span class="o">/</span> <span class="n">ray_length</span><span class="p">;</span>
+
+    <span class="c1">// Random jitter
+</span>    <span class="n">ray_start</span> <span class="o">+=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="n">texture</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="n">fragment_coordinates</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+    <span class="kt">vec3</span> <span class="n">position</span> <span class="o">=</span> <span class="n">ray_start</span><span class="p">;</span>
+
+    <span class="c1">// Stop when the end of the volume is reached
+</span>    <span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+        <span class="c1">// Do something with the sample
+</span>        <span class="c1">// ...
+</span>
+        <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
+        <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="single-pass-raycasting">Single-pass raycasting</h2>
+
+<p>While being very simple to implement, two-pass raycasting is suboptimal.
+Apart from the obvious overhead of two rendering passes, during the second
+pass we need two texture samplings, which are not cheap operations, just to
+recover the entry and exit points.  Moreover, due to the full-screen quad
+rendering, it is not easy to integrate the volume rendering within a larger
+scene containing other objects.  To overcome all these drawbacks, we can
+however perform volumetric raycasting in a single pass. A nice introduction to
+the topic is given in <a href="http://prideout.net/blog/?p=64">this post</a> by Philip
+Rideout.</p>
+
+<p>This time we will render the bounding geometry of the volume, which is still a
+two-unit cube, and compute the ray entry and exit points directly in the
+fragment shader, just before performing the actual shading. In order to do
+this, we need to pass to the shader a little more information, given by the
+camera position (in model coordinates) and field of view.</p>
+
+<p><img src="/posts/img/raycaster/raycasting_coord.svg" class="pull-right" style="width:49%;" /></p>
+
+<p>Given this information and knowing the normalised fragment coordinates (in
+range <script type="math/tex">[-1, 1]</script>), we can easily write the parametric equation of the ray</p>
+
+<script type="math/tex; mode=display">\boldsymbol{p} = \boldsymbol{o} + t \boldsymbol{v}</script>
+
+<p>where <script type="math/tex">\boldsymbol{o}</script> is the origin of the ray, given by the position of the
+camera, and <script type="math/tex">\boldsymbol{v}</script> is its direction, given by the vector going from
+the camera to the fragment. The <script type="math/tex">x</script> and <script type="math/tex">y</script> coordinates of
+<script type="math/tex">\boldsymbol{v}</script> are given by the normalised coordinates of the fragment
+(correcting by the aspect ratio if the viewport is not a square), while its
+<script type="math/tex">z</script> coordinate is equal in absolute value to the focal length <script type="math/tex">f</script>, that can
+be immediately computed from the field of view <script type="math/tex">\alpha</script> as</p>
+
+<script type="math/tex; mode=display">f = \frac{1}{\tan{\frac{\alpha}{2}}}</script>
+
+<p>Once we know the parametric equation of the ray, computing its intersections
+with the volume bounding box is an easy to solve geometric problem, since we
+are dealing with an axis-aligned bounding box (AABB). We can express the AABB
+with two triples, containing the intercepts of the top and bottom bounding
+planes orthogonal to each axis, and the intersections can be quickly computed
+with the slab method, which returns the parameter <script type="math/tex">t</script> for the near and far
+intersection points. Note how we clamp to zero the parameter for the near
+intersection, since we are not interested into negative values, that correspond
+to positions behind the camera.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Slab method for ray-box intersection
+</span><span class="kt">void</span> <span class="nf">ray_box_intersection</span><span class="p">(</span><span class="n">Ray</span> <span class="n">ray</span><span class="p">,</span> <span class="n">AABB</span> <span class="n">box</span><span class="p">,</span> <span class="k">out</span> <span class="kt">float</span> <span class="n">t_0</span><span class="p">,</span> <span class="k">out</span> <span class="kt">float</span> <span class="n">t_1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">vec3</span> <span class="n">direction_inv</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">ray</span><span class="p">.</span><span class="n">direction</span><span class="p">;</span>
+    <span class="kt">vec3</span> <span class="n">t_top</span> <span class="o">=</span> <span class="n">direction_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">box</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="n">ray</span><span class="p">.</span><span class="n">origin</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">t_bottom</span> <span class="o">=</span> <span class="n">direction_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">box</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">ray</span><span class="p">.</span><span class="n">origin</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">t_min</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">t_top</span><span class="p">,</span> <span class="n">t_bottom</span><span class="p">);</span>
+    <span class="kt">vec2</span> <span class="n">t</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">t_min</span><span class="p">.</span><span class="n">xx</span><span class="p">,</span> <span class="n">t_min</span><span class="p">.</span><span class="n">yz</span><span class="p">);</span>
+    <span class="n">t_0</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">y</span><span class="p">));</span>
+    <span class="kt">vec3</span> <span class="n">t_max</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">t_top</span><span class="p">,</span> <span class="n">t_bottom</span><span class="p">);</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">t_max</span><span class="p">.</span><span class="n">xx</span><span class="p">,</span> <span class="n">t_max</span><span class="p">.</span><span class="n">yz</span><span class="p">);</span>
+    <span class="n">t_1</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>At this point, the fragment shader continues in a way similar to the two-pass
+case. Note that we do not need to check for rays that do not intersect the
+volume anymore, since this time we are rendering the bounding box itself, so we
+already know that all the fragments processed by the shader define rays
+passing through the volume.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">vec3</span> <span class="n">ray_direction</span><span class="p">;</span>
+    <span class="n">ray_direction</span><span class="p">.</span><span class="n">xy</span> <span class="o">=</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span> <span class="o">*</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span> <span class="o">/</span> <span class="n">viewport_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">ray_direction</span><span class="p">.</span><span class="n">x</span> <span class="o">*=</span> <span class="n">aspect_ratio</span><span class="p">;</span>
+    <span class="n">ray_direction</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">focal_length</span><span class="p">;</span>
+    <span class="n">ray_direction</span> <span class="o">=</span> <span class="p">(</span><span class="kt">vec4</span><span class="p">(</span><span class="n">ray_direction</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">ViewMatrix</span><span class="p">).</span><span class="n">xyz</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">t_1</span><span class="p">;</span>
+    <span class="n">Ray</span> <span class="n">casting_ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">ray_origin</span><span class="p">,</span> <span class="n">ray_direction</span><span class="p">);</span>
+    <span class="n">AABB</span> <span class="n">bounding_box</span> <span class="o">=</span> <span class="n">AABB</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">);</span>
+    <span class="n">ray_box_intersection</span><span class="p">(</span><span class="n">casting_ray</span><span class="p">,</span> <span class="n">bounding_box</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">t_1</span><span class="p">);</span>
+
+    <span class="kt">vec3</span> <span class="n">ray_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">ray_origin</span> <span class="o">+</span> <span class="n">ray_direction</span> <span class="o">*</span> <span class="n">t_0</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">ray_stop</span> <span class="o">=</span> <span class="p">(</span><span class="n">ray_origin</span> <span class="o">+</span> <span class="n">ray_direction</span> <span class="o">*</span> <span class="n">t_1</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">);</span>
+
+    <span class="kt">vec3</span> <span class="n">ray</span> <span class="o">=</span> <span class="n">ray_stop</span> <span class="o">-</span> <span class="n">ray_start</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">ray_length</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">ray</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">step_vector</span> <span class="o">=</span> <span class="n">step_length</span> <span class="o">*</span> <span class="n">ray</span> <span class="o">/</span> <span class="n">ray_length</span><span class="p">;</span>
+
+    <span class="c1">// Random jitter
+</span>    <span class="n">ray_start</span> <span class="o">+=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="n">texture</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span> <span class="o">/</span> <span class="n">viewport_size</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+    <span class="kt">vec3</span> <span class="n">position</span> <span class="o">=</span> <span class="n">ray_start</span><span class="p">;</span>
+
+    <span class="c1">// Stop when the end of the volume is reached
+</span>    <span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+        <span class="c1">// Do something with the sample
+</span>        <span class="c1">// ...
+</span>
+        <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
+        <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="rendering-techniques">Rendering techniques</h1>
+
+<p>Now that we have a mechanism to sample the volume, we can use such samples to
+perform the actual shading. There are different raycasting techniques that can
+be used, according to what we want to visualise, and that produce very
+different results.</p>
+
+<h2 id="isosurface-rendering">Isosurface rendering</h2>
+
+<p>It is possible to visualise an
+<a href="https://en.wikipedia.org/wiki/Isosurface">isosurface</a> extracted from the
+volume data, defined as the surface of the <a href="https://en.wikipedia.org/wiki/Level_set">level
+set</a> for a given threshold value. To
+perform isosurface extraction in our shader, we let the ray advance through the
+volume until we reach a sample whose intensity is greater or equal to the
+threshold value, meaning that we have hit the isosurface.</p>
+
+<p>Generally speaking, isosurfaces extracted from volume data tend to be quite
+noisy and irregular so, in order to obtain a smoother result, we can refine it
+by bisecting the step length, searching for a sample point with intensity
+closer to the threshold within half step length from the point that hit.</p>
+
+<p>Once we find a point belonging to the isosurface, it is possible to apply an
+illumination model to perform shading. One of the simplest is the <a href="https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_shading_model">Blinn-Phong
+illumination
+model</a>, which
+defines the outgoing light as the sum of ambient, diffuse, and specular
+components. In order to apply the Blinn-Phong model, we need to know the normal
+of the surface at the point. This can be easily approximated by the gradient of
+the intensity at the current sample point, at the cost of three texture
+samplings, given that the data is reasonably continuous.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Estimate the normal from a finite difference approximation of the gradient
+</span><span class="kt">vec3</span> <span class="nf">normal</span><span class="p">(</span><span class="kt">vec3</span> <span class="n">position</span><span class="p">,</span> <span class="kt">float</span> <span class="n">intensity</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">step_length</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">d</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">normalize</span><span class="p">(</span><span class="n">NormalMatrix</span> <span class="o">*</span> <span class="kt">vec3</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Once the normal is computed, we have all the information we need to compute the
+illumination. The ray march loop in the fragment shader will look like this:</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">intensity</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// Get closer to the surface
+</span>        <span class="n">position</span> <span class="o">-=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span>
+        <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+        <span class="n">position</span> <span class="o">-=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="p">(</span><span class="n">intensity</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">?</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span> <span class="o">:</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="p">);</span>
+        <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+        <span class="c1">// Compute the local vectors
+</span>        <span class="kt">vec3</span> <span class="n">L</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light_position</span> <span class="o">-</span> <span class="n">position</span><span class="p">);</span>
+        <span class="kt">vec3</span> <span class="n">V</span> <span class="o">=</span> <span class="o">-</span><span class="n">normalize</span><span class="p">(</span><span class="n">ray</span><span class="p">);</span>
+        <span class="kt">vec3</span> <span class="n">N</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">intensity</span><span class="p">);</span>
+        <span class="kt">vec3</span> <span class="n">H</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">V</span><span class="p">);</span>
+
+        <span class="c1">// Blinn-Phong shading
+</span>        <span class="kt">float</span> <span class="n">Id</span> <span class="o">=</span> <span class="n">kd</span> <span class="o">*</span> <span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">));</span>
+        <span class="kt">float</span> <span class="n">Is</span> <span class="o">=</span> <span class="n">ks</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">H</span><span class="p">)),</span> <span class="n">specular_power</span><span class="p">);</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="p">(</span><span class="n">ka</span> <span class="o">+</span> <span class="n">Id</span><span class="p">)</span> <span class="o">*</span> <span class="n">material_colour</span> <span class="o">+</span> <span class="n">Is</span> <span class="o">*</span> <span class="n">specular_colour</span><span class="p">;</span>
+
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
+    <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This technique is well suited to visualise the skeleton from CT data, since the
+bones have a significantly higher
+<a href="https://en.wikipedia.org/wiki/Radiodensity">radiodensity</a> compared to other
+tissues, giving them a generally good contrast in terms of <a href="https://en.wikipedia.org/wiki/Hounsfield_scale">Hounsfield
+units</a>.</p>
+
+<p><img src="/posts/img/raycaster/isosurface.png" class="center-block" style="width:90%;" /></p>
+
+<h2 id="maximum-intensity-projection">Maximum intensity projection</h2>
+
+<p>A very simple, yet surprisingly effective technique for volume rendering is
+called <a href="https://en.wikipedia.org/wiki/Maximum_intensity_projection">maximum intensity
+projection</a> (MIP).
+In its simplest form, it consists of taking as intensity for the current
+fragment the maximum intensity sampled along the ray.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">maximum_intensity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span> <span class="c1">// Assuming intensity in [0, 1]
+</span>
+<span class="c1">// Stop when the end of the volume is reached
+</span><span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">intensity</span> <span class="o">&gt;</span> <span class="n">maximum_intensity</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">maximum_intensity</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
+    <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This technique works well to visualise a volume where inner regions have
+generally higher intensities compared to outer regions, and once again CT data
+is a good candidate, while for example most types of MR images will not look
+very interesting when taking the MIP.</p>
+
+<p><img src="/posts/img/raycaster/mip.png" class="center-block" style="width:90%;" /></p>
+
+<h2 id="front-to-back-alpha-blending">Front-to-back alpha-blending</h2>
+
+<p>This is probably the most versatile technique, and it allows to produce the
+most complex results, but at the same time it requires more work, and the
+settings are generally tied to the type of image to visualise.</p>
+
+<p>The principle is to use a transfer function to map intensity values to colours,
+and perform front-to-back <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending">alpha
+blending</a> of
+the samples acquired along the ray. One important reasons to render
+front-to-back is that it allows early stopping of the sampling when the colour
+of the fragment is saturated.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">vec4</span> <span class="n">colour</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Stop when the end of the volume is reached or the pixel is saturated
+</span><span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">gradient_magnitude</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">intensity</span><span class="p">);</span>
+
+    <span class="kt">vec4</span> <span class="n">c</span> <span class="o">=</span> <span class="n">colour_transfer</span><span class="p">(</span><span class="n">intensity</span><span class="p">);</span>
+
+    <span class="c1">// Alpha-blending
+</span>    <span class="n">colour</span><span class="p">.</span><span class="n">rgb</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">rgb</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">rgb</span><span class="p">;</span>
+    <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span><span class="p">;</span>
+
+    <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
+    <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can also use gradient information to control the opacity of the samples,
+which is especially useful if we want to emphasise surfaces.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="nf">gradient_magnitude</span><span class="p">(</span><span class="kt">vec3</span> <span class="n">position</span><span class="p">,</span> <span class="kt">float</span> <span class="n">intensity</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">step_length</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">d</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">dy</span> <span class="o">+</span> <span class="n">dz</span> <span class="o">*</span> <span class="n">dz</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>While the alpha blending code seems very easy so far, the tough part is to
+actually implement the colour transfer function. There is no general recipe for
+it, since it is very dependent upon the type of data to be visualised, and on
+which features of the data should be emphasised. One of the simplest meaningful
+transfer functions interpolates between a couple of colours denoting minimum
+and maximum intensity. For example, using exponential decay for the opacity and
+a gradient-based attenuation factor:</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// A very simple colour transfer function
+</span><span class="kt">vec4</span> <span class="nf">colour_transfer</span><span class="p">(</span><span class="kt">float</span> <span class="n">intensity</span><span class="p">,</span> <span class="kt">float</span> <span class="n">gradient</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">vec3</span> <span class="n">high</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">low</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="n">ki</span> <span class="o">*</span> <span class="n">intensity</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="n">ki</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">alpha</span> <span class="o">*=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">+</span> <span class="n">kg</span> <span class="o">*</span> <span class="n">gradient</span><span class="p">);</span>
+    <span class="k">return</span> <span class="kt">vec4</span><span class="p">(</span><span class="n">intensity</span> <span class="o">*</span> <span class="n">high</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">)</span> <span class="o">*</span> <span class="n">low</span><span class="p">,</span> <span class="n">alpha</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If we use this function to render a CT volume, we obtain something like the
+following, where it is possible to see the dimmed outlines of tissues, organs,
+and main vessels:</p>
+
+<p><img src="/posts/img/raycaster/alpha_blending.png" class="center-block" style="width:90%;" /></p>
+
+<h1 id="adding-a-gui">Adding a GUI</h1>
+
+<p>As mentioned in the beginning, to implement a simple and handy tool we can add
+a Qt GUI to provide an interface to the visualiser. The key class is
+<a href="http://doc.qt.io/qt-5/qopenglwidget.html">QOpenGLWidget</a>, that allows to
+render OpenGL content and can be used to implement a canvas for the raycasting.
+Inheriting from
+<a href="https://doc.qt.io/qt-5/qopenglextrafunctions.html">QOpenGLExtraFunctions</a>
+allows to call OpenGL functions as class members and simplifies context
+handling.</p>
+
+<p>Some key virtual member functions that we want to override are
+<code class="highlighter-rouge">initializeGL()</code>, that will contain all OpenGL-related initialisation,
+<code class="highlighter-rouge">paintGL()</code>, which will render a single frame, and <code class="highlighter-rouge">resizeGL()</code>, which will
+handle window resizing.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RayCastCanvas</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QOpenGLWidget</span><span class="p">,</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">explicit</span> <span class="n">RayCastCanvas</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">RayCastCanvas</span><span class="p">();</span>
+
+    <span class="c1">// ...
+</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">initializeGL</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">paintGL</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">resizeGL</span><span class="p">(</span><span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">);</span>
+
+    <span class="c1">// ...
+</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>I also defined a handful of helper classes to model objects: <code class="highlighter-rouge">RayCastVolume</code>,
+holding the state of a volume object that we want to render, and <code class="highlighter-rouge">Mesh</code>,
+representing a triangle mesh (such as the bounding box of the volume). Once
+again, by inheriting from <code class="highlighter-rouge">QOpenGLExtraFunctions</code>, we can implement within a
+<code class="highlighter-rouge">paint()</code> member the logic required by an object to render itself.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RayCastVolume</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">RayCastVolume</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">RayCastVolume</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+    <span class="c1">// ...
+</span><span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Mesh</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Mesh</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">GLfloat</span><span class="o">&gt;&amp;</span> <span class="n">vertices</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">GLuint</span><span class="o">&gt;&amp;</span> <span class="n">indices</span><span class="p">);</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Mesh</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+    <span class="c1">// ...
+</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>The Qt example applications include <a href="http://doc.qt.io/qt-5/qtwidgets-graphicsview-boxes-trackball-h.html">a nice implementation of a
+trackball</a>,
+available under the BSD license, that we can include to allow rotating the
+volume with the mouse. I also implemented a small reader that allows to open
+volumes from files in the VTK structured points legacy format. With Qt Designer
+we can easily set up the main window and a docking widget containing some
+controls. This already gives us a nice skeleton application, that can be very
+easily extended in a modular way. The complete source code is <a href="https://github.com/m-pilia/volume-raycasting">available on
+GitHub</a>. Enjoy!</p>
+
+<p><img src="/posts/img/raycaster/gui.png" class="center-block" style="width:90%;" /></p>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#raycasting">raycasting</a>
+          
+            <a href="/tags#visualisation">visualisation</a>
+          
+            <a href="/tags#Qt">Qt</a>
+          
+            <a href="/tags#OpenGL">OpenGL</a>
+          
+            <a href="/tags#GLSL">GLSL</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=GPU-accelerated+single-pass+volumetric+raycasting+in+Qt+and+OpenGL+https://martinopilia.com/posts/2018/09/17/volume-raycasting.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2018/09/17/volume-raycasting.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+  <!--- Share on Google Plus -->
+    <a href="https://plus.google.com/share?url=https://martinopilia.com/posts/2018/09/17/volume-raycasting.html"
+      class="btn btn-social-icon btn-google" title="Share on Google+">
+      <span class="fa fa-fw fa-google-plus" aria-hidden="true"></span>
+      <span class="sr-only">Google+</span>
+    </a>
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2018/09/17/volume-raycasting.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2018/09/15/building-python-extension.html" data-toggle="tooltip" data-placement="top" title="Building a Python C extension module with CMake">&larr; Previous Post</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="/posts/2018/09/23/goupwise-landmark-registration.html" data-toggle="tooltip" data-placement="top" title="Landmark-based groupwise registration with SGD and B-splines">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2019
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Landmark-based groupwise registration with SGD and B-splines</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Implementing a simple extension to Elastix">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Landmark-based groupwise registration with SGD and B-splines" />
+  
+
+   
+  <meta property="og:description" content="Implementing a simple extension to Elastix">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Landmark-based groupwise registration with SGD and B-splines" />
+  
+
+  
+  <meta name="twitter:description" content="Implementing a simple extension to Elastix">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=14
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Trehörningen"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/malaren-2.jpg"
+		  data-img-desc-2="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/lindholmen.jpg"
+		  data-img-desc-3="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/frozen-fyrisan.jpg"
+		  data-img-desc-4="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/majorna.jpg"
+		  data-img-desc-5="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/malaren-3.jpg"
+		  data-img-desc-6="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/storvreta.jpg"
+		  data-img-desc-7="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/granby.jpg"
+		  data-img-desc-8="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/riksdagshuset.jpg"
+		  data-img-desc-9="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-10="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/gottsunda-3.jpg"
+		  data-img-desc-11="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/gula-stigen.jpg"
+		  data-img-desc-12="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/kungsportsbron.jpg"
+		  data-img-desc-13="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/gottsunda-1.jpg"
+		  data-img-desc-14="Gottsunda"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Landmark-based groupwise registration with SGD and B-splines</h1>
+		  
+		    
+			<h2 class="post-subheading">Implementing a simple extension to Elastix</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on September 23, 2018
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+21 minutes
+
+read (3742 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Landmark-based groupwise registration with SGD and B-splines</h1>
+		  
+		    
+			<h2 class="post-subheading">Implementing a simple extension to Elastix</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on September 23, 2018</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Currently, I work mostly on image registration algorithms, and I devoted quite
+some time looking into groupwise registration techniques. In its essence,
+groupwise registration is a process that aligns  multiple images, mapping them
+to a common reference space, without having to explicitly define such reference
+space (e.g. without manually selecting one image as the reference).</p>
+
+<p>I work with problems that involve large deformations and great anatomical
+variability, making it difficult to achieve robust automatic registration. In
+some pairwise registration tasks, <a href="https://simpleelastix.readthedocs.io/PointBasedRegistration.html">landmark-based
+registration</a>
+has proven to be useful, especially to initially guide the transform, giving a
+better initial estimation that improves the robustness or the process.  For
+this reason, I decided to look for a similar approach in a groupwise setting.</p>
+
+<p><span style="display:none;">
+<script type="math/tex">\newcommand{\bmu}{\boldsymbol{\mu}}
+\newcommand{\bx}{\boldsymbol{x}}
+\newcommand{\obx}{\bar{\bx}}
+\newcommand{\fpart}[2]{\frac{\partial {#1}}{\partial {#2}}}</script>
+</span></p>
+
+<h1 id="groupwise-registration-in-a-nutshell">Groupwise registration in a nutshell</h1>
+
+<p>There are different approaches to groupwise registration, and the most popular
+ones involve the use of an implicit reference space, without using any
+explicitly selected template. Such space is implicitly defined by a collection
+of transforms that map from reference space to the moving images, and that are
+are optimised simultaneously.</p>
+
+<p>Having one transform for each moving image implies that the size of the search
+space grows at least linearly with the number of moving images registered
+together. This has a cost in terms of memory and computing time that,
+especially when working with volume images, can soon become prohibitive. For
+this reason, parametric models and subsampling techniques are often employed in
+this context.</p>
+
+<p>The target of the optimisation is a similarity function defined over the whole
+set of images: one of the simplest, that works well for normalised images that
+share the same distribution of intensities, is is the standard deviation of the
+intensity of all the points in the moving images mapped from a certain position
+in reference space <a class="citation" href="#metz2011nonrigid">[1]</a>, which can be considered the
+groupwise equivalent of mean squared difference similarity in classical
+pairwise registration. This is a suitable choice, for instance, when dealing
+with imaging modalities such as cardiac cine MR. In other settings, such as
+diffusion imaging, contrast varies over time and the assumption of similar
+distribution of intensities does not hold anymore, hence more sophisticated
+techniques are required to separate the intensity dissimilarity due to changes
+in contrast from the dissimilarity due to misalignment (e.g. metrics based on
+<a href="https://en.wikipedia.org/wiki/Principal_component_analysis">principal component
+analysis</a> <a class="citation" href="#huizinga2016pca">[2]</a>.</p>
+
+<h1 id="groupwise-registration-with-elastix">Groupwise registration with Elastix</h1>
+
+<p>While I work most of the time with non-parametric deformation models, sometimes
+I also rely on <a href="http://elastix.isi.uu.nl/">Elastix</a> <a class="citation" href="#klein2010elastix">[3]</a>, a deformable registration toolbox for medical image processing that offers
+a variety of parametric transform models and several image similarity metrics.
+Its workhorse is the <a href="https://en.wikipedia.org/wiki/B-spline">B-spline</a>
+transform, which can be paired with rigid or affine pre-registration and can
+combine multiple images and multiple metrics (among <a href="http://elastix.isi.uu.nl/doxygen/group__Metrics.html">the various that are
+implemented</a>) in a single
+registration process, including a
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html">CorrespondingPointsEuclideanDistanceMetric</a>
+for pairwise landmark-based registration. All of this is made possible in
+practice thanks to <a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1AdaptiveStochasticGradientDescent.html">an
+implementation</a>
+of <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient
+descent</a> (SGD) with
+adaptive parameters <a class="citation" href="#klein2009adaptive">[4]</a>, which makes it possible to
+robustly optimise the energy for this problem within an acceptable computing
+time.</p>
+
+<p>While most Elastix features are designed for pairwise registration, the toolbox
+also offers <a href="https://simpleelastix.readthedocs.io/GroupwiseRegistration.html">some
+support</a> for
+groupwise registration. The trick used to fit groupwise registration within the
+pre-existing software framework is to represent a group of n-dimensional images
+as a n+1-dimensional volume, e.g. a 4D image for a group of 3D volumes, where
+the first three indices are spatial coordinates within each volume, and the
+last index identifies the single volumes within the group. This choice is
+actually very reasonable, given that often groupwise registration is used to
+align the frames of a time series, which is inherently n+1-dimensional. To
+simplify the description, in the following I will refer to such additional axis
+as the <em>last dimension</em> or the <em>time axis</em> (even when the volume does not
+represent a time series).</p>
+
+<p>With this setup, it is possible to have a metric that uses only the moving
+image, which will be the n+1-dimensional volume representing the group of
+images, and to use a transform that maps from an implicit reference space to
+such volume.  However, just using a regular n+1-dimensional transform is
+unlikely to give the expected results, since we do not want to allow movements
+along the last dimension, i.e. between different images.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> For this reason, a
+special
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1BSplineStackTransform.html">BSplineStackTransform</a>
+is implemented for groupwise registration: as the name suggests, it is actually
+a set of stacked n-dimensional transforms, each of whom is applied
+independently to a single slice along the time axis.</p>
+
+<h1 id="making-the-landmarks-groupwise">Making the landmarks groupwise</h1>
+
+<p>Elastix does not natively offer groupwise landmark-based registration, so I
+decided to implement a metric component myself to try this approach. While in
+literature there are several interesting works on unlabeled point set
+registration methods <a class="citation" href="#wang2008simultaneous">[5], [6]</a>, in this
+scenario the task is a bit easier, since the correspondence between landmarks
+is already known. In the pairwise case it is straightforward to define a
+dissimilarity with energy <script type="math/tex">E</script> for the correspondence, e.g. by minimising the
+mean Euclidean distance between pairs <script type="math/tex">(\bx^f_i, \bx^m_i)</script> of corresponding
+points in the fixed and moving image</p>
+
+<script type="math/tex; mode=display">E(\bmu) = \frac{1}{n} \sum_{i=1}^{n}
+          \left\lVert \bx^m_i - T(\bx^f_i, \bmu) \right\rVert</script>
+
+<p>where <script type="math/tex">\bmu</script> is the vector of parameters for the transform <script type="math/tex">T</script>
+that maps points from the reference space (in the fixed image) to the moving
+image.</p>
+
+<p>The groupwise scenario is more complicated due to the fact that there is no
+known position in reference space, all we know is the position of each
+occurrence of the <script type="math/tex">m</script> landmarks in the <script type="math/tex">n</script> moving images. Since we want all
+the transforms to map the same point in reference space to all the occurrences
+of a landmark in the moving images, an ideal and unbiased approach could be to
+minimise, for each landmark <script type="math/tex">\bx^i</script>, the variance of the
+preimages of all its occurrences <script type="math/tex">\bx^i_j</script> in the moving images.</p>
+
+<script type="math/tex; mode=display">E(\bmu) = \frac{1}{m}
+          \sum_{i=1}^{m}
+          \frac{1}{n - 1}
+          \sum_{j=1}^{n}
+          \left\lVert
+                T^{-1}(\bx^i_j, \bmu) -
+                \frac{1}{n} \sum_{k=1}^n T^{-1}(\bx^i_k, \bmu)
+          \right\rVert^2</script>
+
+<p>Unfortunately, in practice this is not immediate to do in Elastix, since we do
+not know the inverse <script type="math/tex">T^{-1}</script> of the transform and, for all we know, it may
+not even be invertible in general (e.g. when using B-splines).</p>
+
+<p>For this reason, I tried an alternative approach, approximating the mean of the
+preimages with a central tendency estimator of the landmarks themselves, and
+then moving the optimisation to the moving image space.</p>
+
+<script type="math/tex; mode=display">E(\bmu) = \frac{1}{m}
+          \sum_{i=1}^{m}
+          \frac{1}{n - 1}
+          \sum_{j=1}^{n}
+          \left\lVert
+                \bx^i_j - T\left( \frac{1}{n} \sum_{k=1}^n \bx^i_k, \bmu \right)
+          \right\rVert^2</script>
+
+<p>This is of course a bold approximation that somehow introduces a bias in the
+construction of the reference space, but if the choice of the landmarks is
+reasonable and their position is reliable, it may still lead to some useful
+results.  For simplicity I am using the mean of the landmarks, but other
+estimators more robust with respect to outliers, such as the median, can be
+used in principle, since at this point we do not require the estimator itself
+to be differentiable. To make things a little simpler in practice we can
+consider a different energy function that shares the same optima:</p>
+
+<script type="math/tex; mode=display">E(\bmu) = \frac{1}{mn}
+          \sum_{i=1}^{m}
+          \sum_{j=1}^{n}
+          \left\lVert
+                \bx^i_j - T(\obx^i, \bmu)
+          \right\rVert</script>
+
+<p>whose derivative with respect to the parameters of the transform is</p>
+
+<script type="math/tex; mode=display">\fpart{E}{\bmu}(\bmu) = -\frac{1}{mn}
+                        \sum_{i=1}^{m}
+                        \sum_{j=1}^{n}
+                        \frac{ \bx^i_j - T(\obx^i, \bmu) }
+                             {\left\lVert \bx^i_j - T(\obx^i, \bmu) \right\rVert}
+                        \fpart{T}{\bmu}(\obx^i_j, \bmu)</script>
+
+<p>where <script type="math/tex">\obx^i</script> is the mean position of the i-th landmark</p>
+
+<script type="math/tex; mode=display">\obx^i = \frac{1}{n} \sum_{k=1}^n \bx^i_k .</script>
+
+<h1 id="implementing-the-metric">Implementing the metric</h1>
+
+<p>Now that we have an expression for the energy and its derivative, all that is
+left to do is to write an Elastix component that implements it. A good starting
+point is to have a look at the implementation of the
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html"><code class="highlighter-rouge">CorrespondingPointsEuclideanDistanceMetric</code></a>.
+Elastix metrics implement the main logic within a class in the <code class="highlighter-rouge">itk</code> namespace,
+and the registration-related logic in a subclass of the latter, in the
+<code class="highlighter-rouge">elastix</code> namespace, so for example we see the
+<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1CorrespondingPointsEuclideanDistancePointMetric.html"><code class="highlighter-rouge">itk::CorrespondingPointsEuclideanDistancePointMetric</code></a>
+class, that inherits from
+<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1SingleValuedPointSetToPointSetMetric.html"><code class="highlighter-rouge">itk::SingleValuedPointSetToPointSetMetric</code></a>
+and that is inherited by
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html"><code class="highlighter-rouge">elastix::CorrespondingPointsEuclideanDistanceMetric</code>.</a></p>
+
+<p>A simple solution is to use the same approach for our new metric. The obvious
+drawback is that, being a subclass of
+<code class="highlighter-rouge">itk::SingleValuedPointSetToPointSetMetric</code>, it will require two point set
+input files, one for the fixed and one for the moving points. The solution is
+to leave things as they are, and just pass a dummy file for the fixed points
+when calling Elastix, whose content will simply be ignored. This same approach
+is already used in the implementation of the groupwise registration image
+metrics, that require to pass a dummy fixed image as input.</p>
+
+<p>Concerning the point file, it will be necessary to impose a precise order of
+the points to be able to group the occurrences of each landmark correctly. A
+possible solution is to sort all points by image, i.e. having all the landmarks
+of the first image together, followed by the landmarks of the second image, and
+so on, and imposing the same order of the landmarks across different images.
+The order of the images is given by their index in the time axis. This way, if
+we have <script type="math/tex">m</script> landmarks and <script type="math/tex">n</script> images, the file will contain <script type="math/tex">m \cdot n</script>
+points, and the point in position <script type="math/tex">k</script> in the file will be the occurrence of
+landmark <script type="math/tex">k \mod m</script> in the image <script type="math/tex">k \div n</script> (if we count starting from
+zero, and denote with <script type="math/tex">\div</script> the integer division operator).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x00 y00 z00 0  // image 0, landmark 0
+x01 y01 z01 0  // image 0, landmark 1
+     ...
+x0n y0n z0n 0  // image 0, landmark n
+
+x10 y10 z10 1  // image 1, landmark 0
+x11 y11 z11 1  // image 1, landmark 1
+     ...
+x1n y1n z1n 1  // image 1, landmark n
+
+  .........
+
+xm0 ym0 zm0 m  // image m, landmark 0
+xm1 ym1 zm1 m  // image m, landmark 1
+    ...
+xmn ymn zmn m  // image m, landmark n
+</code></pre></div></div>
+
+<p>The first thing to do will be to compute the mean position of each landmark
+once, which can be done in the <code class="highlighter-rouge">Initialize()</code> function of the
+<code class="highlighter-rouge">CorrespondingPointsMeanDistancePointMetric</code> class, since its value will be
+constant through the optimisation process.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Group the occurrences of all landmarks in a data structure
+// ...
+</span>
+<span class="cm">/** Compute the mean for the occurrences of each landmark */</span>
+<span class="k">for</span><span class="p">(</span> <span class="k">auto</span> <span class="o">&amp;</span> <span class="n">landmark</span> <span class="o">:</span> <span class="n">m_Landmarks</span> <span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">landmark</span><span class="p">.</span><span class="n">mean</span><span class="p">.</span><span class="n">Fill</span><span class="p">(</span> <span class="n">NumericTraits</span><span class="o">&lt;</span> <span class="n">MovingPointValueType</span> <span class="o">&gt;::</span><span class="n">ZeroValue</span><span class="p">()</span> <span class="p">);</span>
+  <span class="k">for</span><span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span> <span class="n">p</span> <span class="o">:</span> <span class="n">landmark</span><span class="p">.</span><span class="n">occurrences</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">landmark</span><span class="p">.</span><span class="n">mean</span><span class="p">.</span><span class="n">GetVnlVector</span><span class="p">()</span> <span class="o">+=</span> <span class="n">p</span><span class="p">.</span><span class="n">GetVnlVector</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="n">landmark</span><span class="p">.</span><span class="n">mean</span><span class="p">.</span><span class="n">GetVnlVector</span><span class="p">()</span> <span class="o">/=</span> <span class="n">landmark</span><span class="p">.</span><span class="n">occurrences</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we follow the code style conventions of ITK and Elastix, with two spaces
+indentation, opening curly braces in a new line, and spaces inside all types of
+parentheses. It may seem a minor point, but this style actually helps making
+the code more readable, since ITK programs tends to have dense and verbose
+sources.</p>
+
+<p>The metric and its derivative will be computed together in the
+<code class="highlighter-rouge">GetValueAndDerivative</code> function, and separately in the <code class="highlighter-rouge">GetValue</code> and
+<code class="highlighter-rouge">GetDerivative</code> function. Since this metric is relatively cheap to evaluate, I
+avoid duplication by using the first function within the implementation of the
+other two, but it would make sense to have a separate, optimised implementation
+at least for <code class="highlighter-rouge">GetValue</code>. On the other hand, since computing the value has a
+negligible cost when the derivative is also computed together, it makes sense
+to simply call <code class="highlighter-rouge">GetValueAndDerivative</code> in the implementation of
+<code class="highlighter-rouge">GetDerivative</code>.</p>
+
+<p>Since the energy is expressed as a sum over the points, all of whom provide an
+independent contribution, the key part will naturally be a loop over all the
+points.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PointIterator</span> <span class="n">pointItMoving</span> <span class="o">=</span> <span class="n">movingPointSet</span><span class="o">-&gt;</span><span class="n">GetPoints</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Begin</span><span class="p">();</span>
+<span class="n">PointIterator</span> <span class="n">pointEnd</span>      <span class="o">=</span> <span class="n">movingPointSet</span><span class="o">-&gt;</span><span class="n">GetPoints</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">End</span><span class="p">();</span>
+<span class="kt">int</span> <span class="n">point_no</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// position of the current point in the list
+</span><span class="k">while</span><span class="p">(</span> <span class="n">pointItMoving</span> <span class="o">!=</span> <span class="n">pointEnd</span> <span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// do something with the point ...
+</span>
+  <span class="o">++</span><span class="n">pointItMoving</span><span class="p">;</span>
+  <span class="o">++</span><span class="n">point_no</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The base class has a <code class="highlighter-rouge">m_Transform</code> member that, unsurprisingly, represents the
+current transform. In order for this to make sense, we will assume it to be a
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1BSplineStackTransform.html">BSplineStackTransform</a>.
+We can compute the image of a point through the transform with its member
+function <code class="highlighter-rouge">TransformPoint()</code></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mappedPoint</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">m_Transform</span><span class="o">-&gt;</span><span class="n">TransformPoint</span><span class="p">(</span> <span class="n">meanPoint</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<p>Since Elastix supports the use of image masks to focus the registration within
+a region of interest (ROI), we make sure that the image of the mean point we
+are considering falls within the mask</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">m_MovingImageMask</span><span class="p">.</span><span class="n">IsNotNull</span><span class="p">()</span>
+    <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">m_MovingImageMask</span><span class="o">-&gt;</span><span class="n">IsInside</span><span class="p">(</span> <span class="n">mappedPoint</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// skip the point
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>The transform also exposes a <code class="highlighter-rouge">Jacobian()</code> member function to get the derivative
+of the transform with respect to its parameters, which is referred as the
+Jacobian.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> The Jacobian is returned in a sparse representation formed by the
+matrix columns containing any non-zero entry, together with another vector
+containing the indices of the parameters that have non-zero Jacobian. This is
+motivated by the fact that B-splines have local support, so for a given point
+we expect most of the entries in the Jacobian matrix to be zero.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="o">-&gt;</span><span class="n">m_Transform</span><span class="o">-&gt;</span><span class="n">GetJacobian</span><span class="p">(</span> <span class="n">meanPoint</span><span class="p">,</span> <span class="n">jacobian</span><span class="p">,</span> <span class="n">nzji</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<p>After computing the image of the mean point in moving space and the relative
+Jacobian, we have all the information needed to compute the contribution of the
+point to the metric and its derivative. The following code snippet is in fact
+very close to what is done in the
+<a href="https://github.com/SuperElastix/elastix/blob/1f504cf08cc73bc1c11ce2b29fcb3b8c14383cb6/Components/Metrics/CorrespondingPointsEuclideanDistanceMetric/itkCorrespondingPointsEuclideanDistancePointMetric.hxx#L218">itk::CorrespondingPointsEuclideanDistancePointMetric</a>
+class, that is built-in in Elastix.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** Update the mean */</span>
+<span class="n">VnlVectorType</span> <span class="n">diffPoint</span> <span class="o">=</span> <span class="p">(</span> <span class="n">movingPoint</span> <span class="o">-</span> <span class="n">mappedPoint</span> <span class="p">).</span><span class="n">GetVnlVector</span><span class="p">();</span>
+<span class="n">diffPoint</span><span class="p">[</span> <span class="n">m_LastDimension</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="n">MeasureType</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">diffPoint</span><span class="p">.</span><span class="n">magnitude</span><span class="p">();</span>
+<span class="n">measure</span> <span class="o">+=</span> <span class="n">distance</span><span class="p">;</span>
+
+<span class="cm">/** Calculate the contributions to the derivatives with respect to each parameter. */</span>
+<span class="k">if</span><span class="p">(</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">vcl_numeric_limits</span><span class="o">&lt;</span> <span class="n">MeasureType</span> <span class="o">&gt;::</span><span class="n">epsilon</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">VnlVectorType</span> <span class="n">diff_2</span> <span class="o">=</span> <span class="n">diffPoint</span> <span class="o">/</span> <span class="n">distance</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">nzji</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">GetNumberOfParameters</span><span class="p">()</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="cm">/** Loop over all Jacobians. */</span>
+    <span class="n">derivative</span> <span class="o">-=</span> <span class="n">diff_2</span> <span class="o">*</span> <span class="n">jacobian</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span>
+    <span class="cm">/** Only pick the nonzero Jacobians. */</span>
+    <span class="k">for</span><span class="p">(</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nzji</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span>  <span class="o">=</span> <span class="n">nzji</span><span class="p">[</span> <span class="n">i</span> <span class="p">];</span>
+      <span class="n">VnlVectorType</span>      <span class="n">column</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">.</span><span class="n">get_column</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+      <span class="n">derivative</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="o">-=</span> <span class="n">dot_product</span><span class="p">(</span> <span class="n">diff_2</span><span class="p">,</span> <span class="n">column</span> <span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span> <span class="c1">// end if distance != 0
+</span></code></pre></div></div>
+
+<h1 id="example">Example</h1>
+
+<p>To test the metric, we generate a set of simple images. Each image contains
+three circles, and we put a landmark in the centre of each circle. We use a
+different colour for each image to make it easier to visualise.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">]</span> <span class="p">])</span>
+<span class="n">colours</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span>
+            <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">127</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colours</span><span class="p">)):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">colours</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="center-block" style="padding-bottom: 5px;">
+    <img src="/posts/img/groupwise_points/img_0.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/img_1.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/img_2.png" style="width: 32%; border: 1px solid black;" />
+</div>
+<div class="center-block">
+    <img src="/posts/img/groupwise_points/img_3.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/img_4.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/img_5.png" style="width: 32%; border: 1px solid black;" />
+</div>
+
+<p>Superimposing all the images, the misalignment is clear:</p>
+
+<p><img src="/posts/img/groupwise_points/img_all.png" class="center-block" style="width: 60%; border: 1px solid black;" /></p>
+
+<p>The coordinates of the landmarks are stored in a point file in the <a href="https://simpleelastix.readthedocs.io/PointBasedRegistration.html">Elastix
+format</a>, with
+the points sorted according to the criterion discussed previously:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>index
+18
+61	58	0
+94	129	0
+196	195	0
+57	65	1
+108	123	1
+211	191	1
+62	67	2
+72	111	2
+180	203	2
+71	64	3
+109	139	3
+198	201	3
+44	55	4
+75	145	4
+200	186	4
+50	60	5
+88	130	5
+180	194	5
+</code></pre></div></div>
+
+<p>Elastix requires at least one
+<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1AdvancedImageToImageMetric.html">ImageToImageMetric</a>
+to be present in order to run. For this reason, to test the groupwise point
+metric we need to add a dummy intensity metric, setting its weight to zero so
+it will not affect the registration process. Here I use the
+<code class="highlighter-rouge">AdvancedMeanSquares</code>, since it is cheap to compute. A gray scale version of
+the images, packed in a 3D volume, is used as input. The parameter file looks
+like the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Registration "MultiMetricMultiResolutionRegistration")
+(Interpolator "ReducedDimensionBSplineInterpolator")
+(ResampleInterpolator "FinalReducedDimensionBSplineInterpolator")
+(BSplineInterpolationOrder 1)
+(FinalBSplineInterpolationOrder 3)
+(Transform "BSplineStackTransform")
+(HowToCombineTransforms "Compose")
+
+(Optimizer "AdaptiveStochasticGradientDescent")
+(NumberOfSpatialSamples 2000)
+(ImageSampler "RandomCoordinate")
+
+(FinalGridSpacingInPhysicalUnits 20)
+(Metric "AdvancedMeanSquares" "CorrespondingPointsMeanDistanceMetric")
+
+(Metric0Weight 0.0)
+(Metric1Weight 1.0)
+
+(MovingImageDerivativeScales 1 1 0)
+
+(NumberOfResolutions 1)
+(MaximumNumberOfIterations 1000)
+</code></pre></div></div>
+
+<p>Setting the <code class="highlighter-rouge">MovingImageDerivativeScales</code> parameter equal to zero on the last
+dimension prevents movements along the time axis. We should also avoid setting
+a too small spline grid spacing in this example, since the transform has no
+regularisation.</p>
+
+<p>After unpacking the output volume and colouring back the images, the result
+looks like the following:</p>
+<div class="center-block" style="padding-bottom: 5px;">
+    <img src="/posts/img/groupwise_points/res_0.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/res_1.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/res_2.png" style="width: 32%; border: 1px solid black;" />
+</div>
+<div class="center-block">
+    <img src="/posts/img/groupwise_points/res_3.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/res_4.png" style="width: 32%; border: 1px solid black;" />
+    <img src="/posts/img/groupwise_points/res_5.png" style="width: 32%; border: 1px solid black;" />
+</div>
+
+<p>We can superimpose the output images (here in black) together with the input
+images (in colour):</p>
+
+<p><img src="/posts/img/groupwise_points/res_all.png" class="center-block" style="width: 60%; border: 1px solid black;" /></p>
+
+<h1 id="source-code">Source code</h1>
+
+<p>The complete implementation of this metric is available <a href="https://github.com/m-pilia/CorrespondingPointsMeanDistanceMetric">on GitHub</a>. Enjoy!</p>
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="metz2011nonrigid">C. T. Metz, S. Klein, M. Schaap, T. van Walsum, and W. J. Niessen, “Nonrigid registration of dynamic medical imaging data using nD+ t B-splines and a groupwise optimization approach,” <i>Medical image analysis</i>, vol. 15, no. 2, pp. 238–249, 2011.</span></li>
+<li><span id="huizinga2016pca">W. Huizinga <i>et al.</i>, “PCA-based groupwise image registration for quantitative MRI,” <i>Medical image analysis</i>, vol. 29, pp. 65–78, 2016.</span></li>
+<li><span id="klein2010elastix">S. Klein, M. Staring, K. Murphy, M. A. Viergever, and J. P. W. Pluim, “Elastix: A toolbox for intensity-based medical image registration,” <i>IEEE transactions on medical imaging</i>, vol. 29, no. 1, pp. 196–205, 2010.</span></li>
+<li><span id="klein2009adaptive">S. Klein, J. P. W. Pluim, M. Staring, and M. A. Viergever, “Adaptive stochastic gradient descent optimisation for image registration,” <i>International journal of computer vision</i>, vol. 81, no. 3, p. 227, 2009.</span></li>
+<li><span id="wang2008simultaneous">F. Wang, B. C. Vemuri, A. Rangarajan, and S. J. Eisenschenk, “Simultaneous nonrigid registration of multiple point sets and atlas construction,” <i>IEEE transactions on pattern analysis and machine intelligence</i>, vol. 30, no. 11, pp. 2011–2022, 2008.</span></li>
+<li><span id="chen2010group">T. Chen, B. C. Vemuri, A. Rangarajan, and S. J. Eisenschenk, “Group-wise point-set registration using a novel CDF-based Havrda-Charvát divergence,” <i>International journal of computer vision</i>, vol. 86, no. 1, p. 111, 2010.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+
+      <p>When registering a time series, however, we may be interested to the
+partial derivatives with respect to the last dimension, along which we may
+want to have a smooth transform, corresponding to a smooth movement of the
+image content in time. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+
+      <p>While being technically correct, this is perhaps a confusing notation,
+since the term “Jacobian” is commonly associated to the spatial Jacobian of
+the transform. Indeed, modern version of the
+<a href="https://itk.org/Doxygen/html/classitk_1_1Transform.html">itk::Transform</a>
+class have two distinct and unambiguously named functions, called
+respectively <code class="highlighter-rouge">ComputeJacobianWithRespectToParameters()</code> and
+<code class="highlighter-rouge">ComputeJacobianWithRespectToPosition()</code>. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#image registration">image registration</a>
+          
+            <a href="/tags#groupwise registration">groupwise registration</a>
+          
+            <a href="/tags#landmark-based registration">landmark-based registration</a>
+          
+            <a href="/tags#Elastix">Elastix</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Landmark-based+groupwise+registration+with+SGD+and+B-splines+https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+  <!--- Share on Google Plus -->
+    <a href="https://plus.google.com/share?url=https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html"
+      class="btn btn-social-icon btn-google" title="Share on Google+">
+      <span class="fa fa-fw fa-google-plus" aria-hidden="true"></span>
+      <span class="sr-only">Google+</span>
+    </a>
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2018/09/17/volume-raycasting.html" data-toggle="tooltip" data-placement="top" title="GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL">&larr; Previous Post</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="/posts/2019/01/30/command-line-tools.html" data-toggle="tooltip" data-placement="top" title="Useful command line tools">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2019
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
