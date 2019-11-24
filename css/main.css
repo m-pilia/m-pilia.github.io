@@ -777,3 +777,19 @@ td.gutter {
 .content-image-padded {
   padding: 10px;
 }
+
+/* Bibliography */
+ol.bibliography li {
+  list-style-type:none;
+  margin: 30px 0;
+
+}
+ol.bibliography { counter-reset: item }
+ol.bibliography li:before {
+  content: "[" counter(item) "] ";
+  counter-increment: item;
+  width:3em;
+  position:absolute;
+  text-indent:-2em;
+
+}

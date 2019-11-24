@@ -50,26 +50,27 @@ The target of the optimisation is a similarity function defined over the whole
 set of images: one of the simplest, that works well for normalised images that
 share the same distribution of intensities, is is the standard deviation of the
 intensity of all the points in the moving images mapped from a certain position
-in reference space [[1]](#1), which can be considered the groupwise equivalent
-of mean squared difference similarity in classical pairwise registration. This
-is a suitable choice, for instance, when dealing with imaging modalities such
-as cardiac cine MR. In other settings, such as diffusion imaging, contrast
-varies over time and the assumption of similar distribution of intensities does
-not hold anymore, hence more sophisticated techniques are required to separate
-the intensity dissimilarity due to changes in contrast from the dissimilarity
-due to misalignment (e.g. metrics based on [principal component
-analysis](https://en.wikipedia.org/wiki/Principal_component_analysis)
-[[2]](#2)).
+in reference space {% cite metz2011nonrigid %}, which can be considered the
+groupwise equivalent of mean squared difference similarity in classical
+pairwise registration. This is a suitable choice, for instance, when dealing
+with imaging modalities such as cardiac cine MR. In other settings, such as
+diffusion imaging, contrast varies over time and the assumption of similar
+distribution of intensities does not hold anymore, hence more sophisticated
+techniques are required to separate the intensity dissimilarity due to changes
+in contrast from the dissimilarity due to misalignment (e.g. metrics based on
+[principal component
+analysis](https://en.wikipedia.org/wiki/Principal_component_analysis) {% cite
+huizinga2016pca %}.
 
 # Groupwise registration with Elastix
 
 While I work most of the time with non-parametric deformation models, sometimes
-I also rely on [Elastix](http://elastix.isi.uu.nl/) [[3]](#3), a deformable registration
-toolbox for medical image processing that offers a variety of parametric
-transform models and several image similarity metrics. Its workhorse is the
-[B-spline](https://en.wikipedia.org/wiki/B-spline) transform, which can be
-paired with rigid or affine pre-registration and can combine multiple images
-and multiple metrics (among [the various that are
+I also rely on [Elastix](http://elastix.isi.uu.nl/) {% cite klein2010elastix
+%}, a deformable registration toolbox for medical image processing that offers
+a variety of parametric transform models and several image similarity metrics.
+Its workhorse is the [B-spline](https://en.wikipedia.org/wiki/B-spline)
+transform, which can be paired with rigid or affine pre-registration and can
+combine multiple images and multiple metrics (among [the various that are
 implemented](http://elastix.isi.uu.nl/doxygen/group__Metrics.html)) in a single
 registration process, including a
 [CorrespondingPointsEuclideanDistanceMetric](http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html)
@@ -78,8 +79,9 @@ practice thanks to [an
 implementation](http://elastix.isi.uu.nl/doxygen/classelastix_1_1AdaptiveStochasticGradientDescent.html)
 of [stochastic gradient
 descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent) (SGD) with
-adaptive parameters [[4]](#4), which makes it possible to robustly optimise the
-energy for this problem within an acceptable computing time.
+adaptive parameters {% cite klein2009adaptive %}, which makes it possible to
+robustly optimise the energy for this problem within an acceptable computing
+time.
 
 While most Elastix features are designed for pairwise registration, the toolbox
 also offers [some
@@ -112,12 +114,12 @@ independently to a single slice along the time axis.
 Elastix does not natively offer groupwise landmark-based registration, so I
 decided to implement a metric component myself to try this approach. While in
 literature there are several interesting works on unlabeled point set
-registration methods [[5]](#5) [[6]](#6), in this scenario the task is a bit
-easier, since the correspondence between landmarks is already known. In the
-pairwise case it is straightforward to define a dissimilarity with energy $$E$$
-for the correspondence, e.g. by minimising the mean Euclidean distance between
-pairs $$(\bx^f_i, \bx^m_i)$$ of corresponding points in
-the fixed and moving image
+registration methods {% cite wang2008simultaneous chen2010group %}, in this
+scenario the task is a bit easier, since the correspondence between landmarks
+is already known. In the pairwise case it is straightforward to define a
+dissimilarity with energy $$E$$ for the correspondence, e.g. by minimising the
+mean Euclidean distance between pairs $$(\bx^f_i, \bx^m_i)$$ of corresponding
+points in the fixed and moving image
 
 $$
 E(\bmu) = \frac{1}{n} \sum_{i=1}^{n}
@@ -535,17 +537,7 @@ The complete implementation of this metric is available [on GitHub](https://gith
 
 # References
 
-+ <a id="1"></a>[1] Metz, C. T., Klein, S., Schaap, M., van Walsum, T., & Niessen, W. J. (2011). Nonrigid registration of dynamic medical imaging data using nD+ t B-splines and a groupwise optimization approach. *Medical image analysis*, 15(2), 238-249.
-
-+ <a id="2"></a>[2] Huizinga, W., Poot, D. H., Guyader, J. M., Klaassen, R., Coolen, B. F., van Kranenburg, M., ... & Leemans, A. (2016). PCA-based groupwise image registration for quantitative MRI. *Medical image analysis*, 29, 65-78.
-
-+ <a id="3"></a>[3] Klein, S., Staring, M., Murphy, K., Viergever, M. A., & Pluim, J. P. (2010). Elastix: a toolbox for intensity-based medical image registration. *IEEE transactions on medical imaging*, 29(1), 196-205.
-
-+ <a id="4"></a>[4] Klein, S., Pluim, J. P., Staring, M., & Viergever, M. A. (2009). Adaptive stochastic gradient descent optimisation for image registration. *International journal of computer vision*, 81(3), 227.
-
-+ <a id="5"></a>[5] Wang, F., Vemuri, B. C., Rangarajan, A., & Eisenschenk, S. J. (2008). Simultaneous nonrigid registration of multiple point sets and atlas construction. *IEEE transactions on pattern analysis and machine intelligence*, 30(11), 2011-2022.
-
-+ <a id="6"></a>[6] Chen, T., Vemuri, B. C., Rangarajan, A., & Eisenschenk, S. J. (2010). Group-wise point-set registration using a novel CDF-based Havrda-Charvát divergence. *International journal of computer vision*, 86(1), 111.
+{% bibliography --cited %}
 
 # Footnotes
 {:footnotes}

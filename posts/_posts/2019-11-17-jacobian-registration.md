@@ -26,20 +26,20 @@ Jacobian determinants.
 *Imaging-omics*, or *imiomics* for short, is a medical image analysis
 methodology introduced at Uppsala University in 2017, that allows to study and
 visualise pointwise correlations between the local body composition and
-non-image biomarkers [[1]](#1). In this context, "body composition" denotes
-local information such as the volume and composition of tissues in each point
-of the body, while non-image biomarkers can be for instance body measurements
-(height, weight, waist circumference, etc.), blood analysis values, physical
-test (bioimpedance, VO<sub>2</sub> max, etc.), and any other numeric measures
-that can be associated to a subject.
+non-image biomarkers {% cite strand2017concept %}. In this context, "body
+composition" denotes local information such as the volume and composition of
+tissues in each point of the body, while non-image biomarkers can be for
+instance body measurements (height, weight, waist circumference, etc.), blood
+analysis values, physical test (bioimpedance, VO<sub>2</sub> max, etc.), and
+any other numeric measures that can be associated to a subject.
 
 In other words, imiomics makes it possible to visualise a correlation map
 between some local physical property of the body and other global measures. The
-following example from Lind et al. [[2]](#2) gives a clear idea of the power of
-such approach, showing the correlation between adipose tissue volume and total
-fat mass, lean mass, and waist-hip ratio. Clear correlations are visible, such
-as a positive one between subcutaneous tissues in the hips and total fat mass,
-and a negative one between lung volume and total fat mass:
+following example from Lind et al. {% cite lind2019proof %} gives a clear idea
+of the power of such approach, showing the correlation between adipose tissue
+volume and total fat mass, lean mass, and waist-hip ratio. Clear correlations
+are visible, such as a positive one between subcutaneous tissues in the hips
+and total fat mass, and a negative one between lung volume and total fat mass:
 
 <a href="https://www.nature.com/articles/s41598-019-43690-w">
     <img src="/posts/img/imio/local_mass.webp"
@@ -48,7 +48,7 @@ and a negative one between lung volume and total fat mass:
          markdown="1"/>
 </a>
 <div style="text-align: center;">
-    Illustration from Lind et al. <a href="#2">[2]</a>
+Illustration from Lind et al. {% cite lind2019proof %}
 </div>
 
 While probably such results do not come as a surprise, they prove the concept
@@ -66,14 +66,14 @@ correlated with the fat content in a much thinner layer of subcutaneous fat:
          markdown="1"/>
 </a>
 <div style="text-align: center;">
-    Illustration from Lind et al. <a href="#2">[2]</a>
+Illustration from Lind et al. {% cite lind2019proof %}
 </div>
 
 In addition to the group studies in the example above, imiomics is suitable for
 other types of statistical analysis, such as longitudinal studies, where the
 evolution of a single subject is followed up through time, or anomaly
 detection, where discrepancies between a subject and a normality atlas (e.g.
-the presence of lesions) are identified [[4]](#4).
+the presence of lesions) are identified {% cite sjoholm2019whole %}.
 
 # Technicalities under the hood
 
@@ -98,9 +98,9 @@ intra-subject anatomical and pose variability. A deformable registration method
 based on [graph cut
 optimisation](https://en.wikipedia.org/wiki/Graph_cut_optimization) allows to
 get a pointwise transform with sub-voxel accuracy, robustly handling difficult
-cases and with fast computational time [[3]](#3). If PET data is collected
-together with the MR data by using a combined scanner, therefore producing
-inherently co-registered PET and MR images, the transform obtained by
+cases and with fast computational time {% cite ekstrom2018fast %}. If PET data
+is collected together with the MR data by using a combined scanner, therefore
+producing inherently co-registered PET and MR images, the transform obtained by
 registering the MR can be used to also warp the PET data, allowing to produce a
 PET atlas.
 
@@ -166,12 +166,13 @@ frame that is optimal for the population as a whole.
 Several groupwise registration methodologies have been developed since the
 early 2000s, including pairwise registration to an explicit template that is
 iteratively warped according to some average property of the individual
-transforms \[[6](#6), [7](#7)\] and implicit methods that construct the set of
-transforms for all images simultaneously, optimising some groupwise metric
-defined over all images and transforms \[[8](#8), [9](#9)\]. Interestingly, the
-latter approach does not require any choice of template image a priori, and it
-does not produce any explicit reference image but only a set of transforms. If
-desired, a reference image can be recovered by averaging the warped subjects.
+transforms {% cite guimond2000average wu2011sharpmean %} and implicit methods
+that construct the set of transforms for all images simultaneously, optimising
+some groupwise metric defined over all images and transforms {% cite
+balci2006free joshi2004unbiased %}. Interestingly, the latter approach does not
+require any choice of template image a priori, and it does not produce any
+explicit reference image but only a set of transforms. If desired, a reference
+image can be recovered by averaging the warped subjects.
 
 While groupwise methods, especially implicit methods, nicely address the
 problem of the bias toward an arbitrary reference space in the registration of
@@ -219,7 +220,7 @@ possible heuristic is to select as the reference a subject that both height and
 total fat mass[^3] simultaneously close to the respective medians for the
 population. This helps to get a good guess of the average volume for the
 cohort, but it is obviously far from having the desired mean volume everywhere
-in a pointwise fashion [[5](#5)].
+in a pointwise fashion {% cite pilia2019average %}.
 
 In principle, this issue could be overcome in different ways. One possibility
 would be to perform an implicit-reference groupwise registration, adding a
@@ -237,15 +238,15 @@ obtain transforms sufficiently accurate for imiomics analysis.
      style="width:25%;"
      markdown="1"/>
 
-An alternative approach, used in some early groupwise registration methods
-\[[6](#6), [7](#7)\], is to start with a subject from the cohort as initial
-template, and iteratively refine it and repeat the registration to the refined
-template, until the set of transforms from the template towards the rest of the
-cohort satisfy a desired property. Thinking of the images as points in some
-feature space, the intuitive idea is to have the initial subject (red circle)
-iteratively moving in the feature space (red squares) and converging to the
-mean of the population (black circles), for some definition of mean that suits
-the problem.
+An alternative approach, used in some early groupwise registration methods {%
+cite guimond2000average wu2011sharpmean %}, is to start with a subject from the
+cohort as initial template, and iteratively refine it and repeat the
+registration to the refined template, until the set of transforms from the
+template towards the rest of the cohort satisfy a desired property. Thinking of
+the images as points in some feature space, the intuitive idea is to have the
+initial subject (red circle) iteratively moving in the feature space (red
+squares) and converging to the mean of the population (black circles), for some
+definition of mean that suits the problem.
 
 Since the images can be registered one pair at a time, this approach has a
 constant memory footprint and a time complexity that is linear in the size of
@@ -282,12 +283,13 @@ problem, since infinite transforms can share the same Jacobian determinant.
 One possibility is to model the problem as a mechanical deformation. In
 principle, different assumptions can be made, leading to different deformation
 models, and the resulting system of partial differential equations can be
-solved numerically, for instance with finite differences [[10]](#10) or finite
-elements \[[11](#11), [12](#12)\].[^4] This approach has some advantages, such
-as a well understood mathematical and physical model, and the possibility to
-control the physical properties of the tissues being deformed by manipulating
-the parameters of such model. On the downside, however, the numerical solution
-of this problem on the scale of a whole body image can be expensive in terms of
+solved numerically, for instance with finite differences {% cite
+khanal2017simulating %} or finite elements {% cite smith2003biomechanical
+camara2006phenomenological %}.[^4] This approach has some advantages, such as a
+well understood mathematical and physical model, and the possibility to control
+the physical properties of the tissues being deformed by manipulating the
+parameters of such model. On the downside, however, the numerical solution of
+this problem on the scale of a whole body image can be expensive in terms of
 memory and computing time. Moreover, finite elements require a meaningful mesh
 generation, that constitutes a whole problem on its own.
 
@@ -295,10 +297,11 @@ Another approach is constituted by search based methods. It is possible to
 perform a search in the space of displacements by optimising a cost function
 that accounts for the distance between the Jacobian determinant
 $$J_\boldsymbol{d}$$ of the deformation associated to displacement
-$$\boldsymbol{d}$$ and the desired Jacobian $$J^*$$ \[[13](#13), [14](#14)\].
-While this approach may look tricky in principle, due to the fact that infinite
-solutions exist, by using a null displacement as initial guess it is likely to
-end the search in a reasonably good solution.
+$$\boldsymbol{d}$$ and the desired Jacobian $$J^*$$ {% cite
+karaccali2006simulation van2013mapping %}. While this approach may look tricky
+in principle, due to the fact that infinite solutions exist, by using a null
+displacement as initial guess it is likely to end the search in a reasonably
+good solution.
 
 A simple yet effective example of cost function for this problem is the squared
 difference
@@ -313,7 +316,8 @@ $$
 Such function is differentiable with respect to the components of the
 displacement, therefore it is possible to perform gradient descent to minimise
 it. It is also possible to add a regularisation term to penalise non-smooth and
-physically unfeasible deformations, if necessary [[13](#13)].
+physically unfeasible deformations, if necessary {% cite
+karaccali2006simulation %}.
 
 Given a displacement $$d(x,y,z) = \left(f(x,y,z), g(x,y,z), h(x,y,z) \right)$$,
 the partial derivatives in the expression of the Jacobian can be discretised
@@ -375,7 +379,7 @@ $$\frac{1}{\delta_x} \left(f(x+1,y,z) - f(x-1,y,z) \right)$$.
 
 This expression is a bit cumbersome, and it is possible to greatly cut the
 calculations by throwing away all cross terms and approximate the gradient as
-[[14](#14)]
+{% cite van2013mapping %}
 
 $$
 \nabla E \propto \left(
@@ -389,7 +393,7 @@ It is possible to experimentally observe how removing the cross terms worsens
 the improvement at each iteration and weakens the robustness of the search, but
 the savings in terms of computing time are so big that in many cases it is
 possible to compensate by performing more iterations and still reach a better
-solution within the same computing time [[15](#15)].
+solution within the same computing time {% cite pilia2018groupwise %}.
 
 Regardless of whether the full gradient or its approximation is used, it is
 possible to parallelise calculations for all voxels independently, making this
@@ -422,7 +426,7 @@ and its inverse is used to sample a new reference space (top-centre panel). The
 difference image (top-right panel) shows how the anatomy is overall preserved
 and tissue volumes are locally adjusted. When mapping the cohort to this new
 reference space, this time the Jacobian (bottom-centre panel) is close to one
-almost everywhere [[5](#5)].
+almost everywhere {% cite pilia2019average %}.
 
 It is fascinating to observe how this simple approach for the generation of a
 displacement with given Jacobian can be applied on a relatively complicated
@@ -443,79 +447,7 @@ available on [GitHub](https://github.com/m-pilia/disptools) and
 
 # References
 
-+ <a id="1"></a>[1] Strand, R., Malmberg, F., Johansson, L., Lind, L., Sundbom,
-  M., Ahlström, H., Kullberg, J. (2017). [A concept for holistic whole body
-  MRI data analysis,
-  Imiomics](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169966).
-  PloS one, 12(2), e0169966.
-
-+ <a id="2"></a>[2] Lind, L., Kullberg, J., Ahlström, H., Michaëlsson, K.,
-  Strand, R. (2019). [Proof of principle study of a detailed whole-body image
-  analysis technique, “Imiomics”, regarding adipose and lean tissue
-  distribution](https://www.nature.com/articles/s41598-019-43690-w). Scientific
-  reports, 9(1), 7388.
-
-+ <a id="3"></a>[3] Ekström, S., Malmberg, F., Ahlström, H., Kullberg, J,
-  Strand, R.: [Fast Graph-Cut Based Optimization for Practical Dense Deformable
-  Registration of Volume Images](https://arxiv.org/abs/1810.08427) (2019),
-  arXiv preprint arXiv:1810.08427.
-
-+ <a id="4"></a>[4] Sjöholm, T., Ekström, S., Strand, R., Ahlström, H., Lind,
-  L., Malmberg, F., Kullberg, J.: [A whole-body FDG PET/MR atlas for
-  multiparametric voxel-based
-  analysis](https://www.nature.com/articles/s41598-019-42613-z) (2019),
-  Scientific reports 9(1), Nature Publishing Group, 6158.
-
-+ <a id="5"></a>[5] Pilia, M., Kullberg, J., Ahlström, H., Malmberg, F.,
-  Ekström, S., Strand, R. (2019). [Average volume reference space for large
-  scale registration of whole-body magnetic resonance
-  images](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0222700).
-  PloS one, 14(10).
-
-+ <a id="6"></a>[6] Guimond, A., Meunier, J., Thirion, J.-P.: Average brain
-  models: A convergence study (2000), Computer vision and image understanding
-  77(2), Elsevier, 192–210.
-
-+ <a id="7"></a>[7] Wu, G., Jia, H., Wang, Q., Shen, D.: SharpMean: Groupwise
-  registration guided by sharp mean image and tree-based registration (2011),
-  NeuroImage 56(4), Elsevier, 1968–1981.
-
-+ <a id="8"></a>[8] Balci, S.-K., Golland, P., Shenton, M., Wells, W.-M:
-  Free-Form B-spline Deformation Model for Groupwise Registration (2006),
-  International Conference on Medical Image Computing and Computer-Assisted
-  Intervention, volume 10, 23–30.
-
-+ <a id="9"></a>[9] Joshi, S., Davis, B., Jomier, M., Gerig, G.: Unbiased
-  diffeomorphic atlas construction for computational anatomy (2004), NeuroImage
-  23, Elsevier, S151–S160.
-
-+ <a id="10"></a>[10] Khanal, B., Ayache, N., Pennec, X.: Simulating
-  Longitudinal Brain MRIs with known Volume Changes and Realistic Variations in
-  Image Intensity (2017), Frontiers in Neuroscience 11(Article 132), 18.
-
-+ <a id="11"></a>[11] Smith, A.-D. Castellano, C., William R, H., Derek L,
-  T., Neil A, B., Paul A.: Biomechanical simulation of atrophy in MR
-  images (2003), Proceedings of SPIE, volume 5032, 481–490.
-
-+ <a id="12"></a>[12] Camara, O., Schweiger, M., Scahill, R.I.,
-  Crum, W.R, Sneller, B.I., Schnabel, J.A, Ridgway, G.R.,
-  Cash, D.M., Hill, D.LG, Fox, N.C.: Phenomenological model of diffuse
-  global and regional atrophy using finite-element methods (2006), IEEE
-  transactions on medical imaging 25(11), IEEE, 1417–1430.
-
-+ <a id="13"></a>[13] Karaçali, B., Davatzikos, C.: Simulation of
-  tissue atrophy using a topology preserving transformation model (2006), IEEE
-  transactions on medical imaging 25(5), IEEE, 649–652.
-
-+ <a id="14"></a>[14] van Eede, M.C., Scholz, J., Chakravarty, M.M.,
-  Henkelman, R.M., Lerch, J.P.: Mapping registration sensitivity in MR
-  mouse brain images (2013), Neuroimage 82, Elsevier, 226–236.
-
-+ <a id="15"></a>[15] Pilia, M.: [Groupwise whole-body MR image registration
-  guided by zero-average volume
-  changes](http://urn.kb.se/resolve?urn=urn%3Anbn%3Ase%3Auu%3Adiva-371560)
-  (2018), M.Sc. Thesis, Uppsala University, Acta Universitatis Upsaliensis No.
-  18015.
+{% bibliography --cited %}
 
 # Footnotes
 {:footnotes}
