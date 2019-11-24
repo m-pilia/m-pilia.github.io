@@ -12,7 +12,7 @@
           Building a mean volume anatomic atlas - 
           In Uppsala I spent several months investigating the generation of displacement fields with known volume changes, and I even implemented a software suite for the purpose. This might seem an odd topic to pick as working subject, so it is worth a bit of clarification about its purpose and applications....
         </description>
-        <pubDate>Sun, 17 Nov 2019 00:00:00 -0800</pubDate>
+        <pubDate>Sun, 17 Nov 2019 00:00:00 +0100</pubDate>
         <link>https://martinopilia.com/posts/2019/11/17/jacobian-registration.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2019/11/17/jacobian-registration.html</guid>
       </item>
@@ -23,7 +23,7 @@
           Improved workflow on the shell - 
           This post is meant to be a brief introduction to some productivity tools that can make a command line workflow smoother and more efficient. While well known, standard tools with similar function already exist (e.g. bash, grep, find, etc.), the tools presented hereafter have a handy user interface with sensible...
         </description>
-        <pubDate>Wed, 30 Jan 2019 00:00:00 -0800</pubDate>
+        <pubDate>Wed, 30 Jan 2019 00:00:00 +0100</pubDate>
         <link>https://martinopilia.com/posts/2019/01/30/command-line-tools.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2019/01/30/command-line-tools.html</guid>
       </item>
@@ -34,7 +34,7 @@
           Implementing a simple extension to Elastix - 
           Currently, I work mostly on image registration algorithms, and I devoted quite some time looking into groupwise registration techniques. In its essence, groupwise registration is a process that aligns multiple images, mapping them to a common reference space, without having to explicitly define such reference space (e.g. without manually selecting...
         </description>
-        <pubDate>Sun, 23 Sep 2018 00:00:00 -0700</pubDate>
+        <pubDate>Sun, 23 Sep 2018 00:00:00 +0200</pubDate>
         <link>https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html</guid>
       </item>
@@ -45,7 +45,7 @@
           Implementing a simple, yet easy to extend visualiser - 
           Visualisation is a complementary but very important part of my work on image analysis. And since I work mainly with tridimensional volume images, visualisation is inherently a more complicated task compared to image analysis in only two dimensions. To help my work, I decided to implement a small tool for...
         </description>
-        <pubDate>Mon, 17 Sep 2018 00:00:00 -0700</pubDate>
+        <pubDate>Mon, 17 Sep 2018 00:00:00 +0200</pubDate>
         <link>https://martinopilia.com/posts/2018/09/17/volume-raycasting.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2018/09/17/volume-raycasting.html</guid>
       </item>
@@ -56,7 +56,7 @@
           Extending Python, with automatic cross-platform configuration - 
           Python is a high-level programming language whose extremely simple and elegant yet very powerful and expressive syntax has granted it enormous popularity in most programming contexts. Scientific applications are no exception on this respect, and this may look strange at a first glance, given that Python’s runtime is painfully slow...
         </description>
-        <pubDate>Sat, 15 Sep 2018 00:00:00 -0700</pubDate>
+        <pubDate>Sat, 15 Sep 2018 00:00:00 +0200</pubDate>
         <link>https://martinopilia.com/posts/2018/09/15/building-python-extension.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2018/09/15/building-python-extension.html</guid>
       </item>
