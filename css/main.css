@@ -774,22 +774,27 @@ td.gutter {
 }
 
 /* Content */
+
 .content-image-padded {
   padding: 10px;
 }
 
 /* Bibliography */
-ol.bibliography li {
-  list-style-type:none;
-  margin: 30px 0;
 
+ol.bibliography {
+  counter-reset: item
 }
-ol.bibliography { counter-reset: item }
+
+ol.bibliography li {
+  list-style-type: none;
+  margin: 30px 0;
+}
+
 ol.bibliography li:before {
   content: "[" counter(item) "] ";
   counter-increment: item;
-  width:3em;
-  position:absolute;
-  text-indent:-2em;
-
+  position: absolute;
+  text-align: right;
+  width: 4em;
+  margin-left: -4.4em;
 }

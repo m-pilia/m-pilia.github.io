@@ -36,6 +36,7 @@ jobs:
         ls -Q | grep -v _site | xargs rm -rf
         mv _site/* .
         rm -rf _site
+        rm -rf .jekyll-cache
         [[ -n "$(git status --porcelain)" ]] || exit 0
         git add .
         git commit -m "Build $(git rev-parse source | grep -o '^.\{10\}')"

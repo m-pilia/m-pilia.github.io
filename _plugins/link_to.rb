@@ -1,3 +1,5 @@
+# Custom Liquid filter to create hyperlinks
+# {{ 'href' | link_to: 'input' }}
 module Jekyll::CustomFilter
   def link_to(input, href)
     "<a href=\"#{href}\">#{input}</a>"

@@ -131,8 +131,8 @@
       <else>
         <choose>
           <if variable="URL">
-            <text variable="title" quotes="true" prefix="{{ '" suffix="' | "/>
-            <text variable="URL" prefix="link_to: '" suffix="' }}"/>
+            <text variable="URL" prefix="&lt;a href=&quot;" suffix="&quot;&gt;"/>
+            <text variable="title" quotes="true" suffix="&lt;/a&gt;"/>
           </if>
           <else>
             <text variable="title" quotes="true"/>
