@@ -6,6 +6,10 @@ layout: null
 
 /* --- General --- */
 
+html {
+  scroll-padding-top: 50px; /* compensate for the navigation bar height */
+}
+
 body {
   font-family: 'Lora', 'Times New Roman', serif;
   font-size: 18px;
