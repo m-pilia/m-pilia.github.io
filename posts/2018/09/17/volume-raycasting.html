@@ -343,7 +343,7 @@
 
 24 minutes
 
-read (4336 words)
+read (4318 words)
 
           </span>
 		  
@@ -512,19 +512,19 @@ artifacts.</p>
     <span class="kt">float</span> <span class="n">ray_length</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">ray</span><span class="p">);</span>
     <span class="kt">vec3</span> <span class="n">step_vector</span> <span class="o">=</span> <span class="n">step_length</span> <span class="o">*</span> <span class="n">ray</span> <span class="o">/</span> <span class="n">ray_length</span><span class="p">;</span>
 
-    <span class="c1">// Random jitter
-</span>    <span class="n">ray_start</span> <span class="o">+=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="n">texture</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="n">fragment_coordinates</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+    <span class="c1">// Random jitter</span>
+    <span class="n">ray_start</span> <span class="o">+=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="n">texture</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="n">fragment_coordinates</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
 
     <span class="kt">vec3</span> <span class="n">position</span> <span class="o">=</span> <span class="n">ray_start</span><span class="p">;</span>
 
-    <span class="c1">// Stop when the end of the volume is reached
-</span>    <span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Stop when the end of the volume is reached</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 
         <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
 
-        <span class="c1">// Do something with the sample
-</span>        <span class="c1">// ...
-</span>
+        <span class="c1">// Do something with the sample</span>
+        <span class="c1">// ...</span>
+
         <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
         <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
     <span class="p">}</span>
@@ -576,8 +576,8 @@ intersection points. Note how we clamp to zero the parameter for the near
 intersection, since we are not interested into negative values, that correspond
 to positions behind the camera.</p>
 
-<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Slab method for ray-box intersection
-</span><span class="kt">void</span> <span class="nf">ray_box_intersection</span><span class="p">(</span><span class="n">Ray</span> <span class="n">ray</span><span class="p">,</span> <span class="n">AABB</span> <span class="n">box</span><span class="p">,</span> <span class="k">out</span> <span class="kt">float</span> <span class="n">t_0</span><span class="p">,</span> <span class="k">out</span> <span class="kt">float</span> <span class="n">t_1</span><span class="p">)</span>
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Slab method for ray-box intersection</span>
+<span class="kt">void</span> <span class="nf">ray_box_intersection</span><span class="p">(</span><span class="n">Ray</span> <span class="n">ray</span><span class="p">,</span> <span class="n">AABB</span> <span class="n">box</span><span class="p">,</span> <span class="k">out</span> <span class="kt">float</span> <span class="n">t_0</span><span class="p">,</span> <span class="k">out</span> <span class="kt">float</span> <span class="n">t_1</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">vec3</span> <span class="n">direction_inv</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">ray</span><span class="p">.</span><span class="n">direction</span><span class="p">;</span>
     <span class="kt">vec3</span> <span class="n">t_top</span> <span class="o">=</span> <span class="n">direction_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">box</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="n">ray</span><span class="p">.</span><span class="n">origin</span><span class="p">);</span>
@@ -617,19 +617,19 @@ passing through the volume.</p>
     <span class="kt">float</span> <span class="n">ray_length</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">ray</span><span class="p">);</span>
     <span class="kt">vec3</span> <span class="n">step_vector</span> <span class="o">=</span> <span class="n">step_length</span> <span class="o">*</span> <span class="n">ray</span> <span class="o">/</span> <span class="n">ray_length</span><span class="p">;</span>
 
-    <span class="c1">// Random jitter
-</span>    <span class="n">ray_start</span> <span class="o">+=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="n">texture</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span> <span class="o">/</span> <span class="n">viewport_size</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
+    <span class="c1">// Random jitter</span>
+    <span class="n">ray_start</span> <span class="o">+=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="n">texture</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span> <span class="o">/</span> <span class="n">viewport_size</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
 
     <span class="kt">vec3</span> <span class="n">position</span> <span class="o">=</span> <span class="n">ray_start</span><span class="p">;</span>
 
-    <span class="c1">// Stop when the end of the volume is reached
-</span>    <span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Stop when the end of the volume is reached</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 
         <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
 
-        <span class="c1">// Do something with the sample
-</span>        <span class="c1">// ...
-</span>
+        <span class="c1">// Do something with the sample</span>
+        <span class="c1">// ...</span>
+
         <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
         <span class="n">position</span> <span class="o">+=</span> <span class="n">step_vector</span><span class="p">;</span>
     <span class="p">}</span>
@@ -668,8 +668,8 @@ of the surface at the point. This can be easily approximated by the gradient of
 the intensity at the current sample point, at the cost of three texture
 samplings, given that the data is reasonably continuous.</p>
 
-<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Estimate the normal from a finite difference approximation of the gradient
-</span><span class="kt">vec3</span> <span class="nf">normal</span><span class="p">(</span><span class="kt">vec3</span> <span class="n">position</span><span class="p">,</span> <span class="kt">float</span> <span class="n">intensity</span><span class="p">)</span>
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Estimate the normal from a finite difference approximation of the gradient</span>
+<span class="kt">vec3</span> <span class="nf">normal</span><span class="p">(</span><span class="kt">vec3</span> <span class="n">position</span><span class="p">,</span> <span class="kt">float</span> <span class="n">intensity</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">step_length</span><span class="p">;</span>
     <span class="kt">float</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span> <span class="o">+</span> <span class="kt">vec3</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="n">r</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">;</span>
@@ -688,20 +688,20 @@ illumination. The ray march loop in the fragment shader will look like this:</p>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">intensity</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span> <span class="p">{</span>
 
-        <span class="c1">// Get closer to the surface
-</span>        <span class="n">position</span> <span class="o">-=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span>
+        <span class="c1">// Get closer to the surface</span>
+        <span class="n">position</span> <span class="o">-=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span>
         <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
         <span class="n">position</span> <span class="o">-=</span> <span class="n">step_vector</span> <span class="o">*</span> <span class="p">(</span><span class="n">intensity</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">?</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span> <span class="o">:</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="p">);</span>
         <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
 
-        <span class="c1">// Compute the local vectors
-</span>        <span class="kt">vec3</span> <span class="n">L</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light_position</span> <span class="o">-</span> <span class="n">position</span><span class="p">);</span>
+        <span class="c1">// Compute the local vectors</span>
+        <span class="kt">vec3</span> <span class="n">L</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light_position</span> <span class="o">-</span> <span class="n">position</span><span class="p">);</span>
         <span class="kt">vec3</span> <span class="n">V</span> <span class="o">=</span> <span class="o">-</span><span class="n">normalize</span><span class="p">(</span><span class="n">ray</span><span class="p">);</span>
         <span class="kt">vec3</span> <span class="n">N</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">intensity</span><span class="p">);</span>
         <span class="kt">vec3</span> <span class="n">H</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">V</span><span class="p">);</span>
 
-        <span class="c1">// Blinn-Phong shading
-</span>        <span class="kt">float</span> <span class="n">Id</span> <span class="o">=</span> <span class="n">kd</span> <span class="o">*</span> <span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">));</span>
+        <span class="c1">// Blinn-Phong shading</span>
+        <span class="kt">float</span> <span class="n">Id</span> <span class="o">=</span> <span class="n">kd</span> <span class="o">*</span> <span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">));</span>
         <span class="kt">float</span> <span class="n">Is</span> <span class="o">=</span> <span class="n">ks</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">H</span><span class="p">)),</span> <span class="n">specular_power</span><span class="p">);</span>
         <span class="n">colour</span> <span class="o">=</span> <span class="p">(</span><span class="n">ka</span> <span class="o">+</span> <span class="n">Id</span><span class="p">)</span> <span class="o">*</span> <span class="n">material_colour</span> <span class="o">+</span> <span class="n">Is</span> <span class="o">*</span> <span class="n">specular_colour</span><span class="p">;</span>
 
@@ -729,10 +729,10 @@ projection</a> (MIP).
 In its simplest form, it consists of taking as intensity for the current
 fragment the maximum intensity sampled along the ray.</p>
 
-<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">maximum_intensity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span> <span class="c1">// Assuming intensity in [0, 1]
-</span>
-<span class="c1">// Stop when the end of the volume is reached
-</span><span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">maximum_intensity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span> <span class="c1">// Assuming intensity in [0, 1]</span>
+
+<span class="c1">// Stop when the end of the volume is reached</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
 
@@ -767,16 +767,16 @@ of the fragment is saturated.</p>
 
 <div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">vec4</span> <span class="n">colour</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
 
-<span class="c1">// Stop when the end of the volume is reached or the pixel is saturated
-</span><span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">// Stop when the end of the volume is reached or the pixel is saturated</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">ray_length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">position</span><span class="p">).</span><span class="n">r</span><span class="p">;</span>
     <span class="kt">float</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">gradient_magnitude</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">intensity</span><span class="p">);</span>
 
     <span class="kt">vec4</span> <span class="n">c</span> <span class="o">=</span> <span class="n">colour_transfer</span><span class="p">(</span><span class="n">intensity</span><span class="p">);</span>
 
-    <span class="c1">// Alpha-blending
-</span>    <span class="n">colour</span><span class="p">.</span><span class="n">rgb</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">rgb</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">rgb</span><span class="p">;</span>
+    <span class="c1">// Alpha-blending</span>
+    <span class="n">colour</span><span class="p">.</span><span class="n">rgb</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">rgb</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">rgb</span><span class="p">;</span>
     <span class="n">colour</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">colour</span><span class="p">.</span><span class="n">a</span><span class="p">;</span>
 
     <span class="n">ray_length</span> <span class="o">-=</span> <span class="n">step_length</span><span class="p">;</span>
@@ -805,8 +805,8 @@ transfer functions interpolates between a couple of colours denoting minimum
 and maximum intensity. For example, using exponential decay for the opacity and
 a gradient-based attenuation factor:</p>
 
-<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// A very simple colour transfer function
-</span><span class="kt">vec4</span> <span class="nf">colour_transfer</span><span class="p">(</span><span class="kt">float</span> <span class="n">intensity</span><span class="p">,</span> <span class="kt">float</span> <span class="n">gradient</span><span class="p">)</span>
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// A very simple colour transfer function</span>
+<span class="kt">vec4</span> <span class="nf">colour_transfer</span><span class="p">(</span><span class="kt">float</span> <span class="n">intensity</span><span class="p">,</span> <span class="kt">float</span> <span class="n">gradient</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">vec3</span> <span class="n">high</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
     <span class="kt">vec3</span> <span class="n">low</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
@@ -841,19 +841,19 @@ handle window resizing.</p>
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RayCastCanvas</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QOpenGLWidget</span><span class="p">,</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
 <span class="p">{</span>
     <span class="n">Q_OBJECT</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
     <span class="k">explicit</span> <span class="n">RayCastCanvas</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">);</span>
     <span class="o">~</span><span class="n">RayCastCanvas</span><span class="p">();</span>
 
-    <span class="c1">// ...
-</span>
-<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// ...</span>
+
+<span class="nl">protected:</span>
     <span class="kt">void</span> <span class="n">initializeGL</span><span class="p">();</span>
     <span class="kt">void</span> <span class="n">paintGL</span><span class="p">();</span>
     <span class="kt">void</span> <span class="n">resizeGL</span><span class="p">(</span><span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">);</span>
 
-    <span class="c1">// ...
-</span><span class="p">};</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
 </code></pre></div></div>
 
 <p>I also defined a handful of helper classes to model objects: <code class="highlighter-rouge">RayCastVolume</code>,
@@ -864,25 +864,25 @@ again, by inheriting from <code class="highlighter-rouge">QOpenGLExtraFunctions<
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RayCastVolume</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
 <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
     <span class="n">RayCastVolume</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
     <span class="k">virtual</span> <span class="o">~</span><span class="n">RayCastVolume</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 
-    <span class="c1">// ...
-</span><span class="p">};</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
 
 <span class="k">class</span> <span class="nc">Mesh</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
 <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
     <span class="n">Mesh</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">GLfloat</span><span class="o">&gt;&amp;</span> <span class="n">vertices</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">GLuint</span><span class="o">&gt;&amp;</span> <span class="n">indices</span><span class="p">);</span>
     <span class="k">virtual</span> <span class="o">~</span><span class="n">Mesh</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 
-    <span class="c1">// ...
-</span><span class="p">};</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
 </code></pre></div></div>
 
 <p>The Qt example applications include <a href="http://doc.qt.io/qt-5/qtwidgets-graphicsview-boxes-trackball-h.html">a nice implementation of a
