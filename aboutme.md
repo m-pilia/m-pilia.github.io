@@ -4,9 +4,8 @@ title: About me
 subtitle:
 ---
 
-I am native of Sardinia, where I studied music and math. After earning my
-diploma in viola and a couple degrees in math and computer science, I moved to
-Sweden for my master studies in computer science at Uppsala University.
+Native of Sardinia, I moved to Sweden for my master studies in computer science
+at Uppsala University.
 
 I love opera and classical music.  I am an enthusiast [Arch
 Linux](https://www.archlinux.org/), [KDE](https://www.kde.org/), and

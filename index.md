@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Martino's page
-subtitle: Ph.D. student in computer vision
+subtitle:
 use-site-title: true
 ---
 <style>
