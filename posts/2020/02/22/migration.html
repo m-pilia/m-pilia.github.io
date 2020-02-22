@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Migration to Jekyll Scholar and GitHub Actions</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="New bibliography management and build system for the website">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Migration to Jekyll Scholar and GitHub Actions" />
+  
+
+   
+  <meta property="og:description" content="New bibliography management and build system for the website">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2020/02/22/migration.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2020/02/22/migration.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Migration to Jekyll Scholar and GitHub Actions" />
+  
+
+  
+  <meta name="twitter:description" content="New bibliography management and build system for the website">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=14
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/malaren-2.jpg"
+		  data-img-desc-2="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/lindholmen.jpg"
+		  data-img-desc-3="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/frozen-fyrisan.jpg"
+		  data-img-desc-4="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/majorna.jpg"
+		  data-img-desc-5="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/malaren-3.jpg"
+		  data-img-desc-6="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/storvreta.jpg"
+		  data-img-desc-7="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/granby.jpg"
+		  data-img-desc-8="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/riksdagshuset.jpg"
+		  data-img-desc-9="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-10="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/gottsunda-3.jpg"
+		  data-img-desc-11="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/gula-stigen.jpg"
+		  data-img-desc-12="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/kungsportsbron.jpg"
+		  data-img-desc-13="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/gottsunda-1.jpg"
+		  data-img-desc-14="Gottsunda"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Migration to Jekyll Scholar and GitHub Actions</h1>
+		  
+		    
+			<h2 class="post-subheading">New bibliography management and build system for the website</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on February 22, 2020
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+12 minutes
+
+read (2182 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Migration to Jekyll Scholar and GitHub Actions</h1>
+		  
+		    
+			<h2 class="post-subheading">New bibliography management and build system for the website</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on February 22, 2020</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This is a meta post that describes the technical updates I recently performed
+to this very website. Since length and complexity of the articles were growing,
+I decided it was time to switch to Jekyll Scholar as the bibliography
+management tool. This required a little refactoring and a change to the build
+system used to generate the website. Together with the update, I did some
+cleanup of the code for the site, that I am now open-sourcing.</p>
+
+<h1 id="github-pages">GitHub Pages</h1>
+
+<p>As it is easy to guess, this website is hosted on GitHub Pages. <a href="https://pages.github.com/">GitHub
+Pages</a> is a free solution offered by GitHub to host
+static websites, allowing to either write HTML, CSS, and JS code by hand, or to
+use the <a href="https://jekyllrb.com/">Jekyll</a> framework to automatically generate the
+site from Markdown and Liquid sources. While I personally find Markdown a
+little simplistic and I would prefer to use a more versatile and structured
+language for technical writing on the web, such as
+<a href="https://en.wikipedia.org/wiki/ReStructuredText">reStructuredText</a>, the
+combination with Liquid and other Jekyll features somehow compensates for its
+weaknesses and makes it a sufficiently expressive tool.</p>
+
+<p>By default, any GitHub repository can automatically generate a website, with
+the purpose of hosting documentation for the corresponding project. The code
+for the website is stored in a branch named <tt>gh-pages</tt>, and the
+corresponding site is published at <tt>&lt;repository-name&gt;.github.io</tt>.
+Moreover, each user or organisation can host a personal site by creating a
+repository named <tt>&lt;username&gt;.github.io</tt>, where
+<tt>&lt;username&gt;</tt> is the name of the user or organisation on GitHub. In
+this case, the sources of the site can be stored in the <tt>master</tt> branch.</p>
+
+<h1 id="bibliography-management-and-jekyll-scholar">Bibliography management and Jekyll Scholar</h1>
+
+<p>When I first put together my website, I decided to start simple and rely on a
+minimal GitHub Pages setup, so in the early posts I just wrote the
+bibliographical entries as plain text, using HTML anchors to jump to citations
+in the bibliography section. Since the posts grew bigger and with a longer
+reference list, it quickly became clear that such way of working was not going
+to scale up well.</p>
+
+<p>The subsequent decision was to migrate to a bibliography management tool. Since
+I habitually work with TeX and BibTeX, the obvious choice was to move to
+<a href="https://github.com/inukshuk/jekyll-scholar">Jekyll Scholar</a>, a plugin that is
+more or less the equivalent of <tt>biblatex</tt> or <tt>natbib</tt> for the
+Jekyll world. It allows to store bibliographical entries in a standard BibTeX
+file, and defines some commands to create in-line citations (similarly to the
+<tt>\cite{}</tt> command in LaTeX). A rich and flexible set of <a href="https://github.com/inukshuk/jekyll-scholar#configuration">configuration
+options</a> can be
+specified in the Jekyll <tt>_config.yml</tt>, and it is possible to fully
+define the citation style using the <a href="https://citationstyles.org/">Citation Style
+Language</a> (CLS).</p>
+
+<p>Adding Jekyll Scholar to the configuration is straightforward, and it only
+requires to replace the <tt>github-pages</tt> gem with the <tt>jekyll</tt> and
+<tt>jekyll-scholar</tt> in the
+<a href="https://github.com/m-pilia/m-pilia.github.io/commit/990e15e30da92afe81abf379f9dd5c6e3b6e3476#diff-8b7db4d5cc4b8f6dc8feb7030baa2478L3-R4">Gemfile</a>
+and
+<a href="https://github.com/m-pilia/m-pilia.github.io/commit/990e15e30da92afe81abf379f9dd5c6e3b6e3476#diff-e79a60dc6b85309ae70a6ea8261eaf95R80-R83">_config.yml</a>.</p>
+
+<h1 id="a-bit-of-customisations">A bit of customisations</h1>
+
+<p>While Jekyll Scholar works out-of-the-box for most use cases, I decided to
+tweak a handful settings to better fit my needs. I opted for the IEEE style,
+since it is the one I most often use in my work, and one change I made was to
+allow inserting a hyperlink in the title of an entry in the bibliography, that
+looks to me like the most natural way of formatting a citation on the web. To
+do so, I created a <a href="https://github.com/m-pilia/m-pilia.github.io/blob/28336d253714/_bibliography/my-ieee.cls">custom
+version</a>
+of the IEEE stylesheet from the <a href="https://github.com/citation-style-language/styles">CLS
+repository</a>, simply <a href="https://github.com/m-pilia/m-pilia.github.io/blob/28336d253714/_bibliography/my-ieee.cls#L132-L140">adding
+an HTML &lt;a&gt;
+tag</a>
+to the title if the <tt>url</tt> field in the corresponding BibTeX entry is
+filled.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;choose&gt;</span>
+  <span class="nt">&lt;if</span> <span class="na">variable=</span><span class="s">"URL"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;text</span> <span class="na">variable=</span><span class="s">"URL"</span> <span class="na">prefix=</span><span class="s">"&amp;lt;a href=&amp;quot;"</span> <span class="na">suffix=</span><span class="s">"&amp;quot;&amp;gt;"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;text</span> <span class="na">variable=</span><span class="s">"title"</span> <span class="na">quotes=</span><span class="s">"true"</span> <span class="na">suffix=</span><span class="s">"&amp;lt;/a&amp;gt;"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/if&gt;</span>
+  <span class="nt">&lt;else&gt;</span>
+    <span class="nt">&lt;text</span> <span class="na">variable=</span><span class="s">"title"</span> <span class="na">quotes=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/else&gt;</span>
+<span class="nt">&lt;/choose&gt;</span>
+</code></pre></div></div>
+
+<p>To fully reproduce the IEEE style, the numbers in each bibliographical entry
+should be enclosed within square brackets, and it is possible to achieve this
+with a few line of CSS, <a href="https://github.com/m-pilia/m-pilia.github.io/blob/28336d253714cab8/css/main.css#L784-L800">altering the
+style</a>
+of the <tt>&lt;li&gt;</tt> items in the bibliography. The numbering is
+contained in the <tt>:before</tt> pseudo-element of each list item, and the
+<tt>content</tt> property allows to define a custom template for the ordinal.
+Fixing the <tt>width</tt> and using a negative <tt>margin-left</tt> allows to
+shift the numbering to the left, out of the text column, as it would appear in
+a bibliography generated with LaTeX.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">ol</span><span class="nc">.bibliography</span> <span class="p">{</span>
+  <span class="nl">counter-reset</span><span class="p">:</span> <span class="n">item</span>
+<span class="p">}</span>
+
+<span class="nt">ol</span><span class="nc">.bibliography</span> <span class="nt">li</span> <span class="p">{</span>
+  <span class="nl">list-style-type</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">30px</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">ol</span><span class="nc">.bibliography</span> <span class="nt">li</span><span class="nd">:before</span> <span class="p">{</span>
+  <span class="nl">content</span><span class="p">:</span> <span class="s1">"["</span> <span class="n">counter</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="s1">"] "</span><span class="p">;</span>
+  <span class="nl">counter-increment</span><span class="p">:</span> <span class="n">item</span><span class="p">;</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">text-align</span><span class="p">:</span> <span class="nb">right</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">4em</span><span class="p">;</span>
+  <span class="nl">margin-left</span><span class="p">:</span> <span class="m">-4.4em</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Since my theme includes a fixed bar on the top, <a href="https://github.com/m-pilia/m-pilia.github.io/commit/a3b7e1ac876eda04b5d073c6918eb521357181c9">adjusting the scroll
+padding</a>
+prevents it from covering the text when jumping to anchors such as citations or
+footnotes.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">html</span> <span class="p">{</span>
+  <span class="py">scroll-padding-top</span><span class="p">:</span> <span class="m">50px</span><span class="p">;</span> <span class="c">/* compensate for the navigation bar height */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="automated-build">Automated build</h1>
+
+<p>While Jekyll Scholar seems a perfect fit for the task, there is a small catch.
+For obvious security reasons, GitHub Pages does not allow to run arbitrary Ruby
+code in its build process, therefore it is not possible to use third-party
+Jekyll modules at will, and only a restricted handful of selected Ruby gems can
+be loaded. Unfortunately, Jekyll Scholar is not among those, so it is not
+possible to use it and at the same time rely on the automated GitHub Pages
+build system.</p>
+
+<p>Since GitHub Pages allows to upload pre-built HTML and CSS for the site as an
+alternative to the Jekyll sources, a solution is to set up a continuous
+integration pipeline to build the site on each push and publish the build
+output on the <tt>master</tt> branch. Several well known CI systems such as
+<a href="https://travis-ci.org/">Travis</a>, <a href="https://www.appveyor.com/">AppVeyor</a>, and
+<a href="https://circleci.com/">CicleCI</a> offer good integration with GitHub and have
+been around for years. However, GitHub recently launched its in-house
+continuous integration system, <a href="https://github.com/features/actions">GitHub
+Actions</a>, and I decided to use it for this
+task.</p>
+
+<h1 id="github-actions-to-the-rescue">GitHub Actions to the rescue</h1>
+
+<p>GitHub Actions is conceptually similarly to its predecessors, and its
+configuration consists of workflows composed of one or more jobs, where each
+job is a sequence of build steps. Each step is described by a bash script, and
+the whole configuration is defined in a YAML file stored within the repository,
+in the <tt>.github/workflows</tt> folder.</p>
+
+<p>So far, everything seems fairly consistent with other popular CI services.
+However, one interesting feature of GitHub Actions is that it is possible to
+define build steps (the so-called <i>actions</i>) as re-usable blocks, whose
+code is stored within a GitHub repository and it is published on the <a href="https://github.com/marketplace?type=actions">GitHub
+Marketplace</a>.</p>
+
+<p>A simple workflow with one job looks similar to the following. The code is
+mostly self-explanatory, and it is possible to observe how a common action such
+as git checkout is not coded explicitly, but uses the <tt>actions/checkout</tt>
+from the Marketplace. For stability and reproducibility, the action invoked in
+the build is pinned to a specific version (<tt>v1</tt> in this example). It is
+also worth noting how easily the workflow integrates with GitHub: a secret
+token to perform restricted actions on the repository, such as a <tt>git
+push</tt>, is automatically generated and exposed (as
+<tt>${{secrets.GITHUB_TOKEN}}</tt>) with no need to perform
+any configuration steps at all on the repository side.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">My Workflow</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">source</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">MyJob</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">ref</span><span class="pi">:</span> <span class="s">source</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">make all</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+      <span class="na">env</span><span class="pi">:</span>
+        <span class="na">GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">${{secrets.GITHUB_TOKEN}}</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">./deploy.sh "${GITHUB_TOKEN}"</span>
+</code></pre></div></div>
+
+<p>Since most CI workflows involve a lot of common steps, being able to
+redistribute canned actions as ready-to-use packages greatly helps code reuse
+and simplifies the configuration of workflows. Obviously, relying on pre-packed
+code introduces external dependencies in the build process but, as long as each
+action is pinned to a known version, it is possible to find a good balance
+between not re-inventing the wheel and not relying too much on external
+resources.</p>
+
+<h1 id="coding-the-build-and-deployment">Coding the build and deployment</h1>
+
+<p>With these ingredients, it is possible to set up a fully automated <a href="https://github.com/m-pilia/m-pilia.github.io/commit/4e18b41ae01591ce1f9f1e793c2c76cd7bf962b5">build and
+deployment
+pipeline</a>
+for our website. In order to perform a Jekyll build, a Ruby environment is
+required, and for this purpose it is possible to use the
+<tt>actions/setup-ruby</tt> Action, that will perform the required set-up for
+us.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Ruby </span><span class="m">2.6</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-ruby@v1</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">ruby-version</span><span class="pi">:</span> <span class="s">2.6.x</span>
+</code></pre></div></div>
+
+<p>The actual build step is then straightforward:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build Jekyll site</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">set -xo pipefail</span>
+    <span class="s">rm -rf _site/*</span>
+    <span class="s">gem install bundler</span>
+    <span class="s">bundle install</span>
+    <span class="s">bundle exec jekyll build</span>
+    <span class="s">cp CNAME _site/CNAME</span>
+</code></pre></div></div>
+
+<p>Jekyll stores the build artifacts in the <tt>_site</tt> folder. The last line
+of the script is just creating a copy of the <tt>CNAME</tt> file inside the
+artifact folder, to have it in the final output.</p>
+
+<p>The final step is the deployment of the website, that is performed by
+committing and pushing the artifacts to the <tt>master</tt> branch of the
+website. I moved the Jekyll sources to a branch named <tt>source</tt>, that I
+also set as the default branch for the git repository.</p>
+
+<p>Here I explicitly coded the deployment step. The first couple lines set up the
+git environment. <tt>action@github.com</tt> is the e-mail address associated to
+the GitHub Actions bot account, so the commits pushed by the workflow will be
+clearly visible as such in the repository history. The <tt>master</tt> branch
+is checked out, since the output will be committed there.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config <span class="nt">--local</span> user.email <span class="s2">"action@github.com"</span>
+git config <span class="nt">--local</span> user.name <span class="s2">"GitHub Action"</span>
+git checkout master
+</code></pre></div></div>
+
+<p>The next move is to wipe everything except the build artifacts, stored within
+the <tt>_site</tt> directory, and subsequently move the content of the
+<tt>_site</tt> folder to the root of the repository.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-Q</span> | <span class="nb">grep</span> <span class="nt">-v</span> _site | xargs <span class="nb">rm</span> <span class="nt">-rf</span>
+<span class="nb">mv </span>_site/<span class="k">*</span> <span class="nb">.</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> _site
+<span class="nb">rm</span> <span class="nt">-rf</span> .jekyll-cache
+</code></pre></div></div>
+
+<p>Last but not least, the step checks if anything changed and, if so, it creates
+a new commit and pushes it to the GitHub repository. To make it easier to
+backtrack where the changes came from, the SHA of the commit in the
+<tt>source</tt> branch used in the build is included in the commit message.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="si">$(</span>git status <span class="nt">--porcelain</span><span class="si">)</span><span class="s2">"</span> <span class="o">]]</span> <span class="o">||</span> <span class="nb">exit </span>0
+git add <span class="nb">.</span>
+git commit <span class="nt">-m</span> <span class="s2">"Build </span><span class="si">$(</span>git rev-parse <span class="nb">source</span> | <span class="nb">grep</span> <span class="nt">-o</span> <span class="s1">'^.\{10\}'</span><span class="si">)</span><span class="s2">"</span>
+git push <span class="s2">"https://</span><span class="k">${</span><span class="nv">GITHUB_ACTOR</span><span class="k">}</span><span class="s2">:</span><span class="k">${</span><span class="nv">GITHUB_TOKEN</span><span class="k">}</span><span class="s2">@github.com/</span><span class="k">${</span><span class="nv">GITHUB_REPOSITORY</span><span class="k">}</span><span class="s2">.git"</span> master
+</code></pre></div></div>
+
+<p>To sum up, the whole deployment step looks as follows:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="na">GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">${{secrets.GITHUB_TOKEN}}</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">set -xo pipefail</span>
+    <span class="s">git config --local user.email "action@github.com"</span>
+    <span class="s">git config --local user.name "GitHub Action"</span>
+    <span class="s">git checkout master</span>
+    <span class="s">ls -Q | grep -v _site | xargs rm -rf</span>
+    <span class="s">mv _site/* .</span>
+    <span class="s">rm -rf _site</span>
+    <span class="s">rm -rf .jekyll-cache</span>
+    <span class="s">[[ -n "$(git status --porcelain)" ]] || exit 0</span>
+    <span class="s">git add .</span>
+    <span class="s">git commit -m "Build $(git rev-parse source | grep -o '^.\{10\}')"</span>
+    <span class="s">git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" master</span>
+</code></pre></div></div>
+
+<p>Now, after any commit to the <tt>source</tt> branch, a corresponding commit
+with the build output is automatically deployed to the <tt>master</tt> branch.</p>
+
+<p><img src="/posts/img/migration/actions_history.png" class="center-block" style="width:100%;" /></p>
+
+<p>The full source code for the website is <a href="https://github.com/m-pilia/m-pilia.github.io">available on
+GitHub</a>. Enjoy!</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+
+      <p>On Jekyll 4 and Jekyll Scholar 6, the output from the processing of the CLS
+is not further parsed by Jekyll and it is treated as literal. In order to
+insert HTML code in the CLS parsing stage, it is necessary to <a href="https://github.com/m-pilia/m-pilia.github.io/commit/28336d253714ca#diff-37bc4d55969f1bbc3ad9a5ac561ffb04R1-R14">disable the
+escaping</a>
+of HTML code. Kudos to Sylvester Keil for <a href="https://github.com/inukshuk/jekyll-scholar/issues/30#issuecomment-558040712">the
+hint</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#jekyll scholar">jekyll scholar</a>
+          
+            <a href="/tags#github actions">github actions</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Migration+to+Jekyll+Scholar+and+GitHub+Actions+https://martinopilia.com/posts/2020/02/22/migration.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2020/02/22/migration.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+  <!--- Share on Google Plus -->
+    <a href="https://plus.google.com/share?url=https://martinopilia.com/posts/2020/02/22/migration.html"
+      class="btn btn-social-icon btn-google" title="Share on Google+">
+      <span class="fa fa-fw fa-google-plus" aria-hidden="true"></span>
+      <span class="sr-only">Google+</span>
+    </a>
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2020/02/22/migration.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2019/11/17/jacobian-registration.html" data-toggle="tooltip" data-placement="top" title="Image registration guided by zero-average volume changes">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2020
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

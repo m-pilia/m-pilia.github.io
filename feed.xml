@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Migration to Jekyll Scholar and GitHub Actions</title>
+        <description>
+          New bibliography management and build system for the website - 
+          This is a meta post that describes the technical updates I recently performed to this very website. Since length and complexity of the articles were growing, I decided it was time to switch to Jekyll Scholar as the bibliography management tool. This required a little refactoring and a change to...
+        </description>
+        <pubDate>Sat, 22 Feb 2020 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2020/02/22/migration.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2020/02/22/migration.html</guid>
+      </item>
+    
+      <item>
         <title>Image registration guided by zero-average volume changes</title>
         <description>
           Building a mean volume anatomic atlas - 
