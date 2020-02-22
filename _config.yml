@@ -147,7 +147,7 @@ defaults:
       layout: "page"
       show-avatar: true
       bigimg:
-        - "/img/trehorningen.jpg"       : "Trehörningen"
+        - "/img/trehorningen.jpg"       : "Lake Trehörningen, Marielund"
         - "/img/malaren-2.jpg"          : "Lake Mälaren"
         - "/img/lindholmen.jpg"         : "Lindholmen, Göteborg"
         - "/img/frozen-fyrisan.jpg"     : "Fyrisån during winter"
