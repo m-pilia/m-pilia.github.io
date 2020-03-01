@@ -379,6 +379,9 @@ footer .theme-by {
   width: 192px;
   height: auto;
 }
+a.post-image-license-info-link {
+  font-size: xx-small;
+}
 .post-preview .post-read-more {
   font-weight: 800;
 }
