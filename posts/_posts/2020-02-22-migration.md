@@ -2,7 +2,7 @@
 layout: post
 title: Migration to Jekyll Scholar and GitHub Actions
 subtitle: New bibliography management and build system for the website
-image: /posts/img/migration/actions.png
+image: /posts/img/migration/cogs.svg
 show-avatar: false
 mathjax: false
 tags: [jekyll scholar, github actions]

@@ -2,7 +2,10 @@
 layout: post
 title: Building a Python C extension module with CMake
 subtitle: Extending Python, with automatic cross-platform configuration
-image: /posts/img/cmake.svg
+image: /posts/img/python_cmake/python.jpg
+image-license:
+  url: https://commons.wikimedia.org/wiki/File:Pit%C3%B3n_de_la_India_(Python_molurus),_Zoo_de_Ciudad_Ho_Chi_Minh,_Vietnam,_2013-08-14,_DD_08.JPG
+  text: "Image: Diego Delso (CC-BY-SA 3.0)"
 show-avatar: false
 tags: [Python, CMake]
 ---

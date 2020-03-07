@@ -2,7 +2,7 @@
 layout: post
 title: Landmark-based groupwise registration with SGD and B-splines
 subtitle: Implementing a simple extension to Elastix
-image: /posts/img/groupwise.svg
+image: /posts/img/groupwise_points/groupwise.svg
 show-avatar: false
 mathjax: true
 tags: [image registration, groupwise registration, landmark-based registration, Elastix]
