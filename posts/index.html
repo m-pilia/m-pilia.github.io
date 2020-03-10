@@ -58,7 +58,7 @@
   
 
    
-  <meta property="og:description" content="{% for post in paginator.posts %} {{ post.title }} {% if post.subtitle %} {{ post.subtitle }} {% endif %} Posted on {{ post.date | date: &quot;%B %-d, %Y&quot; }} {% if post.image %} {% endif %} {{ post.excerpt | strip_html | xml_escape | truncatewords: site.excerpt_length }} {% assign excerpt_word_count =...">
+  <meta property="og:description" content="{% for post in paginator.posts %} {{ post.title }} {% if post.subtitle %} {{ post.subtitle }} {% endif %} Posted on {{ post.date | date: &quot;%B %-d, %Y&quot; }} {% if post.image %} {% if post.image-license %} {{ post.image-license.text }} {% endif %} {% endif %} {{ post.excerpt | strip_html...">
   
 
 
@@ -82,7 +82,7 @@
   
 
   
-  <meta name="twitter:description" content="{% for post in paginator.posts %} {{ post.title }} {% if post.subtitle %} {{ post.subtitle }} {% endif %} Posted on {{ post.date | date: &quot;%B %-d, %Y&quot; }} {% if post.image %} {% endif %} {{ post.excerpt | strip_html | xml_escape | truncatewords: site.excerpt_length }} {% assign excerpt_word_count =...">
+  <meta name="twitter:description" content="{% for post in paginator.posts %} {{ post.title }} {% if post.subtitle %} {{ post.subtitle }} {% endif %} Posted on {{ post.date | date: &quot;%B %-d, %Y&quot; }} {% if post.image %} {% if post.image-license %} {{ post.image-license.text }} {% endif %} {% endif %} {{ post.excerpt | strip_html...">
   
 
   
@@ -416,7 +416,10 @@
       
       <div class="post-image">
         <!-- <a href="/posts/2020/02/22/migration.html"> -->
-          <img src="/posts/img/migration/actions.png">
+          <div class="post-image-license-info">
+            <img src="/posts/img/migration/cogs.svg" alt="">
+            
+          </div>
         <!-- </a> -->
       </div>
       
@@ -463,7 +466,10 @@
       
       <div class="post-image">
         <!-- <a href="/posts/2019/11/17/jacobian-registration.html"> -->
-          <img src="/posts/img/imio/diagram1.png">
+          <div class="post-image-license-info">
+            <img src="/posts/img/imio/diagram1.png" alt="">
+            
+          </div>
         <!-- </a> -->
       </div>
       
@@ -514,7 +520,10 @@
       
       <div class="post-image">
         <!-- <a href="/posts/2019/01/30/command-line-tools.html"> -->
-          <img src="/posts/img/shell_tools/shell.png">
+          <div class="post-image-license-info">
+            <img src="/posts/img/shell_tools/shell.png" alt="">
+            
+          </div>
         <!-- </a> -->
       </div>
       
@@ -565,7 +574,10 @@
       
       <div class="post-image">
         <!-- <a href="/posts/2018/09/23/goupwise-landmark-registration.html"> -->
-          <img src="/posts/img/groupwise.svg">
+          <div class="post-image-license-info">
+            <img src="/posts/img/groupwise_points/groupwise.svg" alt="">
+            
+          </div>
         <!-- </a> -->
       </div>
       
@@ -616,7 +628,10 @@
       
       <div class="post-image">
         <!-- <a href="/posts/2018/09/17/volume-raycasting.html"> -->
-          <img src="/posts/img/raycaster/isosurface.png">
+          <div class="post-image-license-info">
+            <img src="/posts/img/raycaster/isosurface.png" alt="">
+            
+          </div>
         <!-- </a> -->
       </div>
       
@@ -669,7 +684,12 @@
       
       <div class="post-image">
         <!-- <a href="/posts/2018/09/15/building-python-extension.html"> -->
-          <img src="/posts/img/cmake.svg">
+          <div class="post-image-license-info">
+            <img src="/posts/img/python_cmake/python.jpg" alt="">
+            
+              <a class="post-image-license-info-link" rel="license" href="https://commons.wikimedia.org/wiki/File:Pit%C3%B3n_de_la_India_(Python_molurus),_Zoo_de_Ciudad_Ho_Chi_Minh,_Vietnam,_2013-08-14,_DD_08.JPG">Image: Diego Delso (CC-BY-SA 3.0)</a>
+            
+          </div>
         <!-- </a> -->
       </div>
       
