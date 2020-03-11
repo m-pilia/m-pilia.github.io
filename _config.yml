@@ -149,6 +149,7 @@ defaults:
       bigimg:
         - "/img/trehorningen.jpg"             : "Lake Trehörningen, Marielund"
         - "/img/lund-stortorget.jpg"          : "Stortorget, Lund"
+        - "/img/suomenlinna.jpg"              : "Suomenlinna, Helsinki"
         - "/img/malaren-2.jpg"                : "Lake Mälaren"
         - "/img/lindholmen.jpg"               : "Lindholmen, Göteborg"
         - "/img/frozen-fyrisan.jpg"           : "Fyrisån during winter"
@@ -156,16 +157,19 @@ defaults:
         - "/img/majorna.jpg"                  : "Majorna, Göteborg"
         - "/img/malaren-3.jpg"                : "Lake Mälaren"
         - "/img/lund-universitetshuset.jpg"   : "Universitetshuset, Lund"
+        - "/img/helsinki.jpg"                 : "Helsinki"
         - "/img/storvreta.jpg"                : "Storvreta"
         - "/img/granby.jpg"                   : "Gränby"
         - "/img/lund-stadsparken-vatten.jpg"  : "Stadsparken, Lund"
         - "/img/riksdagshuset.jpg"            : "Riksdagshuset"
         - "/img/gamla-uppsalagatan.jpg"       : "Gamla Uppsalagatan"
+        - "/img/helsinki-bay.jpg"             : "Helsinki bay"
         - "/img/gottsunda-3.jpg"              : "Gottsunda"
         - "/img/lund-stadsparken.jpg"         : "Stadsparken, Lund"
         - "/img/gula-stigen.jpg"              : "Gula stigen, Uppsala"
         - "/img/kungsportsbron.jpg"           : "Kungsportsbron, Göteborg"
         - "/img/gottsunda-1.jpg"              : "Gottsunda"
+        - "/img/tampere-forest.jpg"           : "Hallila, Tampere"
 
 # Use tags index page and make tags on each post clickable
 link-tags: true
