@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>CI for a collaborative LaTeX setup</title>
+        <description>
+          Automated LaTeX workflow, the git way - 
+          LaTeX is a vital component of my work, and usually it is my go-to tool whenever I need to typeset any non-trivial document. TeX is a de facto standard tool for scientific typesetting, and in technical fields most publications, books, and reports are usually composed with it, most often using...
+        </description>
+        <pubDate>Sun, 12 Apr 2020 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2020/04/12/latex-ci.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2020/04/12/latex-ci.html</guid>
+      </item>
+    
+      <item>
         <title>Migration to Jekyll Scholar and GitHub Actions</title>
         <description>
           New bibliography management and build system for the website - 

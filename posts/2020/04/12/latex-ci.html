@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>CI for a collaborative LaTeX setup</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Automated LaTeX workflow, the git way">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="CI for a collaborative LaTeX setup" />
+  
+
+   
+  <meta property="og:description" content="Automated LaTeX workflow, the git way">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2020/04/12/latex-ci.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2020/04/12/latex-ci.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="CI for a collaborative LaTeX setup" />
+  
+
+  
+  <meta name="twitter:description" content="Automated LaTeX workflow, the git way">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>CI for a collaborative LaTeX setup</h1>
+		  
+		    
+			<h2 class="post-subheading">Automated LaTeX workflow, the git way</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on April 12, 2020
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+10 minutes
+
+read (1763 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>CI for a collaborative LaTeX setup</h1>
+		  
+		    
+			<h2 class="post-subheading">Automated LaTeX workflow, the git way</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on April 12, 2020</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>LaTeX is a vital component of my work, and usually it is my go-to tool whenever
+I need to typeset any non-trivial document. TeX is a de facto standard tool
+for scientific typesetting, and in technical fields most publications, books,
+and reports are usually composed with it, most often using the LaTeX
+typesetting system.</p>
+
+<p>Collaborative tools such as <a href="https://www.overleaf.com/">Overleaf</a> allow to
+easily share a LaTeX codebase offering multi-user editing capability, either
+through an interactive web interface or through git, allowing to build as PDF
+and to see a live preview of the document as-you-type.</p>
+
+<p>Having a fast machine at hands makes however local builds faster than remote
+ones, not even considering the need for an internet connection in order to use
+the second approach. Moreover, any power user has probably dexterity with a
+favourite text editor, such as Vim, Emacs, or VSCode, that is unlikely to be
+pleased by the features offered within a web based editor. Thankfully for power
+users, Overleaf offers git access, allowing to pull and push the code of a
+project and edit it locally. However, I like to have more control over the
+build and I am used to keep my code on GitHub, so I decided to arrange a setup
+that allows to automatically perform a continuous integration pipeline,
+including the production of PDF output.</p>
+
+<h1 id="ci-environment">CI environment</h1>
+
+<p>Many continuous integration services offer good integration with GitHub, such
+as Travis CI, <a href="https://travis-ci.org/">Travis</a>,
+<a href="https://www.appveyor.com/">AppVeyor</a>, or <a href="https://circleci.com/">CicleCI</a>, and
+they also offer free builds for open-source projects. Another option is the
+recently introduced in-house CI service provided by GitHub, named <a href="https://help.github.com/en/actions">GitHub
+Actions</a>. All of them are suitable
+candidates for the job, and the choice of tool is mostly a matter of taste. I
+already mentioned GitHub Actions in a <a href="/posts/2020/02/22/migration.html">previous
+meta-post</a> on the migration of the website,
+and in this occasion I opted for it as well.</p>
+
+<p>Having a decent amount of experience with Travis and AppVeyor, that I both used
+in past within different projects with good satisfaction, I recently decided to
+further diversify my competence and get familiar with the newer CI solution
+provided by GitHub. The concept of a Marketplace for <em>Actions</em>, i.e. canned
+and reusable build steps, is interesting and has potential to boost code reuse
+withing the CI while at the same time simplifying the job for the developers,
+and I expect this to become more and more evident as the Marketplace grows with
+more (and more versatile) actions. From a more philosophical point of view, all
+technical aspects aside, keeping the code development workflow within a single
+provider and not having to rely on an additional service has its pros and cons,
+but I overall like simplicity, therefore I am tempted by such approach.</p>
+
+<h1 id="setting-up-a-latex-environment-or-docker-to-the-rescue">Setting up a LaTeX environment, or Docker to the rescue</h1>
+
+<p>The goal of this setup is to have automated linting of the LaTeX code and build
+of a PDF for each commit, and automatic creation of a PDF artifact for each
+release. In order to achieve that, the first obvious step is to set-up a LaTeX
+toolchain. Since I use TeX Live on my machines, I decided to stick to it for
+consistency. GitHub Actions offers Linux Ubuntu workers, so it would be
+possible, in principle, to write a build step to prepare the environment by
+installing all the required TeX Live packages from the Ubuntu repositories.</p>
+
+<p>I really like containers, however, so I decided to opt for a
+<a href="https://www.docker.com">Docker</a> image shipping the required environment
+instead. This allows to use exactly the same environment both on my local
+machine and the CI worker, saving a lot of headaches that can arise from even
+slightly different environments. On top of that, it has the bonus of making
+cloud builds slightly faster by not requiring to download and install a whole
+bunch of .deb packages on the worker every time a build is performed, but
+rather just downloading the Docker image.</p>
+
+<p>Setting up a Docker image would be fairly straightforward, but it is not even
+necessary, since several well written and maintained images already exist on
+<a href="https://hub.docker.com/">Docker Hub</a>. One example is
+<a href="https://gitlab.com/docker-hub/texlive">adnrv/texlive</a>, that comes in different
+flavours, shipping a minimal image and some larger environments, up to a full
+TeX Live installation. While writing an image tailored to the project with only
+the TeX Live components strictly required for the build is a bit more
+efficient, since it allows to have a smaller image, I keep a full image around
+on my machine since it allows to build all my projects and avoids having
+multiple images around. This approach has pros and cons, but overall I find it
+to be a reasonably convenient way to go.</p>
+
+<h1 id="setting-up-the-build">Setting up the build</h1>
+
+<p>Since I want to run the same Dockerised build both on my machine and on the CI
+workers, a simple solution is to implement the build commands using a build
+system that can be triggered both from a local shell and from the CI workflow
+configuration file. Being a reasonably simple task, an easy solution is to use
+<a href="https://www.gnu.org/software/make">GNU Make</a>, but the choice is really a
+matter of taste and other build systems can work just fine.</p>
+
+<p>Playing around with <a href="https://www.gnu.org/software/make/manual/html_node/Pattern-Rules.html">pattern
+rules</a>
+it is possible to write a generic build step that works for projects with
+multiple targets, and that can be easily re-used as it is on several projects.</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">$(OUTPUTS)</span><span class="o">:</span> <span class="nf">build/%.pdf: %.tex bibliography.bib media/*</span>
+	<span class="nb">rm</span> <span class="nt">-rf</span> build
+	<span class="nb">mkdir</span> <span class="nt">-p</span> build
+	docker run <span class="se">\</span>
+		<span class="nt">--rm</span> <span class="se">\</span>
+		<span class="nt">-v</span> <span class="s2">"</span><span class="err">$</span><span class="nv">$(pwd)</span><span class="s2">:/mnt"</span> <span class="se">\</span>
+		<span class="nt">-w</span> /mnt <span class="se">\</span>
+		adnrv/texlive:full <span class="se">\</span>
+		bash <span class="nt">-x</span> <span class="nt">-o</span> pipefail <span class="nt">-c</span> <span class="s1">'\
+			pdflatex </span><span class="nv">$(OPTIONS)</span><span class="s1"> $&lt; &amp;&amp; \
+			bibtex "</span><span class="nv">${BUILD_DIR}</span><span class="s1">"/$* &amp;&amp; \
+			makeglossaries -d </span><span class="nv">$(BUILD_DIR)</span><span class="s1"> "$*" &amp;&amp; \
+			pdflatex </span><span class="nv">$(OPTIONS)</span><span class="s1"> $&lt; &amp;&amp; \
+			pdflatex </span><span class="nv">$(OPTIONS)</span><span class="s1"> $&lt; \
+			'</span>
+</code></pre></div></div>
+
+<p>Storing the output in a <code class="highlighter-rouge">build</code> folder is an easy way to keep the working tree
+clean, and a simple substitution allows to easily create valid Make patterns
+out of a list of filenames, listed without extension for convenience since some
+of the tools require to omit the extension in the commands. For instance, given
+a project with two documents whose main files are <code class="highlighter-rouge">document1.tex</code> and
+<code class="highlighter-rouge">document2.tex</code>, the following couple of Make variables generate the relevant
+build patterns:</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">FILES</span> <span class="o">=</span> document1 document2
+<span class="nv">OUTPUTS</span> <span class="o">=</span> <span class="nf">$(</span><span class="nb">patsubst</span> %,build/%.pdf,<span class="nv">$(FILES)</span><span class="nf">)</span>
+</code></pre></div></div>
+
+<p>An <code class="highlighter-rouge">all</code> rule makes it easy to build the whole project:</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">all</span>
+<span class="nl">all</span><span class="o">:</span> <span class="nf">$(OUTPUTS)</span>
+</code></pre></div></div>
+
+<p>Another simple rule allows to run <code class="highlighter-rouge">chktex</code> to lint our LaTeX code. In this
+case, <code class="highlighter-rouge">find</code> is used to run it on all source files. Moreover, the exit status
+of <code class="highlighter-rouge">chktex</code> is zero even when warnings are emitted, so we check if there is any
+output from it in order to decide whether the build should be marked as failed.</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">chktex</span>
+<span class="nl">chktex</span><span class="o">:</span>
+	find <span class="nb">.</span> <span class="nt">-maxdepth</span> 1 <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s1">'*.tex'</span> <span class="nt">-exec</span> <span class="se">\</span>
+		docker run <span class="se">\</span>
+			<span class="nt">--rm</span> <span class="se">\</span>
+			<span class="nt">-v</span> <span class="s2">"</span><span class="err">$</span><span class="nv">$(pwd)</span><span class="s2">:/mnt"</span> <span class="se">\</span>
+			<span class="nt">-w</span> /mnt <span class="se">\</span>
+			adnrv/texlive:full <span class="se">\</span>
+			bash <span class="nt">-c</span> <span class="s2">"chktex {} | tee build/chktex &amp;&amp; [ </span><span class="err">$$</span><span class="s2">(cat build/chktex | wc -l) -le 0 ]"</span> <span class="se">\;</span>
+</code></pre></div></div>
+
+<p>Last, we can write a rule to clean up the working tree.</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">clean</span>
+<span class="nl">clean</span><span class="o">:</span>
+	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">${BUILD_DIR}</span>
+</code></pre></div></div>
+
+<p>With such a Makefile in place, it is now possible to build the PDF or to lint
+the code by running in a shell the following couple of commands respectively:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make all
+make chktex
+</code></pre></div></div>
+
+<h1 id="implementing-the-ci-workflow">Implementing the CI workflow</h1>
+
+<p>Once the build system is ready, implementing a CI workflow is really
+straightforward, since all the more involved bits are encapsulated in the
+Makefile. We are going to have two separate workflows, one to run build and
+checks on each commit push, and one to build and upload the artifacts on each
+release.</p>
+
+<p>The build workflow has two jobs, one for linting and one for building. We can
+use a couple of Actions to check out the sources and upload the build
+artifacts. This will produce a <code class="highlighter-rouge">zip</code> archive with the PDF and the logs, that
+can be easily accessed from the web interface and whose retention time is <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts">90
+days</a>
+by default.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="s">push</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">chktex</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ChkTeX</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">make chktex</span>
+
+  <span class="na">pdflatex</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">make all</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload artifacts</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">build-artifacts</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">build</span>
+</code></pre></div></div>
+
+<p>The release workflow is equally easy. The
+<a href="https://github.com/JasonEtco/upload-to-release">upload-to-release</a> Action
+allows to add the PDF to the release artifacts. Note that in the checkout
+action it not necessary to explicitly set a ref for the checkout: the release
+event will set the <code class="highlighter-rouge">$GITHUB_REF</code> variable, used by the action to determine what
+to check out, to the tag of the release triggering the workflow.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">on</span><span class="pi">:</span>
+  <span class="na">release</span><span class="pi">:</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">published</span><span class="pi">]</span>
+
+<span class="na">name</span><span class="pi">:</span> <span class="s">Upload PDF on release</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">Build and upload PDF</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@master</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">make all</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload Release Asset</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">JasonEtco/upload-to-release@d648f1babf77</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">args</span><span class="pi">:</span> <span class="s">./build/report.pdf application/pdf</span>
+        <span class="na">env</span><span class="pi">:</span>
+        <span class="na">GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
+</code></pre></div></div>
+
+<h1 id="source-code">Source code</h1>
+
+<p>An example of this workflow is publicly available <a href="https://github.com/m-pilia/tau-report">on
+GitHub</a>. Enjoy!</p>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#continuous integration">continuous integration</a>
+          
+            <a href="/tags#latex">latex</a>
+          
+            <a href="/tags#github actions">github actions</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=CI+for+a+collaborative+LaTeX+setup+https://martinopilia.com/posts/2020/04/12/latex-ci.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2020/04/12/latex-ci.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+  <!--- Share on Google Plus -->
+    <a href="https://plus.google.com/share?url=https://martinopilia.com/posts/2020/04/12/latex-ci.html"
+      class="btn btn-social-icon btn-google" title="Share on Google+">
+      <span class="fa fa-fw fa-google-plus" aria-hidden="true"></span>
+      <span class="sr-only">Google+</span>
+    </a>
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2020/04/12/latex-ci.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2020/02/22/migration.html" data-toggle="tooltip" data-placement="top" title="Migration to Jekyll Scholar and GitHub Actions">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2020
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
