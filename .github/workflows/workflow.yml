@@ -2,8 +2,8 @@ name: Build
 
 on:
   push:
-    branches:
-    - source
+    branches-ignore:
+    - master
 
 jobs:
   build:
@@ -26,6 +26,7 @@ jobs:
         bundle exec jekyll build
         cp CNAME _site/CNAME
     - name: Deploy
+      if: github.ref == 'refs/heads/source'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |

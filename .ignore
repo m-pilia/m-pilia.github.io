@@ -1,2 +1,3 @@
 !*.gitignored
 !*-gitignored.md
+!.github/
