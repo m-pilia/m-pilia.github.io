@@ -411,7 +411,7 @@
 
 15 minutes
 
-read (2676 words)
+read (2683 words)
 
           </span>
 		  
@@ -481,31 +481,31 @@ setting, using a concrete example from my work.</p>
 
 <h1 id="calling-native-functions-from-python">Calling native functions from Python</h1>
 
-<p>As an example, let assume we want to call the C function <code class="highlighter-rouge">printf</code> directly from
+<p>As an example, let assume we want to call the C function <code class="language-plaintext highlighter-rouge">printf</code> directly from
 within the Python REPL. We can do it using the
 <a href="https://docs.python.org/3.7/library/ctypes.html">ctypes</a> module, with the
 following three lines of code</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">CDLL</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span> <span class="o">=</span> <span class="n">CDLL</span><span class="p">(</span><span class="s">'libc.so.6'</span><span class="p">)</span> <span class="c1"># The exact filename may vary on your system
-</span><span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">b</span><span class="s">"We compute </span><span class="si">%</span><span class="s">d + </span><span class="si">%</span><span class="s">d = </span><span class="si">%</span><span class="s">d!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">b"We compute %d + %d = %d!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
 </code></pre></div></div>
 <p>whose output, unsurprisingly, is</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We compute 1 + 2 = 3!
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We compute 1 + 2 = 3!
 22
 </code></pre></div></div>
-<p>where <code class="highlighter-rouge">22</code> is the return value of the function, <a href="https://www.gnu.org/software/libc/manual/html_node/Formatted-Output-Functions.html">corresponding to the
+<p>where <code class="language-plaintext highlighter-rouge">22</code> is the return value of the function, <a href="https://www.gnu.org/software/libc/manual/html_node/Formatted-Output-Functions.html">corresponding to the
 number of characters printed</a>.</p>
 
 <h1 id="writing-a-python-c-extension">Writing a Python C extension</h1>
 
-<p>While <code class="highlighter-rouge">ctypes</code> is a great tool for individual low level function calls, it is
+<p>While <code class="language-plaintext highlighter-rouge">ctypes</code> is a great tool for individual low level function calls, it is
 not a practical solution to systematically wrap a large API. Here the Python C
 API comes to the rescue, allowing to implement an arbitrarily complex module
 directly in C. This of course allows to implement components in C++ as well, as
 long as C linkage is used for the functions effectively called in the module.</p>
 
-<p>The Python API can be accessed from the header <code class="highlighter-rouge">Python.h</code>, that should be
+<p>The Python API can be accessed from the header <code class="language-plaintext highlighter-rouge">Python.h</code>, that should be
 included with a CPython installation. The <a href="https://docs.python.org/3/extending/index.html">official
 documentation</a> contains a
 <a href="https://docs.python.org/3/extending/extending.html">tutorial</a> showing how to
@@ -564,15 +564,15 @@ that exports a single function to perform integer division.</p>
 </code></pre></div></div>
 
 <p>In case a C extension module is included, the source files specified in the
-call to <code class="highlighter-rouge">setup()</code> will be automatically compiled when calling <code class="highlighter-rouge">python setup.py
+call to <code class="language-plaintext highlighter-rouge">setup()</code> will be automatically compiled when calling <code class="language-plaintext highlighter-rouge">python setup.py
 build</code>: the Python interpreter will take care of invoking the C compiler with
 proper flags and to link against the proper libraries.  The result is a shared
-library: on Linux the file is called <code class="highlighter-rouge">mymath.cpython-37m-x86_64-linux-gnu.so</code>,
+library: on Linux the file is called <code class="language-plaintext highlighter-rouge">mymath.cpython-37m-x86_64-linux-gnu.so</code>,
 with a very self-explanatory file name; on Windows the extension is usually
-<code class="highlighter-rouge">.pyd</code>. This shared object can be treated mostly as a pure Python module, and
+<code class="language-plaintext highlighter-rouge">.pyd</code>. This shared object can be treated mostly as a pure Python module, and
 it can be imported and used, for example from the Python REPL:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; import mymath
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; import mymath
 &gt;&gt;&gt; mymath.division(4, 2)
 2
 &gt;&gt;&gt; mymath.division(4, 0)
@@ -618,22 +618,22 @@ extension, taking care of invoking the compiler with suitable flags. This works
 well for simple extensions without external dependencies, while for more
 elaborated projects it may be necessary to use a custom extension builder, that
 allows to tinker with the compiler settings and build options. This can be done
-by creating a subclass of <code class="highlighter-rouge">setuptools.command.build_ext</code>, and then passing an
-instance of this class to the <code class="highlighter-rouge">setup()</code> function.</p>
+by creating a subclass of <code class="language-plaintext highlighter-rouge">setuptools.command.build_ext</code>, and then passing an
+instance of this class to the <code class="language-plaintext highlighter-rouge">setup()</code> function.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
 <span class="kn">from</span> <span class="nn">setuptools.command.build_ext</span> <span class="kn">import</span> <span class="n">build_ext</span>
 
 <span class="k">class</span> <span class="nc">my_build_ext</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">compiler</span><span class="p">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
             <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">"Visual Studio is not supported"</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
-            <span class="n">e</span><span class="o">.</span><span class="n">extra_compile_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'--pedantic'</span><span class="p">]</span>
-            <span class="n">e</span><span class="o">.</span><span class="n">extra_link_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-lgomp'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="n">e</span><span class="p">.</span><span class="n">extra_compile_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'--pedantic'</span><span class="p">]</span>
+            <span class="n">e</span><span class="p">.</span><span class="n">extra_link_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-lgomp'</span><span class="p">]</span>
 
-        <span class="n">build_ext</span><span class="o">.</span><span class="n">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">build_ext</span><span class="p">.</span><span class="n">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <span class="n">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"mymath"</span><span class="p">,</span>
       <span class="n">version</span> <span class="o">=</span> <span class="s">"0.1"</span><span class="p">,</span>
@@ -688,7 +688,7 @@ headers:</p>
 <span class="nb">endif</span><span class="p">()</span>
 </code></pre></div></div>
 <p>Next we define a target for the extension itself. As said before, the extension
-module is a shared library: here <code class="highlighter-rouge">${SRCS}</code> is the list of source files. It is
+module is a shared library: here <code class="language-plaintext highlighter-rouge">${SRCS}</code> is the list of source files. It is
 important to specify C linkage among the target properties.</p>
 <div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">add_library</span><span class="p">(</span>mymath SHARED <span class="si">${</span><span class="nv">SRCS</span><span class="si">}</span><span class="p">)</span>
 
@@ -705,59 +705,59 @@ allows to integrate it freely with other targets.</p>
 
 <p>We may still want to let Python launch the build and take care of the
 installation or packaging of our extension. To do this, we can write a custom
-<code class="highlighter-rouge">build_ext</code> that launches the CMake build. For the sake of clarity, it is
+<code class="language-plaintext highlighter-rouge">build_ext</code> that launches the CMake build. For the sake of clarity, it is
 possible to define a custom extension class that allows to specify the root
-folder of the CMake project (<code class="highlighter-rouge">cmake_lists_dir</code>). Moreover, we set the <code class="highlighter-rouge">sources</code>
+folder of the CMake project (<code class="language-plaintext highlighter-rouge">cmake_lists_dir</code>). Moreover, we set the <code class="language-plaintext highlighter-rouge">sources</code>
 parameter to an empty list, since in the base class it is not an optional
 argument, but we do not want setuptools to directly compile any file for us.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CMakeExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmake_lists_dir</span><span class="o">=</span><span class="s">'.'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwa</span><span class="p">):</span>
-        <span class="n">Extension</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwa</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cmake_lists_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cmake_lists_dir</span><span class="p">)</span>
+        <span class="n">Extension</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cmake_lists_dir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cmake_lists_dir</span><span class="p">)</span>
 </code></pre></div></div>
-<p>We can then proceed to define the actual <code class="highlighter-rouge">build_ext</code> subclass that is in charge
+<p>We can then proceed to define the actual <code class="language-plaintext highlighter-rouge">build_ext</code> subclass that is in charge
 to launch CMake.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">cmake_build_ext</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Ensure that CMake is present and working
 </span>        <span class="k">try</span><span class="p">:</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--version'</span><span class="p">])</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--version'</span><span class="p">])</span>
         <span class="k">except</span> <span class="nb">OSError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'Cannot find CMake executable'</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">extensions</span><span class="p">:</span>
 
-            <span class="n">extdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ext_fullpath</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
+            <span class="n">extdir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">get_ext_fullpath</span><span class="p">(</span><span class="n">ext</span><span class="p">.</span><span class="n">name</span><span class="p">)))</span>
             <span class="n">cfg</span> <span class="o">=</span> <span class="s">'Debug'</span> <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s">'--debug'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'ON'</span> <span class="k">else</span> <span class="s">'Release'</span>
 
             <span class="n">cmake_args</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="s">'-DCMAKE_BUILD_TYPE=</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">cfg</span><span class="p">,</span>
+                <span class="s">'-DCMAKE_BUILD_TYPE=%s'</span> <span class="o">%</span> <span class="n">cfg</span><span class="p">,</span>
                 <span class="c1"># Ask CMake to place the resulting library in the directory
 </span>                <span class="c1"># containing the extension
-</span>                <span class="s">'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
+</span>                <span class="s">'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
                 <span class="c1"># Other intermediate static libraries are placed in a
 </span>                <span class="c1"># temporary build directory instead
-</span>                <span class="s">'-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">),</span>
+</span>                <span class="s">'-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">),</span>
                 <span class="c1"># Hint CMake to use the same Python executable that
 </span>                <span class="c1"># is launching the build, prevents possible mismatching if
 </span>                <span class="c1"># multiple versions of Python are installed
-</span>                <span class="s">'-DPYTHON_EXECUTABLE={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">),</span>
+</span>                <span class="s">'-DPYTHON_EXECUTABLE={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">),</span>
                 <span class="c1"># Add other project-specific CMake arguments if needed
 </span>                <span class="c1"># ...
 </span>            <span class="p">]</span>
 
             <span class="c1"># We can handle some platform-specific settings at our discretion
-</span>            <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">'Windows'</span><span class="p">:</span>
-                <span class="n">plat</span> <span class="o">=</span> <span class="p">(</span><span class="s">'x64'</span> <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'64bit'</span> <span class="k">else</span> <span class="s">'Win32'</span><span class="p">)</span>
+</span>            <span class="k">if</span> <span class="n">platform</span><span class="p">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">'Windows'</span><span class="p">:</span>
+                <span class="n">plat</span> <span class="o">=</span> <span class="p">(</span><span class="s">'x64'</span> <span class="k">if</span> <span class="n">platform</span><span class="p">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'64bit'</span> <span class="k">else</span> <span class="s">'Win32'</span><span class="p">)</span>
                 <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
                     <span class="c1"># These options are likely to be needed under Windows
 </span>                    <span class="s">'-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE'</span><span class="p">,</span>
-                    <span class="s">'-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
+                    <span class="s">'-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
                 <span class="p">]</span>
                 <span class="c1"># Assuming that Visual Studio and MinGW are supported compilers
-</span>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
+</span>                <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">compiler</span><span class="p">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
                     <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
-                        <span class="s">'-DCMAKE_GENERATOR_PLATFORM=</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">plat</span><span class="p">,</span>
+                        <span class="s">'-DCMAKE_GENERATOR_PLATFORM=%s'</span> <span class="o">%</span> <span class="n">plat</span><span class="p">,</span>
                     <span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
@@ -766,16 +766,16 @@ to launch CMake.</p>
 
             <span class="n">cmake_args</span> <span class="o">+=</span> <span class="n">cmake_cmd_args</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">):</span>
+                <span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
 
             <span class="c1"># Config
-</span>            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="n">ext</span><span class="o">.</span><span class="n">cmake_lists_dir</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmake_args</span><span class="p">,</span>
-                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">)</span>
+</span>            <span class="n">subprocess</span><span class="p">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="n">ext</span><span class="p">.</span><span class="n">cmake_lists_dir</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmake_args</span><span class="p">,</span>
+                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
 
             <span class="c1"># Build
-</span>            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--build'</span><span class="p">,</span> <span class="s">'.'</span><span class="p">,</span> <span class="s">'--config'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">],</span>
-                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">)</span>
+</span>            <span class="n">subprocess</span><span class="p">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--build'</span><span class="p">,</span> <span class="s">'.'</span><span class="p">,</span> <span class="s">'--config'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">],</span>
+                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>A real-life example of Python extension built this way is the
@@ -789,7 +789,7 @@ that I implemented and made available on GitHub.</p>
 <a href="https://github.com/scikit-build/scikit-build">scikit-build</a>, a Python package
 providing a build tool alternative to setuptools, that simplifies the build of
 extensions written in C, C++, Cython, and Fortran. Scikit-build offers a bridge
-between the <code class="highlighter-rouge">setup.py</code> and CMake, and it provides CMake modules to
+between the <code class="language-plaintext highlighter-rouge">setup.py</code> and CMake, and it provides CMake modules to
 automatically find Cython, NumPy, and F2PY.</p>
 
 

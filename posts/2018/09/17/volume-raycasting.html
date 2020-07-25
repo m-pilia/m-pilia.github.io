@@ -415,7 +415,7 @@
 
 24 minutes
 
-read (4318 words)
+read (4310 words)
 
           </span>
 		  
@@ -517,7 +517,7 @@ vertex shader, while passing to the fragment shader the non-transformed
 coordinates of the vertex. A very simple fragment shader allows to store them
 in the correct texture of the framebuffer, according to whether the fragment
 belongs to a front face or not, and performs a conversion from two-unit cube
-coordinates (range <script type="math/tex">[-1, 1]</script>) to texture coordinates (range <script type="math/tex">[0, 1]</script>).</p>
+coordinates (range \([-1, 1]\)) to texture coordinates (range \([0, 1]\)).</p>
 
 <div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#version 130
 </span>
@@ -537,7 +537,7 @@ coordinates (range <script type="math/tex">[-1, 1]</script>) to texture coordina
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>For this to work, it is necessary to enable <code class="highlighter-rouge">GL_BLEND</code> before rendering the
+<p>For this to work, it is necessary to enable <code class="language-plaintext highlighter-rouge">GL_BLEND</code> before rendering the
 cube, and use two render targets, one for each attachment:</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glEnable</span><span class="p">(</span><span class="n">GL_BLEND</span><span class="p">);</span>
@@ -624,26 +624,26 @@ camera position (in model coordinates) and field of view.</p>
 <p><img src="/posts/img/raycaster/raycasting_coord.svg" class="pull-right" style="width:49%;" /></p>
 
 <p>Given this information and knowing the normalised fragment coordinates (in
-range <script type="math/tex">[-1, 1]</script>), we can easily write the parametric equation of the ray</p>
+range \([-1, 1]\)), we can easily write the parametric equation of the ray</p>
 
-<script type="math/tex; mode=display">\boldsymbol{p} = \boldsymbol{o} + t \boldsymbol{v}</script>
+\[\boldsymbol{p} = \boldsymbol{o} + t \boldsymbol{v}\]
 
-<p>where <script type="math/tex">\boldsymbol{o}</script> is the origin of the ray, given by the position of the
-camera, and <script type="math/tex">\boldsymbol{v}</script> is its direction, given by the vector going from
-the camera to the fragment. The <script type="math/tex">x</script> and <script type="math/tex">y</script> coordinates of
-<script type="math/tex">\boldsymbol{v}</script> are given by the normalised coordinates of the fragment
+<p>where \(\boldsymbol{o}\) is the origin of the ray, given by the position of the
+camera, and \(\boldsymbol{v}\) is its direction, given by the vector going from
+the camera to the fragment. The \(x\) and \(y\) coordinates of
+\(\boldsymbol{v}\) are given by the normalised coordinates of the fragment
 (correcting by the aspect ratio if the viewport is not a square), while its
-<script type="math/tex">z</script> coordinate is equal in absolute value to the focal length <script type="math/tex">f</script>, that can
-be immediately computed from the field of view <script type="math/tex">\alpha</script> as</p>
+\(z\) coordinate is equal in absolute value to the focal length \(f\), that can
+be immediately computed from the field of view \(\alpha\) as</p>
 
-<script type="math/tex; mode=display">f = \frac{1}{\tan{\frac{\alpha}{2}}}</script>
+\[f = \frac{1}{\tan{\frac{\alpha}{2}}}\]
 
 <p>Once we know the parametric equation of the ray, computing its intersections
 with the volume bounding box is an easy to solve geometric problem, since we
 are dealing with an axis-aligned bounding box (AABB). We can express the AABB
 with two triples, containing the intercepts of the top and bottom bounding
 planes orthogonal to each axis, and the intersections can be quickly computed
-with the slab method, which returns the parameter <script type="math/tex">t</script> for the near and far
+with the slab method, which returns the parameter \(t\) for the near and far
 intersection points. Note how we clamp to zero the parameter for the near
 intersection, since we are not interested into negative values, that correspond
 to positions behind the camera.</p>
@@ -906,8 +906,8 @@ allows to call OpenGL functions as class members and simplifies context
 handling.</p>
 
 <p>Some key virtual member functions that we want to override are
-<code class="highlighter-rouge">initializeGL()</code>, that will contain all OpenGL-related initialisation,
-<code class="highlighter-rouge">paintGL()</code>, which will render a single frame, and <code class="highlighter-rouge">resizeGL()</code>, which will
+<code class="language-plaintext highlighter-rouge">initializeGL()</code>, that will contain all OpenGL-related initialisation,
+<code class="language-plaintext highlighter-rouge">paintGL()</code>, which will render a single frame, and <code class="language-plaintext highlighter-rouge">resizeGL()</code>, which will
 handle window resizing.</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RayCastCanvas</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QOpenGLWidget</span><span class="p">,</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
@@ -928,11 +928,11 @@ handle window resizing.</p>
 <span class="p">};</span>
 </code></pre></div></div>
 
-<p>I also defined a handful of helper classes to model objects: <code class="highlighter-rouge">RayCastVolume</code>,
-holding the state of a volume object that we want to render, and <code class="highlighter-rouge">Mesh</code>,
+<p>I also defined a handful of helper classes to model objects: <code class="language-plaintext highlighter-rouge">RayCastVolume</code>,
+holding the state of a volume object that we want to render, and <code class="language-plaintext highlighter-rouge">Mesh</code>,
 representing a triangle mesh (such as the bounding box of the volume). Once
-again, by inheriting from <code class="highlighter-rouge">QOpenGLExtraFunctions</code>, we can implement within a
-<code class="highlighter-rouge">paint()</code> member the logic required by an object to render itself.</p>
+again, by inheriting from <code class="language-plaintext highlighter-rouge">QOpenGLExtraFunctions</code>, we can implement within a
+<code class="language-plaintext highlighter-rouge">paint()</code> member the logic required by an object to render itself.</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RayCastVolume</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">QOpenGLExtraFunctions</span>
 <span class="p">{</span>

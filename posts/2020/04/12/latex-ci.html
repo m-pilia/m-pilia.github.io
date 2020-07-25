@@ -411,7 +411,7 @@
 
 10 minutes
 
-read (1763 words)
+read (1773 words)
 
           </span>
 		  
@@ -564,27 +564,27 @@ multiple targets, and that can be easily re-used as it is on several projects.</
 			'</span>
 </code></pre></div></div>
 
-<p>Storing the output in a <code class="highlighter-rouge">build</code> folder is an easy way to keep the working tree
+<p>Storing the output in a <code class="language-plaintext highlighter-rouge">build</code> folder is an easy way to keep the working tree
 clean, and a simple substitution allows to easily create valid Make patterns
 out of a list of filenames, listed without extension for convenience since some
 of the tools require to omit the extension in the commands. For instance, given
-a project with two documents whose main files are <code class="highlighter-rouge">document1.tex</code> and
-<code class="highlighter-rouge">document2.tex</code>, the following couple of Make variables generate the relevant
+a project with two documents whose main files are <code class="language-plaintext highlighter-rouge">document1.tex</code> and
+<code class="language-plaintext highlighter-rouge">document2.tex</code>, the following couple of Make variables generate the relevant
 build patterns:</p>
 
 <div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">FILES</span> <span class="o">=</span> document1 document2
 <span class="nv">OUTPUTS</span> <span class="o">=</span> <span class="nf">$(</span><span class="nb">patsubst</span> %,build/%.pdf,<span class="nv">$(FILES)</span><span class="nf">)</span>
 </code></pre></div></div>
 
-<p>An <code class="highlighter-rouge">all</code> rule makes it easy to build the whole project:</p>
+<p>An <code class="language-plaintext highlighter-rouge">all</code> rule makes it easy to build the whole project:</p>
 
 <div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">all</span>
 <span class="nl">all</span><span class="o">:</span> <span class="nf">$(OUTPUTS)</span>
 </code></pre></div></div>
 
-<p>Another simple rule allows to run <code class="highlighter-rouge">chktex</code> to lint our LaTeX code. In this
-case, <code class="highlighter-rouge">find</code> is used to run it on all source files. Moreover, the exit status
-of <code class="highlighter-rouge">chktex</code> is zero even when warnings are emitted, so we check if there is any
+<p>Another simple rule allows to run <code class="language-plaintext highlighter-rouge">chktex</code> to lint our LaTeX code. In this
+case, <code class="language-plaintext highlighter-rouge">find</code> is used to run it on all source files. Moreover, the exit status
+of <code class="language-plaintext highlighter-rouge">chktex</code> is zero even when warnings are emitted, so we check if there is any
 output from it in order to decide whether the build should be marked as failed.</p>
 
 <div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">chktex</span>
@@ -608,7 +608,7 @@ output from it in order to decide whether the build should be marked as failed.<
 <p>With such a Makefile in place, it is now possible to build the PDF or to lint
 the code by running in a shell the following couple of commands respectively:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make all
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make all
 make chktex
 </code></pre></div></div>
 
@@ -622,7 +622,7 @@ release.</p>
 
 <p>The build workflow has two jobs, one for linting and one for building. We can
 use a couple of Actions to check out the sources and upload the build
-artifacts. This will produce a <code class="highlighter-rouge">zip</code> archive with the PDF and the logs, that
+artifacts. This will produce a <code class="language-plaintext highlighter-rouge">zip</code> archive with the PDF and the logs, that
 can be easily accessed from the web interface and whose retention time is <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts">90
 days</a>
 by default.</p>
@@ -660,7 +660,7 @@ by default.</p>
 <a href="https://github.com/JasonEtco/upload-to-release">upload-to-release</a> Action
 allows to add the PDF to the release artifacts. Note that in the checkout
 action it not necessary to explicitly set a ref for the checkout: the release
-event will set the <code class="highlighter-rouge">$GITHUB_REF</code> variable, used by the action to determine what
+event will set the <code class="language-plaintext highlighter-rouge">$GITHUB_REF</code> variable, used by the action to determine what
 to check out, to the tag of the release triggering the workflow.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">on</span><span class="pi">:</span>

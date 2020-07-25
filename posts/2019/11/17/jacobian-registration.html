@@ -415,7 +415,7 @@
 
 21 minutes
 
-read (3835 words)
+read (3785 words)
 
           </span>
 		  
@@ -533,8 +533,8 @@ to preform group studies at voxel resolution.</p>
 
 <p><img src="/posts/img/imio/diagram0.png" class="pull-right content-image-padded" style="width:30%;" /></p>
 
-<p>Given a cohort composed by <script type="math/tex">n</script> subjects <script type="math/tex">I_1, \dots, I_n</script>, the key idea is
-to construct an atlas <script type="math/tex">I_R</script> representative of the group, and to register all
+<p>Given a cohort composed by \(n\) subjects \(I_1, \dots, I_n\), the key idea is
+to construct an atlas \(I_R\) representative of the group, and to register all
 subjects to it. Whole body registration is a difficult task, due to high
 intra-subject anatomical and pose variability. A deformable registration method
 based on <a href="https://en.wikipedia.org/wiki/Graph_cut_optimization">graph cut
@@ -547,40 +547,40 @@ registering the MR can be used to also warp the PET data, allowing to produce a
 PET atlas.</p>
 
 <p>After all subjects are registered to the common reference space, each voxel of
-the atlas is mapped to a point in each subject <script type="math/tex">I_k</script> by a transform <script type="math/tex">f_k</script>,
-forming a vector of samples that can be used for statistical analysis.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>
-Moreover, the spatial Jacobian determinant <script type="math/tex">J[f]</script> of a transform <script type="math/tex">f</script>
-mapping the atlas to subject <script type="math/tex">I_n</script></p>
+the atlas is mapped to a point in each subject \(I_k\) by a transform \(f_k\),
+forming a vector of samples that can be used for statistical analysis.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>
+Moreover, the spatial Jacobian determinant \(J[f]\) of a transform \(f\)
+mapping the atlas to subject \(I_n\)</p>
 
-<script type="math/tex; mode=display">J[f](\boldsymbol{x}) =
-    \left| \frac{\partial f_i}{\partial x_j}(\boldsymbol{x}) \right|_{ij}</script>
+\[J[f](\boldsymbol{x}) =
+    \left| \frac{\partial f_i}{\partial x_j}(\boldsymbol{x}) \right|_{ij}\]
 
-<p>gives the local volume change induced by <script type="math/tex">f</script> at point <script type="math/tex">\boldsymbol{x}</script>,
-that represents the local tissue volume of subject <script type="math/tex">I_n</script> at point
-<script type="math/tex">\boldsymbol{x}</script> with respect to the reference space. A Jacobian determinant
+<p>gives the local volume change induced by \(f\) at point \(\boldsymbol{x}\),
+that represents the local tissue volume of subject \(I_n\) at point
+\(\boldsymbol{x}\) with respect to the reference space. A Jacobian determinant
 equal to one denotes no volume change, a value greater than one denotes local
 expansion, a value between zero and one denotes local compression. Values
 lesser or equal than zero denote a physically unfeasible transform, and
 typically emerge from errors or imperfections in the image registration
-process.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+process.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup></p>
 
-<p>While the transform <script type="math/tex">f</script> maps points from reference space coordinates to
+<p>While the transform \(f\) maps points from reference space coordinates to
 source image coordinates, in the context of image registration it is often
-convenient to express the deformation as a displacement <script type="math/tex">d</script>, i.e. the
-difference between the transform <script type="math/tex">f</script> and the identity, that tells how much a
+convenient to express the deformation as a displacement \(d\), i.e. the
+difference between the transform \(f\) and the identity, that tells how much a
 point needs to be displaced from its reference space coordinates in order to
 reach its position in source image coordinates.</p>
 
-<script type="math/tex; mode=display">f(\boldsymbol{x}) = \boldsymbol{x} + d(\boldsymbol{x})</script>
+\[f(\boldsymbol{x}) = \boldsymbol{x} + d(\boldsymbol{x})\]
 
 <p>From this it naturally follows that the Jacobian determinant of a transform
 equals the determinant of the Jacobian matrix of its associated displacement
 summed with the identity matrix</p>
 
-<script type="math/tex; mode=display">J[f](\boldsymbol{x}) =
-    \left| \delta_{ij} + \frac{\partial d_i}{\partial x_j}(\boldsymbol{x}) \right|_{ij}</script>
+\[J[f](\boldsymbol{x}) =
+    \left| \delta_{ij} + \frac{\partial d_i}{\partial x_j}(\boldsymbol{x}) \right|_{ij}\]
 
-<p>where <script type="math/tex">\delta_{ij}</script> is Kronecker’s delta function. This is a small and simple
+<p>where \(\delta_{ij}\) is Kronecker’s delta function. This is a small and simple
 detail, but it can nevertheless be a source of confusion. In the following, the
 Jacobian determinant is always the Jacobian of the transform, not the one of
 the displacement, since the latter does not express the local volume change
@@ -617,10 +617,10 @@ to handle large deformations and finely align structures, and this represents
 an issue, since imiomics requires a fairly accurate registration. Moreover, the
 computational cost and memory footprint of implicit methods increase with the
 size of the group being registered: if the groupwise transform has the form of
-<script type="math/tex">T(\boldsymbol{\mu})</script>, where <script type="math/tex">\boldsymbol{\mu}</script> is the vector of all
+\(T(\boldsymbol{\mu})\), where \(\boldsymbol{\mu}\) is the vector of all
 parameters from all transforms, and the groupwise metric is defined over the
-<script type="math/tex">n+1</script>-dimensional volume obtained by stacking the input images <script type="math/tex">I_1, \dots,
-I_n</script>, the cost of optimisation is going to grow (super-linearly, in most
+\(n+1\)-dimensional volume obtained by stacking the input images \(I_1, \dots,
+I_n\), the cost of optimisation is going to grow (super-linearly, in most
 cases) as a function of the population size. This makes it difficult to scale
 to large populations, especially when considering the size of whole body
 images, typically larger than the brain images used in the development of most
@@ -642,7 +642,7 @@ change through the Jacobian determinant of the transforms, and a unit Jacobian
 implies conservation of local volume, the geometric mean of the Jacobian maps
 for all subjects should be one in all points of the reference space.</p>
 
-<script type="math/tex; mode=display">\prod_i J[f_i](\boldsymbol{x}) = 1</script>
+\[\prod_i J[f_i](\boldsymbol{x}) = 1\]
 
 <p>While it is usually possible to reasonably fulfill the first property of good
 representativity of the cohort, by carefully selecting a reference, the last
@@ -650,7 +650,7 @@ requirement on neutrality with respect to volume changes is unlikely to happen
 by chance. Since the subcutaneous fat deposits contribute to a significant
 portion of the body volume variability for subjects of comparable height, a
 possible heuristic is to select as the reference a subject that both height and
-total fat mass<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup> simultaneously close to the respective medians for the
+total fat mass<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup> simultaneously close to the respective medians for the
 population. This helps to get a good guess of the average volume for the
 cohort, but it is obviously far from having the desired mean volume everywhere
 in a pointwise fashion <a class="citation" href="#pilia2019average">[9]</a>.</p>
@@ -685,17 +685,17 @@ groupwise methods in difficult scenarios.</p>
 
 <p><img src="/posts/img/imio/diagram1.png" class="pull-right content-image-padded" style="width:52%;" /></p>
 
-<p>At each iteration, a registration of the images <script type="math/tex">I_1, \dots, I_n</script> in the
-group to the current template <script type="math/tex">I_R</script> is performed, producing a set of
-transforms <script type="math/tex">f_1, \dots, f_n</script> with a certain mean Jacobian <script type="math/tex">J</script>, and the
-iterative correction <script type="math/tex">d</script> should somehow produce a new template <script type="math/tex">I_{R'}</script>
-such that the mean Jacobian of <script type="math/tex">f_1 \circ d^{-1}, \dots, f_n \circ d^{-1}</script> is
+<p>At each iteration, a registration of the images \(I_1, \dots, I_n\) in the
+group to the current template \(I_R\) is performed, producing a set of
+transforms \(f_1, \dots, f_n\) with a certain mean Jacobian \(J\), and the
+iterative correction \(d\) should somehow produce a new template \(I_{R'}\)
+such that the mean Jacobian of \(f_1 \circ d^{-1}, \dots, f_n \circ d^{-1}\) is
 closer to one in every point. A reasonable approach is to pick a deformation
-<script type="math/tex">d</script> such that its Jacobian is exactly <script type="math/tex">J</script>, therefore cancelling the
+\(d\) such that its Jacobian is exactly \(J\), therefore cancelling the
 residual mean volume. Ideally, this could be done in a single iteration and, if
 everything was perfect, a new registration of all subjects to the new reference
-<script type="math/tex">I_{R'}</script> should produce as deformations exactly <script type="math/tex">f_1 \circ d^{-1}, \dots,
-f_n \circ d^{-1}</script>. Alas, this is not likely to happen, due to the imperfection
+\(I_{R'}\) should produce as deformations exactly \(f_1 \circ d^{-1}, \dots,
+f_n \circ d^{-1}\). Alas, this is not likely to happen, due to the imperfection
 of the registration methods and to limitations in accuracy of numerical
 operations. However, it is possible to iterate rounds of registration to the
 new reference and generation of a new template, until convergence.</p>
@@ -709,7 +709,7 @@ problem, since infinite transforms can share the same Jacobian determinant.</p>
 <p>One possibility is to model the problem as a mechanical deformation. In
 principle, different assumptions can be made, leading to different deformation
 models, and the resulting system of partial differential equations can be
-solved numerically, for instance with finite differences <a class="citation" href="#khanal2017simulating">[10]</a> or finite elements <a class="citation" href="#smith2003biomechanical">[11], [12]</a>.<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup> This approach has some advantages, such as a
+solved numerically, for instance with finite differences <a class="citation" href="#khanal2017simulating">[10]</a> or finite elements <a class="citation" href="#smith2003biomechanical">[11], [12]</a>.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote">4</a></sup> This approach has some advantages, such as a
 well understood mathematical and physical model, and the possibility to control
 the physical properties of the tissues being deformed by manipulating the
 parameters of such model. On the downside, however, the numerical solution of
@@ -720,8 +720,8 @@ generation, that constitutes a whole problem on its own.</p>
 <p>Another approach is constituted by search based methods. It is possible to
 perform a search in the space of displacements by optimising a cost function
 that accounts for the distance between the Jacobian determinant
-<script type="math/tex">J_\boldsymbol{d}</script> of the deformation associated to displacement
-<script type="math/tex">\boldsymbol{d}</script> and the desired Jacobian <script type="math/tex">J^*</script> <a class="citation" href="#karaccali2006simulation">[13], [14]</a>. While this approach may look tricky
+\(J_\boldsymbol{d}\) of the deformation associated to displacement
+\(\boldsymbol{d}\) and the desired Jacobian \(J^*\) <a class="citation" href="#karaccali2006simulation">[13], [14]</a>. While this approach may look tricky
 in principle, due to the fact that infinite solutions exist, by using a null
 displacement as initial guess it is likely to end the search in a reasonably
 good solution.</p>
@@ -729,82 +729,81 @@ good solution.</p>
 <p>A simple yet effective example of cost function for this problem is the squared
 difference</p>
 
-<script type="math/tex; mode=display">E(\boldsymbol{d}) =
+\[E(\boldsymbol{d}) =
     \frac{1}{2} \int
     \left( J_\boldsymbol{d}(\boldsymbol{x}) - J^*(\boldsymbol{x}) \right)^2
-    \operatorname{d}\boldsymbol{x} .</script>
+    \operatorname{d}\boldsymbol{x} .\]
 
 <p>Such function is differentiable with respect to the components of the
 displacement, therefore it is possible to perform gradient descent to minimise
 it. It is also possible to add a regularisation term to penalise non-smooth and
 physically unfeasible deformations, if necessary <a class="citation" href="#karaccali2006simulation">[13]</a>.</p>
 
-<p>Given a displacement <script type="math/tex">d(x,y,z) = \left(f(x,y,z), g(x,y,z), h(x,y,z) \right)</script>,
+<p>Given a displacement \(d(x,y,z) = \left(f(x,y,z), g(x,y,z), h(x,y,z) \right)\),
 the partial derivatives in the expression of the Jacobian can be discretised
-with central differences of step length <script type="math/tex">(\delta_x, \delta_y, \delta_z)</script>,
-allowing to write the gradient of <script type="math/tex">E</script> in closed form. The partial derivative
-of <script type="math/tex">E</script> with respect to the component <script type="math/tex">f</script> of the discrete displacement
-at coordinates <script type="math/tex">(x, y, z)</script> is given by</p>
+with central differences of step length \((\delta_x, \delta_y, \delta_z)\),
+allowing to write the gradient of \(E\) in closed form. The partial derivative
+of \(E\) with respect to the component \(f\) of the discrete displacement
+at coordinates \((x, y, z)\) is given by</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align*}
+\[\begin{align*}
     \frac{\partial E(d)}{\partial f^{x,y,z}} =
-        &\sum_{\boldsymbol{x}}
+        &amp;\sum_{\boldsymbol{x}}
             \left(
                 J_{\boldsymbol{d}}(\boldsymbol{x}) - J^*(\boldsymbol{x})
             \right)
             \frac{\partial J_{\boldsymbol{d}} (\boldsymbol{x})}{\partial f^{x,y,z}}
         \\
-        \approx&\frac{e^{x-1,y,z}}{\delta_x}
+        \approx&amp;\frac{e^{x-1,y,z}}{\delta_x}
         \begin{vmatrix}
-            g_y^{x-1,y,z}  &  f_z^{x-1,y,z} \\
-            h_y^{x-1,y,z}  &  h_z^{x-1,y,z} \\
+            g_y^{x-1,y,z}  &amp;  f_z^{x-1,y,z} \\
+            h_y^{x-1,y,z}  &amp;  h_z^{x-1,y,z} \\
         \end{vmatrix}
         -
         \frac{e^{x+1,y,z}}{\delta_x}
         \begin{vmatrix}
-            g_y^{x+1,y,z}  &  f_z^{x+1,y,z} \\
-            h_y^{x+1,y,z}  &  h_z^{x+1,y,z} \\
+            g_y^{x+1,y,z}  &amp;  f_z^{x+1,y,z} \\
+            h_y^{x+1,y,z}  &amp;  h_z^{x+1,y,z} \\
         \end{vmatrix}
         - \\
-        &\frac{e^{x,y-1,z}}{\delta_y}
+        &amp;\frac{e^{x,y-1,z}}{\delta_y}
         \begin{vmatrix}
-            g_y^{x,y-1,z}  &  f_z^{x,y-1,z} \\
-            h_y^{x,y-1,z}  &  h_z^{x,y-1,z} \\
+            g_y^{x,y-1,z}  &amp;  f_z^{x,y-1,z} \\
+            h_y^{x,y-1,z}  &amp;  h_z^{x,y-1,z} \\
         \end{vmatrix}
         +
         \frac{e^{x,y+1,z}}{\delta_y}
         \begin{vmatrix}
-            g_y^{x,y+1,z}  &  f_z^{x,y+1,z} \\
-            h_y^{x,y+1,z}  &  h_z^{x,y+1,z} \\
+            g_y^{x,y+1,z}  &amp;  f_z^{x,y+1,z} \\
+            h_y^{x,y+1,z}  &amp;  h_z^{x,y+1,z} \\
         \end{vmatrix}
         + \\
-        &\frac{e^{x,y,z-1}}{\delta_z}
+        &amp;\frac{e^{x,y,z-1}}{\delta_z}
         \begin{vmatrix}
-            g_y^{x,y,z-1}  &  f_z^{x,y,z-1} \\
-            h_y^{x,y,z-1}  &  h_z^{x,y,z-1} \\
+            g_y^{x,y,z-1}  &amp;  f_z^{x,y,z-1} \\
+            h_y^{x,y,z-1}  &amp;  h_z^{x,y,z-1} \\
         \end{vmatrix}
         -
         \frac{e^{x,y,z+1}}{\delta_z}
         \begin{vmatrix}
-            g_y^{x,y,z+1}  &  f_z^{x,y,z+1} \\
-            h_y^{x,y,z+1}  &  h_z^{x,y,z+1} \\
+            g_y^{x,y,z+1}  &amp;  f_z^{x,y,z+1} \\
+            h_y^{x,y,z+1}  &amp;  h_z^{x,y,z+1} \\
         \end{vmatrix}
-\end{align*} %]]></script>
+\end{align*}\]
 
-<p>denoting with <script type="math/tex">e^{x,y,z} = J_{\boldsymbol{d}}(x,y,z) - J^*(x,y,z)</script> the local
-distance to the target Jacobian, and with <script type="math/tex">f_x^{x,y,z}</script> the central difference
-<script type="math/tex">\frac{1}{\delta_x} \left(f(x+1,y,z) - f(x-1,y,z) \right)</script>.</p>
+<p>denoting with \(e^{x,y,z} = J_{\boldsymbol{d}}(x,y,z) - J^*(x,y,z)\) the local
+distance to the target Jacobian, and with \(f_x^{x,y,z}\) the central difference
+\(\frac{1}{\delta_x} \left(f(x+1,y,z) - f(x-1,y,z) \right)\).</p>
 
 <p>This expression is a bit cumbersome, and it is possible to greatly cut the
 calculations by throwing away all cross terms and approximate the gradient as
 <a class="citation" href="#van2013mapping">[14]</a></p>
 
-<script type="math/tex; mode=display">\nabla E \propto \left(
+\[\nabla E \propto \left(
     e_{i-1,j,k} - e_{i+1,j,k},
     e_{i,j-1,k} - e_{i,j+1,k},
     e_{i,j,k-1} - e_{i,j,k+1}
-\right) .</script>
+\right) .\]
 
 <p>It is possible to experimentally observe how removing the cross terms worsens
 the improvement at each iteration and weakens the robustness of the search, but
@@ -879,31 +878,31 @@ available on <a href="https://github.com/m-pilia/disptools">GitHub</a> and
 
 <h1 id="footnotes">Footnotes</h1>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
+    <li id="fn:1" role="doc-endnote">
 
-      <p>The transform <script type="math/tex">f_k</script> goes from the reference space of <script type="math/tex">I_R</script> to the
-coordinate system of each input image <script type="math/tex">I_k</script> to be registered. While at a
+      <p>The transform \(f_k\) goes from the reference space of \(I_R\) to the
+coordinate system of each input image \(I_k\) to be registered. While at a
 first glance this may seem to be the opposite of what intuition would
 suggest, the transform goes in this direction because it allows to resample
-the warped image in reference space. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+the warped image in reference space. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
+    <li id="fn:2" role="doc-endnote">
 
       <p>For short, the Jacobian determinant is simply referred as “the Jacobian” in
-the following. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+the following. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
+    <li id="fn:3" role="doc-endnote">
 
       <p>That can be cheaply estimated via bioelectrical impedance analysis, and it
-is measured as part of such studies. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+is measured as part of such studies. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4">
+    <li id="fn:4" role="doc-endnote">
 
       <p>An implementation of the finite difference approach has been made publicly
 available by the authors as the <a href="https://github.com/Inria-Asclepios/simul-atrophy">Simul@trophy
-package</a> on GitHub. <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+package</a> on GitHub. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

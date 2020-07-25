@@ -415,7 +415,7 @@
 
 21 minutes
 
-read (3741 words)
+read (3742 words)
 
           </span>
 		  
@@ -474,10 +474,10 @@ better initial estimation that improves the robustness or the process.  For
 this reason, I decided to look for a similar approach in a groupwise setting.</p>
 
 <p><span style="display:none;">
-<script type="math/tex">\newcommand{\bmu}{\boldsymbol{\mu}}
+\(\newcommand{\bmu}{\boldsymbol{\mu}}
 \newcommand{\bx}{\boldsymbol{x}}
 \newcommand{\obx}{\bar{\bx}}
-\newcommand{\fpart}[2]{\frac{\partial {#1}}{\partial {#2}}}</script>
+\newcommand{\fpart}[2]{\frac{\partial {#1}}{\partial {#2}}}\)
 </span></p>
 
 <h1 id="groupwise-registration-in-a-nutshell">Groupwise registration in a nutshell</h1>
@@ -549,7 +549,7 @@ image, which will be the n+1-dimensional volume representing the group of
 images, and to use a transform that maps from an implicit reference space to
 such volume.  However, just using a regular n+1-dimensional transform is
 unlikely to give the expected results, since we do not want to allow movements
-along the last dimension, i.e. between different images.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> For this reason, a
+along the last dimension, i.e. between different images.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup> For this reason, a
 special
 <a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1BSplineStackTransform.html">BSplineStackTransform</a>
 is implemented for groupwise registration: as the name suggests, it is actually
@@ -564,49 +564,49 @@ literature there are several interesting works on unlabeled point set
 registration methods <a class="citation" href="#wang2008simultaneous">[5], [6]</a>, in this
 scenario the task is a bit easier, since the correspondence between landmarks
 is already known. In the pairwise case it is straightforward to define a
-dissimilarity with energy <script type="math/tex">E</script> for the correspondence, e.g. by minimising the
-mean Euclidean distance between pairs <script type="math/tex">(\bx^f_i, \bx^m_i)</script> of corresponding
+dissimilarity with energy \(E\) for the correspondence, e.g. by minimising the
+mean Euclidean distance between pairs \((\bx^f_i, \bx^m_i)\) of corresponding
 points in the fixed and moving image</p>
 
-<script type="math/tex; mode=display">E(\bmu) = \frac{1}{n} \sum_{i=1}^{n}
-          \left\lVert \bx^m_i - T(\bx^f_i, \bmu) \right\rVert</script>
+\[E(\bmu) = \frac{1}{n} \sum_{i=1}^{n}
+          \left\lVert \bx^m_i - T(\bx^f_i, \bmu) \right\rVert\]
 
-<p>where <script type="math/tex">\bmu</script> is the vector of parameters for the transform <script type="math/tex">T</script>
+<p>where \(\bmu\) is the vector of parameters for the transform \(T\)
 that maps points from the reference space (in the fixed image) to the moving
 image.</p>
 
 <p>The groupwise scenario is more complicated due to the fact that there is no
 known position in reference space, all we know is the position of each
-occurrence of the <script type="math/tex">m</script> landmarks in the <script type="math/tex">n</script> moving images. Since we want all
+occurrence of the \(m\) landmarks in the \(n\) moving images. Since we want all
 the transforms to map the same point in reference space to all the occurrences
 of a landmark in the moving images, an ideal and unbiased approach could be to
-minimise, for each landmark <script type="math/tex">\bx^i</script>, the variance of the
-preimages of all its occurrences <script type="math/tex">\bx^i_j</script> in the moving images.</p>
+minimise, for each landmark \(\bx^i\), the variance of the
+preimages of all its occurrences \(\bx^i_j\) in the moving images.</p>
 
-<script type="math/tex; mode=display">E(\bmu) = \frac{1}{m}
+\[E(\bmu) = \frac{1}{m}
           \sum_{i=1}^{m}
           \frac{1}{n - 1}
           \sum_{j=1}^{n}
           \left\lVert
                 T^{-1}(\bx^i_j, \bmu) -
                 \frac{1}{n} \sum_{k=1}^n T^{-1}(\bx^i_k, \bmu)
-          \right\rVert^2</script>
+          \right\rVert^2\]
 
 <p>Unfortunately, in practice this is not immediate to do in Elastix, since we do
-not know the inverse <script type="math/tex">T^{-1}</script> of the transform and, for all we know, it may
+not know the inverse \(T^{-1}\) of the transform and, for all we know, it may
 not even be invertible in general (e.g. when using B-splines).</p>
 
 <p>For this reason, I tried an alternative approach, approximating the mean of the
 preimages with a central tendency estimator of the landmarks themselves, and
 then moving the optimisation to the moving image space.</p>
 
-<script type="math/tex; mode=display">E(\bmu) = \frac{1}{m}
+\[E(\bmu) = \frac{1}{m}
           \sum_{i=1}^{m}
           \frac{1}{n - 1}
           \sum_{j=1}^{n}
           \left\lVert
                 \bx^i_j - T\left( \frac{1}{n} \sum_{k=1}^n \bx^i_k, \bmu \right)
-          \right\rVert^2</script>
+          \right\rVert^2\]
 
 <p>This is of course a bold approximation that somehow introduces a bias in the
 construction of the reference space, but if the choice of the landmarks is
@@ -617,44 +617,44 @@ used in principle, since at this point we do not require the estimator itself
 to be differentiable. To make things a little simpler in practice we can
 consider a different energy function that shares the same optima:</p>
 
-<script type="math/tex; mode=display">E(\bmu) = \frac{1}{mn}
+\[E(\bmu) = \frac{1}{mn}
           \sum_{i=1}^{m}
           \sum_{j=1}^{n}
           \left\lVert
                 \bx^i_j - T(\obx^i, \bmu)
-          \right\rVert</script>
+          \right\rVert\]
 
 <p>whose derivative with respect to the parameters of the transform is</p>
 
-<script type="math/tex; mode=display">\fpart{E}{\bmu}(\bmu) = -\frac{1}{mn}
+\[\fpart{E}{\bmu}(\bmu) = -\frac{1}{mn}
                         \sum_{i=1}^{m}
                         \sum_{j=1}^{n}
                         \frac{ \bx^i_j - T(\obx^i, \bmu) }
                              {\left\lVert \bx^i_j - T(\obx^i, \bmu) \right\rVert}
-                        \fpart{T}{\bmu}(\obx^i_j, \bmu)</script>
+                        \fpart{T}{\bmu}(\obx^i_j, \bmu)\]
 
-<p>where <script type="math/tex">\obx^i</script> is the mean position of the i-th landmark</p>
+<p>where \(\obx^i\) is the mean position of the i-th landmark</p>
 
-<script type="math/tex; mode=display">\obx^i = \frac{1}{n} \sum_{k=1}^n \bx^i_k .</script>
+\[\obx^i = \frac{1}{n} \sum_{k=1}^n \bx^i_k .\]
 
 <h1 id="implementing-the-metric">Implementing the metric</h1>
 
 <p>Now that we have an expression for the energy and its derivative, all that is
 left to do is to write an Elastix component that implements it. A good starting
 point is to have a look at the implementation of the
-<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html"><code class="highlighter-rouge">CorrespondingPointsEuclideanDistanceMetric</code></a>.
-Elastix metrics implement the main logic within a class in the <code class="highlighter-rouge">itk</code> namespace,
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html"><code class="language-plaintext highlighter-rouge">CorrespondingPointsEuclideanDistanceMetric</code></a>.
+Elastix metrics implement the main logic within a class in the <code class="language-plaintext highlighter-rouge">itk</code> namespace,
 and the registration-related logic in a subclass of the latter, in the
-<code class="highlighter-rouge">elastix</code> namespace, so for example we see the
-<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1CorrespondingPointsEuclideanDistancePointMetric.html"><code class="highlighter-rouge">itk::CorrespondingPointsEuclideanDistancePointMetric</code></a>
+<code class="language-plaintext highlighter-rouge">elastix</code> namespace, so for example we see the
+<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1CorrespondingPointsEuclideanDistancePointMetric.html"><code class="language-plaintext highlighter-rouge">itk::CorrespondingPointsEuclideanDistancePointMetric</code></a>
 class, that inherits from
-<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1SingleValuedPointSetToPointSetMetric.html"><code class="highlighter-rouge">itk::SingleValuedPointSetToPointSetMetric</code></a>
+<a href="http://elastix.isi.uu.nl/doxygen/classitk_1_1SingleValuedPointSetToPointSetMetric.html"><code class="language-plaintext highlighter-rouge">itk::SingleValuedPointSetToPointSetMetric</code></a>
 and that is inherited by
-<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html"><code class="highlighter-rouge">elastix::CorrespondingPointsEuclideanDistanceMetric</code>.</a></p>
+<a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1CorrespondingPointsEuclideanDistanceMetric.html"><code class="language-plaintext highlighter-rouge">elastix::CorrespondingPointsEuclideanDistanceMetric</code>.</a></p>
 
 <p>A simple solution is to use the same approach for our new metric. The obvious
 drawback is that, being a subclass of
-<code class="highlighter-rouge">itk::SingleValuedPointSetToPointSetMetric</code>, it will require two point set
+<code class="language-plaintext highlighter-rouge">itk::SingleValuedPointSetToPointSetMetric</code>, it will require two point set
 input files, one for the fixed and one for the moving points. The solution is
 to leave things as they are, and just pass a dummy file for the fixed points
 when calling Elastix, whose content will simply be ignored. This same approach
@@ -667,12 +667,12 @@ possible solution is to sort all points by image, i.e. having all the landmarks
 of the first image together, followed by the landmarks of the second image, and
 so on, and imposing the same order of the landmarks across different images.
 The order of the images is given by their index in the time axis. This way, if
-we have <script type="math/tex">m</script> landmarks and <script type="math/tex">n</script> images, the file will contain <script type="math/tex">m \cdot n</script>
-points, and the point in position <script type="math/tex">k</script> in the file will be the occurrence of
-landmark <script type="math/tex">k \mod m</script> in the image <script type="math/tex">k \div n</script> (if we count starting from
-zero, and denote with <script type="math/tex">\div</script> the integer division operator).</p>
+we have \(m\) landmarks and \(n\) images, the file will contain \(m \cdot n\)
+points, and the point in position \(k\) in the file will be the occurrence of
+landmark \(k \mod m\) in the image \(k \div n\) (if we count starting from
+zero, and denote with \(\div\) the integer division operator).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x00 y00 z00 0  // image 0, landmark 0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x00 y00 z00 0  // image 0, landmark 0
 x01 y01 z01 0  // image 0, landmark 1
      ...
 x0n y0n z0n 0  // image 0, landmark n
@@ -691,8 +691,8 @@ xmn ymn zmn m  // image m, landmark n
 </code></pre></div></div>
 
 <p>The first thing to do will be to compute the mean position of each landmark
-once, which can be done in the <code class="highlighter-rouge">Initialize()</code> function of the
-<code class="highlighter-rouge">CorrespondingPointsMeanDistancePointMetric</code> class, since its value will be
+once, which can be done in the <code class="language-plaintext highlighter-rouge">Initialize()</code> function of the
+<code class="language-plaintext highlighter-rouge">CorrespondingPointsMeanDistancePointMetric</code> class, since its value will be
 constant through the optimisation process.</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Group the occurrences of all landmarks in a data structure</span>
@@ -717,14 +717,14 @@ the code more readable, since ITK programs tends to have dense and verbose
 sources.</p>
 
 <p>The metric and its derivative will be computed together in the
-<code class="highlighter-rouge">GetValueAndDerivative</code> function, and separately in the <code class="highlighter-rouge">GetValue</code> and
-<code class="highlighter-rouge">GetDerivative</code> function. Since this metric is relatively cheap to evaluate, I
+<code class="language-plaintext highlighter-rouge">GetValueAndDerivative</code> function, and separately in the <code class="language-plaintext highlighter-rouge">GetValue</code> and
+<code class="language-plaintext highlighter-rouge">GetDerivative</code> function. Since this metric is relatively cheap to evaluate, I
 avoid duplication by using the first function within the implementation of the
 other two, but it would make sense to have a separate, optimised implementation
-at least for <code class="highlighter-rouge">GetValue</code>. On the other hand, since computing the value has a
+at least for <code class="language-plaintext highlighter-rouge">GetValue</code>. On the other hand, since computing the value has a
 negligible cost when the derivative is also computed together, it makes sense
-to simply call <code class="highlighter-rouge">GetValueAndDerivative</code> in the implementation of
-<code class="highlighter-rouge">GetDerivative</code>.</p>
+to simply call <code class="language-plaintext highlighter-rouge">GetValueAndDerivative</code> in the implementation of
+<code class="language-plaintext highlighter-rouge">GetDerivative</code>.</p>
 
 <p>Since the energy is expressed as a sum over the points, all of whom provide an
 independent contribution, the key part will naturally be a loop over all the
@@ -742,11 +742,11 @@ points.</p>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>The base class has a <code class="highlighter-rouge">m_Transform</code> member that, unsurprisingly, represents the
+<p>The base class has a <code class="language-plaintext highlighter-rouge">m_Transform</code> member that, unsurprisingly, represents the
 current transform. In order for this to make sense, we will assume it to be a
 <a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1BSplineStackTransform.html">BSplineStackTransform</a>.
 We can compute the image of a point through the transform with its member
-function <code class="highlighter-rouge">TransformPoint()</code></p>
+function <code class="language-plaintext highlighter-rouge">TransformPoint()</code></p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mappedPoint</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">m_Transform</span><span class="o">-&gt;</span><span class="n">TransformPoint</span><span class="p">(</span> <span class="n">meanPoint</span> <span class="p">);</span>
 </code></pre></div></div>
@@ -762,9 +762,9 @@ are considering falls within the mask</p>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>The transform also exposes a <code class="highlighter-rouge">Jacobian()</code> member function to get the derivative
+<p>The transform also exposes a <code class="language-plaintext highlighter-rouge">Jacobian()</code> member function to get the derivative
 of the transform with respect to its parameters, which is referred as the
-Jacobian.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> The Jacobian is returned in a sparse representation formed by the
+Jacobian.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup> The Jacobian is returned in a sparse representation formed by the
 matrix columns containing any non-zero entry, together with another vector
 containing the indices of the parameters that have non-zero Jacobian. This is
 motivated by the fact that B-splines have local support, so for a given point
@@ -817,16 +817,16 @@ different colour for each image to make it easier to visualise.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">]</span> <span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">]</span> <span class="p">])</span>
 <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span>
             <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">127</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="p">]</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colours</span><span class="p">)):</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">colours</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">20</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">uint32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">cv2</span><span class="p">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">colours</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="center-block" style="padding-bottom: 5px;">
@@ -848,7 +848,7 @@ different colour for each image to make it easier to visualise.</p>
 format</a>, with
 the points sorted according to the criterion discussed previously:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>index
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>index
 18
 61	58	0
 94	129	0
@@ -875,11 +875,11 @@ the points sorted according to the criterion discussed previously:</p>
 to be present in order to run. For this reason, to test the groupwise point
 metric we need to add a dummy intensity metric, setting its weight to zero so
 it will not affect the registration process. Here I use the
-<code class="highlighter-rouge">AdvancedMeanSquares</code>, since it is cheap to compute. A gray scale version of
+<code class="language-plaintext highlighter-rouge">AdvancedMeanSquares</code>, since it is cheap to compute. A gray scale version of
 the images, packed in a 3D volume, is used as input. The parameter file looks
 like the following:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Registration "MultiMetricMultiResolutionRegistration")
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Registration "MultiMetricMultiResolutionRegistration")
 (Interpolator "ReducedDimensionBSplineInterpolator")
 (ResampleInterpolator "FinalReducedDimensionBSplineInterpolator")
 (BSplineInterpolationOrder 1)
@@ -903,7 +903,7 @@ like the following:</p>
 (MaximumNumberOfIterations 1000)
 </code></pre></div></div>
 
-<p>Setting the <code class="highlighter-rouge">MovingImageDerivativeScales</code> parameter equal to zero on the last
+<p>Setting the <code class="language-plaintext highlighter-rouge">MovingImageDerivativeScales</code> parameter equal to zero on the last
 dimension prevents movements along the time axis. We should also avoid setting
 a too small spline grid spacing in this example, since the transform has no
 regularisation.</p>
@@ -941,24 +941,24 @@ images (in colour):</p>
 
 <h1 id="footnotes">Footnotes</h1>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
+    <li id="fn:1" role="doc-endnote">
 
       <p>When registering a time series, however, we may be interested to the
 partial derivatives with respect to the last dimension, along which we may
 want to have a smooth transform, corresponding to a smooth movement of the
-image content in time. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+image content in time. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
+    <li id="fn:2" role="doc-endnote">
 
       <p>While being technically correct, this is perhaps a confusing notation,
 since the term “Jacobian” is commonly associated to the spatial Jacobian of
 the transform. Indeed, modern version of the
 <a href="https://itk.org/Doxygen/html/classitk_1_1Transform.html">itk::Transform</a>
 class have two distinct and unambiguously named functions, called
-respectively <code class="highlighter-rouge">ComputeJacobianWithRespectToParameters()</code> and
-<code class="highlighter-rouge">ComputeJacobianWithRespectToPosition()</code>. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+respectively <code class="language-plaintext highlighter-rouge">ComputeJacobianWithRespectToParameters()</code> and
+<code class="language-plaintext highlighter-rouge">ComputeJacobianWithRespectToPosition()</code>. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

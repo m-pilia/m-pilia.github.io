@@ -411,7 +411,7 @@
 
 16 minutes
 
-read (2876 words)
+read (2921 words)
 
           </span>
 		  
@@ -497,7 +497,7 @@ from the community</a> are
 available).</p>
 
 <p>Key bindings can be enabled by sourcing the provided install scripts, e.g. for
-Zsh source in <code class="highlighter-rouge">.zshrc</code> as follows:</p>
+Zsh source in <code class="language-plaintext highlighter-rouge">.zshrc</code> as follows:</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact path may depend on your installation</span>
 <span class="nb">.</span> /usr/share/fzf/key-bindings.zsh
@@ -508,8 +508,8 @@ Zsh source in <code class="highlighter-rouge">.zshrc</code> as follows:</p>
 
 <p><a href="https://github.com/BurntSushi/ripgrep">Ripgrep</a> (rg) is a line search tool
 that recursively searches for regex patterns within files, with a behaviour
-similar to <code class="highlighter-rouge">grep -r</code>. It has a simple and convenient syntax, and by default it
-respects <code class="highlighter-rouge">.gitignore</code>, ignores hidden files, and offers coloured output. It
+similar to <code class="language-plaintext highlighter-rouge">grep -r</code>. It has a simple and convenient syntax, and by default it
+respects <code class="language-plaintext highlighter-rouge">.gitignore</code>, ignores hidden files, and offers coloured output. It
 supports Perl regular expressions (PCRE2), non-UTF-8 text encodings, search
 inside compressed archives, and input preprocessing filters. It is optimised
 for speed and it can be <a href="https://blog.burntsushi.net/ripgrep/">significantly
@@ -536,7 +536,7 @@ main author of ack.</p>
 
 <p><a href="https://www.gnu.org/software/parallel/">GNU Parallel</a> is a tool to run
 multiple jobs in parallel. It can take commands to be run either from arguments
-or from the standard input, with a syntax similar to <code class="highlighter-rouge">xargs</code>. The simplest use
+or from the standard input, with a syntax similar to <code class="language-plaintext highlighter-rouge">xargs</code>. The simplest use
 case is to provide a list of commands in input, and Parallel will take care of
 distributing them between different processes:</p>
 
@@ -546,15 +546,15 @@ distributing them between different processes:</p>
 <p>If the number of jobs exceeds the number of available workers (by default equal
 to the number of CPUs), Parallel will organise a queue. Among the basic
 options, it is possible to specify the desired number of workers with the
-<code class="highlighter-rouge">--jobs</code> argument, and it is even possible to distribute jobs across different
-machines via <code class="highlighter-rouge">ssh</code>, using the <code class="highlighter-rouge">--sshlogin</code> flag.</p>
+<code class="language-plaintext highlighter-rouge">--jobs</code> argument, and it is even possible to distribute jobs across different
+machines via <code class="language-plaintext highlighter-rouge">ssh</code>, using the <code class="language-plaintext highlighter-rouge">--sshlogin</code> flag.</p>
 
 <p>Parallel does not just allow to run commands, but also to build them, taking
 one or multiple lists of arguments and allowing to combine them. A list of
-arguments is always introduced by the separator <code class="highlighter-rouge">:::</code>. For instance, the
+arguments is always introduced by the separator <code class="language-plaintext highlighter-rouge">:::</code>. For instance, the
 following is a trivial example that outputs all possible binary numbers of
-three digits, by feeding all possible combinations of <code class="highlighter-rouge">0</code> and <code class="highlighter-rouge">1</code> as arguments
-to <code class="highlighter-rouge">echo</code>:</p>
+three digits, by feeding all possible combinations of <code class="language-plaintext highlighter-rouge">0</code> and <code class="language-plaintext highlighter-rouge">1</code> as arguments
+to <code class="language-plaintext highlighter-rouge">echo</code>:</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>parallel <span class="nb">echo</span> ::: 0 1 ::: 0 1 ::: 0 1
 0 0 0
@@ -573,15 +573,15 @@ of this post. The <a href="https://www.gnu.org/software/parallel/parallel_tutori
 <h1 id="fd">Fd</h1>
 
 <p><a href="https://github.com/sharkdp/fd">Fd</a> is a file search tool, with a use case
-similar to <code class="highlighter-rouge">find</code>. Compared to the latter, it offers a very handy syntax: a
+similar to <code class="language-plaintext highlighter-rouge">find</code>. Compared to the latter, it offers a very handy syntax: a
 simple search by file name inside the current folder can be done by just
-writing <code class="highlighter-rouge">fd foo</code>, whereas a minimal find command would look like <code class="highlighter-rouge">find . -name
+writing <code class="language-plaintext highlighter-rouge">fd foo</code>, whereas a minimal find command would look like <code class="language-plaintext highlighter-rouge">find . -name
 foo</code>.</p>
 
 <p>Fd has sensible defaults oriented towards interactive use (smart-case, coloured
-output, respects <code class="highlighter-rouge">.gitignore</code>, ignores hidden files and directories), it offers
+output, respects <code class="language-plaintext highlighter-rouge">.gitignore</code>, ignores hidden files and directories), it offers
 Unicode support, and optimisation for speed (especially when performing
-regex-based search, it can be significantly faster than <code class="highlighter-rouge">find</code>).</p>
+regex-based search, it can be significantly faster than <code class="language-plaintext highlighter-rouge">find</code>).</p>
 
 <p>It has built-in support for parallel execution, with a syntax similar to GNU
 Parallel. For instance, the following command finds all JPEG images and
@@ -616,13 +616,13 @@ setopt correctall <span class="c"># Enable argument auto-correction</span>
 
 <p><img src="/posts/img/shell_tools/zsh_correct.png" class="center-block" style="width:100%;" /></p>
 
-<p>Auto-correction can be however rather inaccurate when enabling <code class="highlighter-rouge">setopt
+<p>Auto-correction can be however rather inaccurate when enabling <code class="language-plaintext highlighter-rouge">setopt
 correctall</code>, and sometimes it may wrongly suggest to replace an actually
 correct argument with a file name that looks similar. Moreover, this mechanism
 can only catch a limited amount of mistakes, for instance it cannot help in
 presence of a misspelled git command. Luckily, git offers its own
-auto-correction mechanism, that can be enabled in <code class="highlighter-rouge">.gitconfig</code> by assigning to
-<code class="highlighter-rouge">autocorrect</code> a value in tenths of seconds, representing a wait time before
+auto-correction mechanism, that can be enabled in <code class="language-plaintext highlighter-rouge">.gitconfig</code> by assigning to
+<code class="language-plaintext highlighter-rouge">autocorrect</code> a value in tenths of seconds, representing a wait time before
 actual auto-correction happens.</p>
 
 <div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[<span class="n">help</span>]
@@ -643,16 +643,16 @@ mechanism, and custom rules can be easily added, or existing rules can be
 excluded.</p>
 
 <p>The application can be installed by evaluating in the shell the output of
-<code class="highlighter-rouge">thefuck --alias</code>, that defines an alias which will perform all the required
+<code class="language-plaintext highlighter-rouge">thefuck --alias</code>, that defines an alias which will perform all the required
 magic under the hood. Since the default value for the alias name is a <a href="https://en.wikipedia.org/wiki/Seven_dirty_words">type of
 word</a> that one may not always
 want to leave around in the history of their machines, it is possible to set a
-custom alias name, for instance <code class="highlighter-rouge">fixit</code>:</p>
+custom alias name, for instance <code class="language-plaintext highlighter-rouge">fixit</code>:</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>thefuck <span class="nt">--alias</span> fixit<span class="si">)</span><span class="s2">"</span>
 </code></pre></div></div>
 
-<p>Now it is possible to autocorrect a failed command by simply typing <code class="highlighter-rouge">fixit</code>.
+<p>Now it is possible to autocorrect a failed command by simply typing <code class="language-plaintext highlighter-rouge">fixit</code>.
 The application will show a prompt allowing to accept the suggested fix, scroll
 through alternative suggestions, or abort:</p>
 
@@ -660,7 +660,7 @@ through alternative suggestions, or abort:</p>
 
 <p>No need to say that this utility needs to be used with caution and
 never blindly, since in less trivial cases the correction may not be the one
-expected and putting together <code class="highlighter-rouge">sudo</code> and random commands is a perfect recipe
+expected and putting together <code class="language-plaintext highlighter-rouge">sudo</code> and random commands is a perfect recipe
 for disaster.</p>
 
 <h1 id="zsh">Zsh</h1>
@@ -685,17 +685,17 @@ in the respective documentations and tutorials.</p>
 
 <p>Similarly to bash, Zsh sources a series of files at startup, that can be used
 to control the environment and settings. Each file can be present in system
-space (inside <code class="highlighter-rouge">/etc</code>) and user space (a dot-file inside <code class="highlighter-rouge">$ZDOTDIR</code>, which is
-<code class="highlighter-rouge">~/</code> by default), and system files are always sourced before user files. The
-first file to be sourced is <code class="highlighter-rouge">zshenv</code>, followed by <code class="highlighter-rouge">zprofile</code> (only for login
-shells), <code class="highlighter-rouge">zshrc</code> (only for interactive shells), and <code class="highlighter-rouge">zlogin</code> (only for login
+space (inside <code class="language-plaintext highlighter-rouge">/etc</code>) and user space (a dot-file inside <code class="language-plaintext highlighter-rouge">$ZDOTDIR</code>, which is
+<code class="language-plaintext highlighter-rouge">~/</code> by default), and system files are always sourced before user files. The
+first file to be sourced is <code class="language-plaintext highlighter-rouge">zshenv</code>, followed by <code class="language-plaintext highlighter-rouge">zprofile</code> (only for login
+shells), <code class="language-plaintext highlighter-rouge">zshrc</code> (only for interactive shells), and <code class="language-plaintext highlighter-rouge">zlogin</code> (only for login
 shells).</p>
 
 <p>In a post about Zsh it is impossible to avoid mentioning <a href="https://github.com/robbyrussell/oh-my-zsh">Oh My
 Zsh</a>, a popular framework for Zsh
 configuration and plugin management. However, handling the configuration
 manually is also very easy, and many Zsh plugins may be already shipped as
-packages with your Linux distribution. What follows is an example <code class="highlighter-rouge">.zshrc</code> file
+packages with your Linux distribution. What follows is an example <code class="language-plaintext highlighter-rouge">.zshrc</code> file
 containing some useful basic settings.</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># A large and neat history is valuable when using some tools</span>
@@ -728,7 +728,7 @@ bindkey <span class="s1">'^r'</span> history-incremental-search-backward
 mostly unchanged through decades, some customisations can make it much more
 informative, speeding up the workflow. Of course, Zsh allows to specify a
 prompt template to be expanded, through the
-<a href="http://zsh.sourceforge.net/Intro/intro_14.html"><code class="highlighter-rouge">PROMPT</code></a> variable. Many
+<a href="http://zsh.sourceforge.net/Intro/intro_14.html"><code class="language-plaintext highlighter-rouge">PROMPT</code></a> variable. Many
 themes from the community are available, and an example gallery with themes to
 please all tastes can be found in the <a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes">oh-my-zsh
 wiki</a>.</p>
@@ -742,7 +742,7 @@ many more.</p>
 
 <p><img src="/posts/img/shell_tools/spaceship_prompt.png" class="center-block" style="width:90%;" /></p>
 
-<p>Installation is as simple as sourcing a script in <code class="highlighter-rouge">.zshrc</code>, and a
+<p>Installation is as simple as sourcing a script in <code class="language-plaintext highlighter-rouge">.zshrc</code>, and a
 <a href="https://github.com/denysdovhan/spaceship-prompt/blob/master/docs/Options.md">large number of
 options</a>
 can be changed by setting proper environment variables:</p>
@@ -760,13 +760,13 @@ can be changed by setting proper environment variables:</p>
 <p>It is well known that the shell offers command completion via the
 <kbd>Tab</kbd> key. Through custom completion functions, any program can
 instruct the shell on how to complete its arguments. Zsh supports both its own
-completion function syntax and <code class="highlighter-rouge">bash</code> completion functions, and many completion
+completion function syntax and <code class="language-plaintext highlighter-rouge">bash</code> completion functions, and many completion
 scripts <a href="https://github.com/zsh-users/zsh-completions">are available</a>.</p>
 
 <p>The completion system for Zsh can be initialised through a guided wizard by
-calling <code class="highlighter-rouge">autoload -Uz compinstall &amp;&amp; compinstall</code>, which will write relevant
-code to <code class="highlighter-rouge">~/.zshrc</code>, or manually by inserting relevant commands in the
-<code class="highlighter-rouge">~/.zshrc</code>, similarly to the following:</p>
+calling <code class="language-plaintext highlighter-rouge">autoload -Uz compinstall &amp;&amp; compinstall</code>, which will write relevant
+code to <code class="language-plaintext highlighter-rouge">~/.zshrc</code>, or manually by inserting relevant commands in the
+<code class="language-plaintext highlighter-rouge">~/.zshrc</code>, similarly to the following:</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Initialise the completion system</span>
 autoload <span class="nt">-U</span> +X compinit <span class="o">&amp;&amp;</span> compinit
@@ -779,7 +779,7 @@ zstyle <span class="s1">':completion:*'</span> menu <span class="k">select</span
 <p>Last but not least, fzf offers a <a href="https://github.com/junegunn/fzf#fuzzy-completion-for-bash-and-zsh">context-aware fuzzy completion
 mechanism</a>
 for command arguments, that can be used by inserting a trigger sequence (by
-default a double asterisk, <code class="highlighter-rouge">**</code>) followed by a <kbd>Tab</kbd> pressure. For
+default a double asterisk, <code class="language-plaintext highlighter-rouge">**</code>) followed by a <kbd>Tab</kbd> pressure. For
 instance, to fuzzy-search a file from a given directory, to be passed as a
 positional argument to vim:</p>
 
@@ -794,12 +794,12 @@ proposes a completion for the commands as you type, based on the shell history.<
 
 <p>Autosuggestions are showed as greyed text, and can be accepted entirely by
 pressing <kbd>End</kbd> or <kbd>→</kbd>, or one word at a time by pressing a
-key combination bound to <code class="highlighter-rouge">forward-word</code> (<kbd>ctrl</kbd> +
+key combination bound to <code class="language-plaintext highlighter-rouge">forward-word</code> (<kbd>ctrl</kbd> +
 <kbd>→</kbd> if using the example configuration from above).</p>
 
 <p><img src="/posts/img/shell_tools/autosuggestions.gif" class="center-block" style="width:90%;" /></p>
 
-<p>Also in this case, installation is as simple as sourcing a script in <code class="highlighter-rouge">.zshrc</code>
+<p>Also in this case, installation is as simple as sourcing a script in <code class="language-plaintext highlighter-rouge">.zshrc</code>
 and, optionally, choosing a shortcut to accept the suggestions or configuring
 other
 <a href="https://github.com/zsh-users/zsh-autosuggestions#Configuration">settings</a>:</p>
@@ -828,8 +828,8 @@ install script:</p>
 </code></pre></div></div>
 
 <p>The syntax is unsurprisingly concise, given that saving keystrokes is the exact
-purpose of the tool. A function named <code class="highlighter-rouge">j</code> allows to jump to a directory, and
-its sisters <code class="highlighter-rouge">jc</code> and <code class="highlighter-rouge">jo</code> allow to jump to a child directory and to open a
+purpose of the tool. A function named <code class="language-plaintext highlighter-rouge">j</code> allows to jump to a directory, and
+its sisters <code class="language-plaintext highlighter-rouge">jc</code> and <code class="language-plaintext highlighter-rouge">jo</code> allow to jump to a child directory and to open a
 directory in the file manager respectively.</p>
 
 <p><img src="/posts/img/shell_tools/autojump.png" class="center-block" style="width:90%;" /></p>
@@ -845,7 +845,7 @@ visual feedback by highlighting valid commands in green, and invalid ones in
 red, and it underlines valid file names and patterns.</p>
 
 <p>To enable syntax highlighting, it is enough to source its installation script.
-This should be done at the end of the <code class="highlighter-rouge">.zshrc</code> file, otherwise widgets defined
+This should be done at the end of the <code class="language-plaintext highlighter-rouge">.zshrc</code> file, otherwise widgets defined
 after it will not update the syntax highlighting.</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
@@ -866,7 +866,7 @@ command is used while there is an alias defined for it.</p>
 <p><img src="/posts/img/shell_tools/alias_tips.png" class="center-block" style="width:90%;" /></p>
 
 <p>Also in this case, installation is a matter of sourcing the script from
-<code class="highlighter-rouge">.zshrc</code>:</p>
+<code class="language-plaintext highlighter-rouge">.zshrc</code>:</p>
 
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The exact location may vary on your installation</span>
 <span class="nb">.</span> /usr/share/zsh/plugins/alias-tips/alias-tips.plugin.zsh
