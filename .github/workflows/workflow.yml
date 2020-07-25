@@ -43,3 +43,15 @@ jobs:
         git commit -m "Build $(git rev-parse source | grep -o '^.\{10\}')"
         git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" master
 
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Lint
+      run: |
+        find . \
+            -type f \
+            -name 'Dockerfile*' \
+            -exec docker run --rm -i -v "$(pwd)":/mnt -w /mnt hadolint/hadolint:v1.17.2 hadolint '{}' \;
+

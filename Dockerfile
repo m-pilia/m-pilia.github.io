@@ -1,10 +1,11 @@
-FROM jekyll/jekyll
+FROM jekyll/jekyll:4.1.0
 
 WORKDIR /srv/jekyll
 COPY Gemfile .
+COPY Gemfile.lock .
 
-RUN gem install bundler
-RUN bundle install --clean --quiet
+RUN gem install bundler:2.0.2
+RUN bundle install
 
 EXPOSE 4000
 
