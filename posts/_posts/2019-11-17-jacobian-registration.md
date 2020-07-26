@@ -98,7 +98,7 @@ intra-subject anatomical and pose variability. A deformable registration method
 based on [graph cut
 optimisation](https://en.wikipedia.org/wiki/Graph_cut_optimization) allows to
 get a pointwise transform with sub-voxel accuracy, robustly handling difficult
-cases and with fast computational time {% cite ekstrom2018fast %}. If PET data
+cases and with fast computational time {% cite ekstrom2020fast %}. If PET data
 is collected together with the MR data by using a combined scanner, therefore
 producing inherently co-registered PET and MR images, the transform obtained by
 registering the MR can be used to also warp the PET data, allowing to produce a
