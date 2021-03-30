@@ -415,7 +415,7 @@
 
 21 minutes
 
-read (3742 words)
+read (3744 words)
 
           </span>
 		  
@@ -549,7 +549,7 @@ image, which will be the n+1-dimensional volume representing the group of
 images, and to use a transform that maps from an implicit reference space to
 such volume.  However, just using a regular n+1-dimensional transform is
 unlikely to give the expected results, since we do not want to allow movements
-along the last dimension, i.e. between different images.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup> For this reason, a
+along the last dimension, i.e. between different images.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> For this reason, a
 special
 <a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1BSplineStackTransform.html">BSplineStackTransform</a>
 is implemented for groupwise registration: as the name suggests, it is actually
@@ -764,7 +764,7 @@ are considering falls within the mask</p>
 
 <p>The transform also exposes a <code class="language-plaintext highlighter-rouge">Jacobian()</code> member function to get the derivative
 of the transform with respect to its parameters, which is referred as the
-Jacobian.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup> The Jacobian is returned in a sparse representation formed by the
+Jacobian.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup> The Jacobian is returned in a sparse representation formed by the
 matrix columns containing any non-zero entry, together with another vector
 containing the indices of the parameters that have non-zero Jacobian. This is
 motivated by the fact that B-splines have local support, so for a given point
@@ -1082,7 +1082,7 @@ respectively <code class="language-plaintext highlighter-rouge">ComputeJacobianW
       <p class="copyright text-muted">
       Martino Pilia
       &nbsp;&bull;&nbsp;
-      2020
+      2021
 
       
       &nbsp;&bull;&nbsp;
