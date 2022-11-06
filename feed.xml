@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>How I sped up an e-book</title>
+        <description>
+          Making an unreasonably slow EPUB usable - 
+          This post is a short recap of a funny situation where I had to deal with a seemingly innocent-looking e-book that ended up being unreadable on my e-reader. The solution turned out to be relatively simple, but I have not found references to any similar problem on the web, therefore...
+        </description>
+        <pubDate>Sun, 06 Nov 2022 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2022/11/06/speed-up-epub.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2022/11/06/speed-up-epub.html</guid>
+      </item>
+    
+      <item>
         <title>CI for a collaborative LaTeX setup</title>
         <description>
           Automated LaTeX workflow, the git way - 
