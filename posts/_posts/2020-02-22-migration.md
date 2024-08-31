@@ -8,6 +8,13 @@ mathjax: false
 tags: [jekyll scholar, github actions]
 ---
 
+{: .box-warning}
+**Note (2024-08-31):** This post was written in February 2020. Support for
+building and deploying Jekyll sites on GitHub pages has been streamlined in the
+meantime and can now be performed with stock actions. See
+[jekyll-build-pages](https://github.com/actions/jekyll-build-pages) and
+[deploy-pages](https://github.com/actions/deploy-pages).
+
 This is a meta post that describes the technical updates I recently performed
 to this very website. Since length and complexity of the articles were growing,
 I decided it was time to switch to Jekyll Scholar as the bibliography
