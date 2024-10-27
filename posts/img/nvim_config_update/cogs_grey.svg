@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="254"
+   height="254"
+   viewBox="0 0 1111.25 1110"
+   id="svg3"
+   sodipodi:docname="cogs_grey.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.4658707"
+     inkscape:cx="-192.22419"
+     inkscape:cy="-38.525946"
+     inkscape:window-width="3840"
+     inkscape:window-height="2045"
+     inkscape:window-x="0"
+     inkscape:window-y="75"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <defs
+     id="defs1">
+    <path
+       id="c"
+       d="m 26,-248 h -52 c -16,25 -17,51 -18,74 l -50,20 c -15,-21 -31,-30 -66,-43 l -37,37 c 13,35 22,51 43,66 l -20,50 c -23,1 -49,2 -74,18 v 52 c 25,16 51,17 74,18 l 20,50 c -21,15 -30,31 -43,66 l 37,37 c 35,-13 51,-22 66,-43 l 50,20 c 1,23 2,49 18,74 h 52 c 16,-25 17,-51 18,-74 l 50,-20 c 15,21 31,30 66,43 l 37,-37 C 184,125 175,109 154,94 l 20,-50 c 23,-1 49,-2 74,-18 v -52 c -25,-16 -51,-17 -74,-18 l -20,-50 c 21,-15 30,-31 43,-66 l -37,-37 c -35,13 -51,22 -66,43 l -50,-20 c -1,-23 -2,-49 -18,-74 z M 0,-80 c 44,0 80,36 80,80 0,44 -36,80 -80,80 -44,0 -80,-36 -80,-80 0,-44 36,-80 80,-80 z" />
+  </defs>
+  <use
+     xlink:href="#c"
+     fill="#555555"
+     transform="translate(446.93855,250)"
+     id="use1" />
+  <use
+     xlink:href="#c"
+     fill="#777777"
+     transform="rotate(22.5,-1019.1174,2167.6252)"
+     id="use2" />
+  <use
+     xlink:href="#c"
+     fill="#999999"
+     transform="translate(446.93855,860)"
+     id="use3" />
+</svg>
