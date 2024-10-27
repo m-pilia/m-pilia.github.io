@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Short recap of my history as a vim and Neovim user</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="My (Neo)vim journey so far">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Short recap of my history as a vim and Neovim user" />
+  
+
+   
+  <meta property="og:description" content="My (Neo)vim journey so far">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2024/10/27/vim-background.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2024/10/27/vim-background.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Short recap of my history as a vim and Neovim user" />
+  
+
+  
+  <meta name="twitter:description" content="My (Neo)vim journey so far">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Short recap of my history as a vim and Neovim user</h1>
+		  
+		    
+			<h2 class="post-subheading">My (Neo)vim journey so far</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on October 27, 2024
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+10 minutes
+
+read (1865 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Short recap of my history as a vim and Neovim user</h1>
+		  
+		    
+			<h2 class="post-subheading">My (Neo)vim journey so far</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on October 27, 2024</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>When writing <a href="/posts/2024/10/27/vim-config-update.html">a post</a> about my recent
+(Neo)vim configuration overhaul, I wanted to start with an overview of how my
+(Neo)vim usage evolved in time and how it reached the point it stands at now.
+This overview ended up being a fairly lengthy write-up, which I therefore
+decided to publish as a standalone post.</p>
+
+<h1 id="background">Background</h1>
+
+<p>My (Neo)vim configuration always keeps up with the times, but it usually moves
+cautiously. While in general I value cutting-edge features and keeping up with
+latest trends and developments, vim is probably the single most important tool
+in my box and it is heavily ingrained in both my work and personal life. For
+that reason, when it comes to my vim setup, I highly value stability and
+consistency. I sometimes wait before jumping on board of the latest vim or
+Neovim trends, and I often give time for features to mature first (while
+carefully keeping watch on how they develop).</p>
+
+<p>I am a long-standing vim user, and (Neo)vim has been my text editor and
+development environment for a variety of programming languages and text
+document types in school, work, and personal life. For that reason, my vim
+setup and configuration has evolved through time to support this, encompassing
+the choice and setup of a variety of plugins.</p>
+
+<h1 id="key-features">Key features</h1>
+
+<p>When it comes to programming, the two most important IDE features to me are
+inline diagnostics and semantic autocompletion.</p>
+
+<p>Shortening the feedback loop is one of the most important aspects of optimising
+a developer’s way of working, and being able to see diagnostics as I type is
+one of the most extreme forms of
+<a href="https://en.wikipedia.org/wiki/Shift-left_testing">shift-left</a>.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">1</a></sup> For the
+same reason, I value using as many linters and static analysers as possible,
+not just to improve quality of my work but also to learn more and more about
+code quality and best practices through them.</p>
+
+<p>Additionally, I primarily work with large and complex codebases, and I often
+have to quickly insert myself into projects and codebases I am unfamiliar with.
+Being able to quickly see APIs as I type through semantic autocompletion is a
+major time-saver and very helpful in reducing cognitive burden.</p>
+
+<h1 id="the-youcompleteme-era">The YouCompleteMe era</h1>
+
+<p>My first main setup for inline diagnostics and semantic autocompletion was
+based on <a href="https://github.com/ycm-core/YouCompleteMe">YouCompleteMe</a> (YCM),
+originally developed by <a href="https://github.com/Valloric">Val Markovic</a>. With its
+support for C, C++, and Python, it was a major pillar in my daily work. That
+setup carried me through school, research work, and my first industrial job.</p>
+
+<h1 id="advent-of-the-language-server-protocol">Advent of the Language Server Protocol</h1>
+
+<p>Microsoft introduced the <a href="https://microsoft.github.io/language-server-protocol/">Language Server
+Protocol</a> (LSP) as a
+building block for their well-known next-generation editor, Visual Studio Code
+(VSCode). For me the LSP was love at first sight, as it allowed decoupling IDE
+front-ends and back-ends in a standardised and interoperable fashion. Flocks of
+language servers were developed for all sorts of languages, and my dream of
+having inline diagnostics and semantic autocompletion for all the languages I
+wanted was becoming true.</p>
+
+<p>While YCM had already pioneered the idea of decoupling the semantic back-end
+from the text editor<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup> before LSP itself, the LSP had a much broader span and
+unfortunately the YCM project was a bit slow to switch to the new protocol.
+That pushed me to abandon YCM in favour of an LSP client.</p>
+
+<p>There were several options for vim clients since early times, and after testing
+a few alternatives I decided to go with
+<a href="https://github.com/prabirshrestha/vim-lsp">vim-lsp</a>, which seemed the
+leanest<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">3</a></sup> to me while at the same time having all the features I wanted (I
+contributed a few features to the project myself).</p>
+
+<h1 id="cocnvim">coc.nvim</h1>
+
+<p>I sticked to vim-lsp only for a relatively short period, as soon after I
+decided to try a more ambitious plugin developed by a subset of the Chinese
+(Neo)vim community, <a href="https://github.com/neoclide/coc.nvim">coc.nvim</a>, whose
+aspiration was to port the VSCode ecosystem to (Neo)vim. Given the big feature
+scope of coc.nvim, this was a major overhaul of my vim setup.<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">4</a></sup></p>
+
+<p>While coc.nvim served me well for a long time, I have always been torn over it
+since the very beginning, and even before switching to it I was already
+hesitant. coc.nvim is a big and complex plugin that relies on its own node.js
+daemon, and with its own plugin management (plugin-for-the-plugin) and an
+ecosystem of TypeScript plugins. This has its pros and cons.</p>
+
+<p>On the good side, it provides a feature-rich and consistent experience, with
+lots of complex features working out-of-the-box and integrating consistently
+with each other. As a consequence, it allows to replace many vim plugins with a
+single plugin, significantly simplifying the vim setup. It also works
+consistently with both vim and Neovim, and it therefore easily lends itself to
+act as a compatibility layer for many advanced features.</p>
+
+<p>On the flip side, it is a big and complex plugin that interferes with lots of
+other plugins, acting a bit as a monolith at the expense of modularity. Many
+features mimic the VSCode behaviour, which is a boon for some and a curse for
+others. Also, it depends on node.js, which is often an annoyance, especially at
+work where I hardly ever have node.js as part of my development environment.</p>
+
+<h1 id="tentative-neovim-approach">Tentative Neovim approach</h1>
+
+<p>When the Neovim project started in 2015 I really liked the idea behind it, as I
+saw the need for a more modern development approach in the vim project.
+However, I did not jump ship immediately. In its early days Neovim suffered of
+stability and platform portability issues. It was also not obvious whether the
+project would take off or if it would end up as a dead end.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">5</a></sup> I therefore
+preferred to wait and see whether the project would stabilize.</p>
+
+<p>Neovim turned out to be a solid project that started to offer not just a better
+community-driven (and test-driven) development of the editor itself, but also
+many high-quality features that vim lacked or was behind in terms of
+development. For that reason, I later switched to Neovim as my daily editor,
+but I decided to keep all my configuration backward-compatible with vim. In
+this sense, coc.nvim also helped by acting as a compatibility layer between the
+two editors.</p>
+
+<h1 id="shifting-to-neovim">Shifting to Neovim</h1>
+
+<p>As time passed, it became clear that I was not going to switch back to vim. I
+regardless kept my configuration backward compatible for a prolonged period.
+I also kept using coc.nvim, despite of more and more features becoming Neovim
+built-ins through time, such as the native LSP client in 0.5, native snippet
+expansion support in 0.10, and the incoming native autocompletion support in
+0.11.</p>
+
+<p>There were different reasons for this. Besides the aforementioned backward
+compatibility with vim, and waiting for built-in features (and the plugin
+ecosystem built around them) to mature, coc.nvim still worked very well for me
+and provided all the features I wanted in the way I wanted them. Conversely, at
+the time experimenting with newest Neovim’s built-in features and related
+plugins required a more complex configuration with more plugins, more glue
+code, and the result was still not as satisfactory as coc.nvim.</p>
+
+<p>Last but not least, I did not see the need to change just for the sake of
+change. While I prefer the idea of using built-in features where possible, that
+by itself did not justify a change, for the reasons mentioned above.</p>
+
+<p>Similarly, while many Neovim users have their entire configuration in Lua, I
+did not see a reason to port my entire configuration to Lua. While I see Lua as
+a much “better”<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">6</a></sup> scripting language than Vim script,<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">7</a></sup> I have an advanced
+knowledge of Vim script myself, having implemented and published several
+complex plugins, which differentiates me from newcoming Neovim users. And for
+simpler things I find a Vim script configuration cleaner and more concise than
+a Lua counterpart.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">8</a></sup></p>
+
+<h1 id="embracing-neovim">Embracing Neovim</h1>
+
+<p>However, Neovim features and plugins steadily matured, and I eventually reached
+the point where a full switch to Neovim was meaningful, and abandoning coc.nvim
+was a worthwhile improvement.</p>
+
+<p>Neovim built-ins and plugins could now provide the features I wanted in the way
+I wanted them, with also better performance than coc.nvim and removing the need
+for a cumbersome node.js dependency. I also liked the possibility of a more
+modular configuration, with a mix-and-match of plugins that is not possible
+with coc.nvim, and a natural way to break down my configuration into many
+smaller and more self-contained Lua files.</p>
+
+<p>Another aspect is that vim itself is also taking new and incompatible
+directions. <a href="https://web.archive.org/web/20241004195536/https://vim-jp.org/vimdoc-en/vim9.html">Vim9
+script</a>
+is the future of vim scripting and plugin development, however it is
+incompatible with Neovim and, understandably, Neovim only guarantees
+compatibility with legacy Vim scrip (which is now known as <a href="https://web.archive.org/web/20240325015229/https://vim-jp.org/vimdoc-en/eval.html#scriptversion">Vim script version
+1</a>).
+For this reason, while I think Vim9 script is a great improvement over legacy
+Vim script, I am not invested into it. I see Neovim as my main driver now,
+and I have a hard time justifying an investment of my time and effort into
+incompatible solutions.</p>
+
+<p>This decision led me to what became a major overhaul of my (Neo)vim setup and
+configuration. I will however not get into details here, as this configuration
+switch is the subject of a <a href="/posts/2024/10/27/vim-config-update.html">dedicated
+post</a>.</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:5" role="doc-endnote">
+      <p>To give a practical example, in one of my previous jobs we used to have
+  our in-house C coding guidelines, and an in-house tool developed to check
+  compliance and enforce them (back then <code class="language-plaintext highlighter-rouge">clang-tidy</code> was not as viable as
+  it is today). I implemented a vim plugin to integrate our in-house coding
+  guidelines linter in vim and Neovim, which became a user-driven company
+  tool, and I shortly followed it up with implementing an analogous plugin
+  for VSCode to offer the same experience to other coworkers (even though I
+  did not use VSCode myself, it was the most popular IDE at work there). <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>For instance, there was <a href="https://github.com/abingham/emacs-ycmd">an Emacs
+  client</a> that used the same YCM
+  daemon. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>I highly value cleanliness and simplicity. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>I still remember spending several hours during a long layover at
+   Amsterdam Schiphol porting my configuration to coc.nvim. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>The Neovim schism injected some renewed energy in the roadmap of vim
+  itself, for instance pushing towards the implementation of long-requested
+  features such as terminal embedding, asynchronous execution, etc. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p>“Better” in the sense of cleaner, less error-prone, and with less obscure
+  idiosyncrasies. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>I am capitalizing “vim” (as in the text editor) as lowercase, and “Vim
+  script” (as in the programming language, also known as “VimL””) as
+  uppercase, following the capitalization used in the official
+  documentation for the latter. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>Admittedly, this might also be influenced by my long experience with
+  Vim script. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#vim">vim</a>
+          
+            <a href="/tags#neovim">neovim</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Short+recap+of+my+history+as+a+vim+and+Neovim+user+https://martinopilia.com/posts/2024/10/27/vim-background.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2024/10/27/vim-background.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2024/10/27/vim-background.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2022/11/06/speed-up-epub.html" data-toggle="tooltip" data-placement="top" title="How I sped up an e-book">&larr; Previous Post</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="/posts/2024/10/27/vim-config-update.html" data-toggle="tooltip" data-placement="top" title="Vim and Neovim configuration overhaul">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2024
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

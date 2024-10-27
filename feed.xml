@@ -7,6 +7,28 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Vim and Neovim configuration overhaul</title>
+        <description>
+          A major rework after several years - 
+          I spent several hours over the past week testing Neovim features and plugins to update my vim and Neovim configuration, in what became a major overhaul. This post is a concise summary of changes with their rationale and directions. I wanted to start this write-up with a background on the...
+        </description>
+        <pubDate>Sun, 27 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2024/10/27/vim-config-update.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2024/10/27/vim-config-update.html</guid>
+      </item>
+    
+      <item>
+        <title>Short recap of my history as a vim and Neovim user</title>
+        <description>
+          My (Neo)vim journey so far - 
+          When writing a post about my recent (Neo)vim configuration overhaul, I wanted to start with an overview of how my (Neo)vim usage evolved in time and how it reached the point it stands at now. This overview ended up being a fairly lengthy write-up, which I therefore decided to publish...
+        </description>
+        <pubDate>Sun, 27 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2024/10/27/vim-background.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2024/10/27/vim-background.html</guid>
+      </item>
+    
+      <item>
         <title>How I sped up an e-book</title>
         <description>
           Making an unreasonably slow EPUB usable - 
