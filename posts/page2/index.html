@@ -54,20 +54,19 @@
   
 
   
-  <meta property="og:title" content="Martino's page" />
+  <meta property="og:title" content="Posts" />
   
 
    
-  <meta property="og:description" content="
-">
+  <meta property="og:description" content="{% for post in paginator.posts %} {{ post.title }} {% if post.subtitle %} {{ post.subtitle }} {% endif %} Posted on {{ post.date | date: &quot;%B %-d, %Y&quot; }} {% if post.image %} {% if post.image-license %} {{ post.image-license.text }} {% endif %} {% endif %} {{ post.excerpt | strip_html...">
   
 
 
   <meta property="og:type" content="website" />
 
   
-  <meta property="og:url" content="https://martinopilia.com/" />
-  <link rel="canonical" href="https://martinopilia.com/" />
+  <meta property="og:url" content="https://martinopilia.com/posts/page2/" />
+  <link rel="canonical" href="https://martinopilia.com/posts/page2/" />
   
 
   
@@ -79,12 +78,11 @@
   <meta name="twitter:creator" content="@" />
 
   
-  <meta name="twitter:title" content="Martino's page" />
+  <meta name="twitter:title" content="Posts" />
   
 
   
-  <meta name="twitter:description" content="
-">
+  <meta name="twitter:description" content="{% for post in paginator.posts %} {{ post.title }} {% if post.subtitle %} {{ post.subtitle }} {% endif %} Posted on {{ post.date | date: &quot;%B %-d, %Y&quot; }} {% if post.image %} {% if post.image-license %} {{ post.image-license.text }} {% endif %} {% endif %} {{ post.excerpt | strip_html...">
   
 
   
@@ -395,7 +393,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-heading">
-          <h1>Martino's page</h1>
+          <h1>Posts</h1>
 		  
 
 		  
@@ -411,7 +409,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-heading">
-          <h1>Martino's page</h1>
+          <h1>Posts</h1>
 		  
 
 		  
@@ -429,10 +427,71 @@
 <div class="container" role="main">
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <style>
-div[role="main"] {display: none;}
-footer {margin-top: 0; padding: 30px;}
-</style>
+      <div class="posts-list">
+  
+  <article class="post-preview">
+    <a class="post-heading" href="/posts/2018/09/15/building-python-extension.html">
+	  <h2 class="post-title">Building a Python C extension module with CMake</h2>
+
+	  
+	  <h3 class="post-subtitle">
+	    Extending Python, with automatic cross-platform configuration
+	  </h3>
+	  
+    </a>
+
+    <p class="post-meta">
+      Posted on September 15, 2018
+    </p>
+
+    <div class="post-entry-container">
+      
+      <div class="post-image">
+        <!-- <a href="/posts/2018/09/15/building-python-extension.html"> -->
+          <div class="post-image-license-info">
+            <img src="/posts/img/python_cmake/python.jpg" alt="">
+            
+              <a class="post-image-license-info-link" rel="license" href="https://commons.wikimedia.org/wiki/File:Pit%C3%B3n_de_la_India_(Python_molurus),_Zoo_de_Ciudad_Ho_Chi_Minh,_Vietnam,_2013-08-14,_DD_08.JPG">Image: Diego Delso (CC-BY-SA 3.0)</a>
+            
+          </div>
+        <!-- </a> -->
+      </div>
+      
+      <div class="post-entry">
+        Python is a high-level programming language whose extremely simple and elegant yet very powerful and expressive syntax has granted it enormous popularity in most programming contexts. Scientific applications are no exception on this respect, and this may look strange at a first glance, given that Python’s runtime is painfully slow...
+        
+        
+          <a href="/posts/2018/09/15/building-python-extension.html" class="post-read-more">[Read&nbsp;More]</a>
+        
+      </div>
+    </div>
+
+    
+    <div class="blog-tags">
+      Tags:
+      
+      
+      <a href="/tags#Python">Python</a>
+      
+      <a href="/tags#CMake">CMake</a>
+      
+      
+    </div>
+    
+
+   </article>
+  
+</div>
+
+
+<ul class="pager main-pager">
+  
+  <li class="previous">
+    <a href="/posts/">&larr; Newer Posts</a>
+  </li>
+  
+  
+</ul>
 
 
 	    

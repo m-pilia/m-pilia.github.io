@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Testing tips for junior developers</title>
+        <description>
+          Or how to save me from repeating the same comments in code reviews - 
+          Software testing is a fundamental aspect of any serious engineering effort, but at the same time it is such a young discipline. Importance of testing has been known in the industry for decades from a theoretical point of view, yet it took it a very long time to catch up...
+        </description>
+        <pubDate>Mon, 06 Jan 2025 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2025/01/06/testing-intro.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2025/01/06/testing-intro.html</guid>
+      </item>
+    
+      <item>
         <title>Vim and Neovim configuration overhaul</title>
         <description>
           A major rework after several years - 

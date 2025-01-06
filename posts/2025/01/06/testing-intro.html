@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Testing tips for junior developers</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Or how to save me from repeating the same comments in code reviews">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Testing tips for junior developers" />
+  
+
+   
+  <meta property="og:description" content="Or how to save me from repeating the same comments in code reviews">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2025/01/06/testing-intro.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2025/01/06/testing-intro.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Testing tips for junior developers" />
+  
+
+  
+  <meta name="twitter:description" content="Or how to save me from repeating the same comments in code reviews">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Testing tips for junior developers</h1>
+		  
+		    
+			<h2 class="post-subheading">Or how to save me from repeating the same comments in code reviews</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on January 6, 2025
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+24 minutes
+
+read (4382 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Testing tips for junior developers</h1>
+		  
+		    
+			<h2 class="post-subheading">Or how to save me from repeating the same comments in code reviews</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on January 6, 2025</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Software testing is a fundamental aspect of any serious engineering effort, but
+at the same time it is such a young discipline. Importance of testing has been
+known in the industry for decades from a theoretical point of view, yet it took
+it a very long time to catch up in practice and become an integral part of
+development cycles. To get some perspective, even major software companies
+started embracing pervasive automated testing policies only in the mid 2000s <a class="citation" href="#sweag2020testing">[1]</a>.</p>
+
+<p>Besides the young age of the discipline, testing competence is also penalized
+by being rarely taught within education programs. The average computer science
+(or adjacent) graduate has probably never used a test framework in their
+education, and more importantly has never learned the importance of testing,
+let alone its principles, caveats, and tricks of the trade. When such young
+professional figures join the industry, they are obviously put at a
+disadvantage. Nevertheless, a lot of progress has happened in the industry,
+especially in the last twenty years, and there is hope that higher education
+will catch up with it.</p>
+
+<p>The aim of this post is not to be a treaty on software testing, as many good
+essays are already published and more extensive and informative coverage on the
+subject can be readily found elsewhere. It is instead meant as a collection of
+tips and comments I often found myself repeating in code reviews, with the hope
+that they can be useful to the more junior readers to avoid repeating the same
+pitfalls. As such, it is a fairly unstructured collection, and presence (or
+absence) of topics or their order of presentation has no intended relation with
+their relative importance. Only some topics are covered in this post, and more
+topics might follow in future posts.</p>
+
+<h1 id="test-behaviour-not-implementation">Test behaviour, not implementation</h1>
+
+<p>This is one of the most basic rules of testing. Yet I often see this basic
+principle being violated in various ways, such as by mirroring non-public
+behaviour in the test code (i.e. writing tests based on knowledge of the
+implementation that is not supposed to be part of its public API), misusing
+mocks to manipulate internals of the implementation, befriending the production
+code with the test fixture to access non public members from the test
+cases,<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">1</a></sup> and the likes.</p>
+
+<p>Tests should not be tied to implementation details, for at least two main
+reasons.</p>
+
+<p>Firstly, reflecting the implementation in the tests injects a strong bias
+towards the behaviour of the implementation itself, which might differ from the
+expected behaviour. If the implementation is defective, the same bugs might be
+reflected in the tests and remain undetected.</p>
+
+<p>In an ideal world, tests would be implemented by different people other the
+ones that work on the feature implementation, and would be written
+independently than the feature itself, i.e. without looking at its
+implementation (possibly even before the feature itself is implemented). Not
+many companies can afford this in practice from a logistical standpoint though,
+and also having the same developer work on both feature and corresponding tests
+usually speeds up the writing process.</p>
+
+<p>Another reason is that tests coupled with implementation details are fragile,
+and they can break when the implementation changes, even if the interface and
+behaviour are unchanged. This creates additional maintenance cost, and at the
+same time it slows development down.</p>
+
+<p>Good tests should fail when the behaviour of the feature does not meet
+expectations, and they are expected to break if behaviour is changed or if the
+interface to the tested feature is changed. However, tests that break due to
+internal changes that should be transparent to the user are expensive and
+annoying to deal with, and are a symptom of bad test design.</p>
+
+<h1 id="write-atomic-test-cases">Write atomic test cases</h1>
+
+<p>Atomicity is one of the most important properties of good test cases. Each test
+case should be limited to one behavioural aspect of one unit, on one input
+datum.</p>
+
+<p>The following is not good:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEST</span><span class="p">(</span><span class="n">MyClass</span><span class="p">,</span> <span class="n">Test</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">MyClass</span> <span class="n">object</span><span class="p">{};</span>
+
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">object</span><span class="p">.</span><span class="n">foo</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">Foo</span><span class="p">{</span><span class="mf">0.0</span><span class="p">});</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">object</span><span class="p">.</span><span class="n">foo</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">Foo</span><span class="p">{</span><span class="mf">1.0</span><span class="p">});</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">object</span><span class="p">.</span><span class="n">bar</span><span class="p">(),</span> <span class="n">Bar</span><span class="p">{});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Mixing up different aspect (or even different units) in the same test case
+makes tests more complex than necessary, which makes them more error-prone,
+increasing the cost due to bugs, and also harder to read and modify (i.e. more
+expensive to maintain). It also makes test reports less granular: when a
+Frankenstein test covering many behaviours fails, it is not obviously clear
+which aspects of the software are broken and which ones are not.</p>
+
+<p>Even just testing different data points in the same test case poses a risk.
+Re-using the same scope, as opposed to test each data point in a clean fixture,
+increases the risk of bugs or mistakes in the test due to objects being in a
+state that is different than intended (after being modified by previous
+operations). This can easily hide bugs.</p>
+
+<p>The following is better:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyClassTest</span> <span class="o">:</span> <span class="k">public</span> <span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">Test</span>
+<span class="p">{</span>
+ <span class="nl">protected:</span>
+    <span class="n">MyClass</span> <span class="n">_object</span><span class="p">{};</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">MyClassTestFoo</span> <span class="o">:</span> <span class="k">public</span> <span class="n">MyClassTest</span><span class="p">,</span>
+                       <span class="k">public</span> <span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">WithParamInterface</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span>
+<span class="p">{};</span>
+
+<span class="n">TEST_P</span><span class="p">(</span><span class="n">MyClassTestFoo</span><span class="p">,</span> <span class="n">GetFoo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_object</span><span class="p">.</span><span class="n">foo</span><span class="p">(</span><span class="n">GetParam</span><span class="p">()),</span> <span class="n">Foo</span><span class="p">{</span><span class="n">GetParam</span><span class="p">()});</span>
+<span class="p">}</span>
+
+<span class="n">INSTANTIATE_TEST_SUITE_P</span><span class="p">(</span><span class="n">MyClassTestFoo</span><span class="p">,</span> <span class="n">MyClassTestFoo</span><span class="p">,</span> <span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">Values</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">MyClassTest</span><span class="p">,</span> <span class="n">GetBar</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_object</span><span class="p">.</span><span class="n">bar</span><span class="p">(),</span> <span class="n">Bar</span><span class="p">{});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now we have different tests for each method, and for each data point when
+testing the same method multiple times. In this small example it might look
+like an overkill, but in my experience it is not. Even in simpler cases, the
+benefits easily outweight the need to write a few more lines of code, and the
+structure easily and better scales when adding more test cases is unavoidably
+needed.</p>
+
+<p>Whenever I stumble upon tests written without respecting atomicity, I find bugs
+in them more often than not.</p>
+
+<h1 id="write-for-readability">Write for readability</h1>
+
+<p>Readability of tests is one of the most important aspects, yet it is one of the
+most easily underrated by test authors. When it comes to test cases,
+readability has two faces: readability of the test script, and readability of
+its output. This section argues over the former.</p>
+
+<p>Most software projects these days lack written requirements (and often also,
+unfortunately, they lack proper documentation), in which case test scripts
+often double their role as documentation for the intended behaviour of the
+product. For this reason, it is very important to make it clear what behaviour
+is being tested and why.<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">2</a></sup></p>
+
+<p>Way too many times I had to deal with test cases composed of excessively
+lengthy and unstructured blobs of code, where it was not even clear what was
+under test to begin with. For example, let assume we are testing an odometer,
+and I get to review a test case written like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEST_F</span><span class="p">(</span><span class="n">Odometer</span><span class="p">,</span> <span class="n">TestOdometry</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">x</span><span class="p">{};</span>
+    <span class="kt">double</span> <span class="n">y</span><span class="p">{};</span>
+    <span class="kt">double</span> <span class="n">z</span><span class="p">{};</span>
+    <span class="kt">double</span> <span class="n">vx</span><span class="p">{</span><span class="mf">0.7</span><span class="p">};</span>
+    <span class="kt">double</span> <span class="n">vy</span><span class="p">{</span><span class="mf">0.5</span><span class="p">};</span>
+    <span class="kt">double</span> <span class="n">vz</span><span class="p">{};</span>
+    <span class="kt">double</span> <span class="n">elapsed</span><span class="p">{};</span>
+    <span class="kt">double</span> <span class="k">const</span> <span class="n">t</span><span class="p">{</span><span class="mf">0.02</span><span class="p">}</span>
+
+    <span class="c1">// do some acceleration</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">elapsed</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">ax</span><span class="p">{</span><span class="mf">0.5</span><span class="p">};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">ay</span><span class="p">{};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">az</span><span class="p">{</span><span class="mf">0.1</span><span class="p">};</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">vx</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">ax</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">vy</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">ay</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="n">vz</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">az</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">vx</span> <span class="o">+=</span> <span class="n">ax</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">vy</span> <span class="o">+=</span> <span class="n">ay</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">vz</span> <span class="o">+=</span> <span class="n">az</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">elapsed</span> <span class="o">+=</span> <span class="n">t</span><span class="p">;</span>
+
+        <span class="n">_odometer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">Input</span><span class="p">{</span><span class="n">mps</span><span class="p">(</span><span class="n">vx</span><span class="p">),</span> <span class="n">mps</span><span class="p">(</span><span class="n">vy</span><span class="p">),</span> <span class="n">mps</span><span class="p">(</span><span class="n">vz</span><span class="p">)});</span>
+    <span class="p">}</span>
+
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_odometer</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="p">().</span><span class="n">meters</span><span class="p">().</span><span class="n">value</span><span class="p">(),</span> <span class="mf">0.95</span><span class="p">);</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_odometer</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="p">().</span><span class="n">meters</span><span class="p">().</span><span class="n">value</span><span class="p">(),</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_odometer</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="p">().</span><span class="n">meters</span><span class="p">().</span><span class="n">value</span><span class="p">(),</span> <span class="mf">0.05</span><span class="p">);</span>
+
+    <span class="c1">// do some coasting</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">elapsed</span> <span class="o">&lt;</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">vx</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">vy</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="n">vz</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">elapsed</span> <span class="o">+=</span> <span class="n">t</span><span class="p">;</span>
+
+        <span class="n">_odometer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">Input</span><span class="p">{</span><span class="n">mps</span><span class="p">(</span><span class="n">vx</span><span class="p">),</span> <span class="n">mps</span><span class="p">(</span><span class="n">vy</span><span class="p">),</span> <span class="n">mps</span><span class="p">(</span><span class="n">vz</span><span class="p">)});</span>
+    <span class="p">}</span>
+
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_odometer</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="p">().</span><span class="n">meters</span><span class="p">().</span><span class="n">value</span><span class="p">(),</span> <span class="mf">2.15</span><span class="p">);</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_odometer</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="p">().</span><span class="n">meters</span><span class="p">().</span><span class="n">value</span><span class="p">(),</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">_odometer</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="p">().</span><span class="n">meters</span><span class="p">().</span><span class="n">value</span><span class="p">(),</span> <span class="mf">0.15</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is hard to follow and easy to get wrong.<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">3</a></sup> In my opinion, this test is
+way longer and more complex than it should be acceptable. Yet in practice it is
+not uncommon to see test code that is significantly worse than this.</p>
+
+<p>Besides the obvious downside of creating an unnecessary spike in maintenance
+cost, such kind of test is very dangerous because, when something goes wrong,
+it becomes hard to understand whether the issue lies within the product or
+within the test itself.</p>
+
+<p>I warmly recommend following a handful rules to write readable tests:</p>
+<ul>
+  <li>Make your names as descriptive as possible. Often test frameworks use two
+levels of naming (fixture and test cases), in which case you typically want
+the fixture to describe what unit (class, method, or function) is being
+tested, and the test case to concisely but clearly describe what behavioural
+aspect it covers (you will normally have many test cases for each unit).</li>
+  <li>Keep the size of test cases small, in the ballpark of a dozen statements or
+so. That sounds like a very small number and you might think it is too
+strict. Well, in my experience it is not. Any piece of non-trivial logic
+(i.e. more than a handful statements) in the initialization or verification
+parts should be moved into self-contained, clearly written, and well-named
+auxiliary classes or functions.</li>
+  <li>Use a good pattern to create a clear separation across initialization logic,
+action under test,<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">4</a></sup> and verification of the results. The
+<a href="https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/">Arrange-Act-Assert (AAA)
+pattern</a>
+is usually a good one to follow as a rule of thumb.</li>
+</ul>
+
+<p>If I had to have a stab at this myself, it would probably look more like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEST_F</span><span class="p">(</span><span class="n">OdometerTest</span><span class="p">,</span> <span class="n">FinalPositionWhenAcceleratingAndThenCoasting</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Arrange</span>
+    <span class="k">auto</span> <span class="k">const</span> <span class="n">input_generator</span> <span class="o">=</span> <span class="n">InputGenerator</span><span class="p">(</span><span class="mf">2.0</span><span class="n">_s</span><span class="p">,</span> <span class="mf">50.0</span><span class="n">_hz</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">setInitialVelocity</span><span class="p">(</span><span class="n">Velocity</span><span class="p">{</span><span class="mf">0.7</span><span class="n">_mps</span><span class="p">,</span> <span class="mf">0.5</span><span class="n">_mps</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">_mps</span><span class="p">}))</span>
+        <span class="p">.</span><span class="n">addAcceleration</span><span class="p">(</span><span class="n">AccelerationBuilder</span><span class="p">{}</span>
+                            <span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="mf">0.0</span><span class="n">_s</span><span class="p">)</span>
+                            <span class="p">.</span><span class="n">end</span><span class="p">(</span><span class="mf">1.0</span><span class="n">_s</span><span class="p">)</span>
+                            <span class="p">.</span><span class="n">magnitude</span><span class="p">(</span><span class="n">XYZ</span><span class="p">{</span><span class="mf">0.5</span><span class="n">_mps2</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">_mps2</span><span class="p">,</span> <span class="mf">0.1</span><span class="n">_mps2</span><span class="p">}))</span>
+    <span class="k">auto</span> <span class="k">const</span> <span class="n">odometer</span> <span class="o">=</span> <span class="n">OdometerFactory</span><span class="p">{</span><span class="n">_resource_pool</span><span class="p">}.</span><span class="n">makeStaticOdometer</span><span class="p">(</span><span class="n">input_generator</span><span class="p">.</span><span class="n">frequency</span><span class="p">());</span>
+
+    <span class="c1">// Act</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span> <span class="n">input</span> <span class="o">=</span> <span class="n">input_generator</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">status</span> <span class="o">=</span> <span class="n">odometer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="o">*</span><span class="n">input</span><span class="p">);</span>
+
+        <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">Odometer</span><span class="o">::</span><span class="n">Status</span><span class="o">::</span><span class="n">Ok</span><span class="p">);</span>  <span class="c1">// Coherence check</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Assert</span>
+    <span class="k">auto</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">state</span> <span class="o">=</span> <span class="n">odometer</span><span class="p">.</span><span class="n">getState</span><span class="p">();</span>
+    <span class="n">EXPECT_THAT</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">IsApprox</span><span class="p">(</span><span class="mf">2.15</span><span class="n">_m</span><span class="p">));</span>
+    <span class="n">EXPECT_THAT</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">IsApprox</span><span class="p">(</span><span class="mf">1.0</span><span class="n">_m</span><span class="p">));</span>
+    <span class="n">EXPECT_THAT</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="p">(),</span> <span class="n">IsApprox</span><span class="p">(</span><span class="mf">0.15</span><span class="n">_m</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I defined generators and builders for the various test inputs, custom matchers
+for robust numerical testing, and created three distinct sections for the AAA
+pattern. I limit the assertions to one scenario (see the section about
+atomicity above), different scenarios should get their own self-contained test
+case.</p>
+
+<p>Out of context this might look like an overkill. But consider that, in order to
+properly test your odometer, this test alone is not enough and dozens more of
+similar tests (at best) will be needed. That is where having good abstract test
+machinery suddenly gives a lot of value.<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">5</a></sup></p>
+
+<h1 id="write-for-readability-of-the-test-output">Write for readability (of the test output)</h1>
+
+<p>The importance of producing clear and easy to troubleshoot test output sounds
+obvious, yet in my experience it is so often missed by test authors.</p>
+
+<p>Take the following as an (oversimplified) example:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">assertResult</span><span class="p">(</span><span class="kt">double</span> <span class="k">const</span> <span class="n">result</span><span class="p">,</span> <span class="kt">double</span> <span class="k">const</span> <span class="n">input</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="k">const</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">computeExpected</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+    <span class="n">EXPECT_EQ</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">TEST</span><span class="p">(</span><span class="n">MyFunction</span><span class="p">,</span> <span class="n">Test</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assertResult</span><span class="p">(</span><span class="n">myFunction</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="n">assertResult</span><span class="p">(</span><span class="n">myFunction</span><span class="p">(</span><span class="mf">2.0</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">);</span>
+    <span class="n">assertResult</span><span class="p">(</span><span class="n">myFunction</span><span class="p">(</span><span class="mf">3.0</span><span class="p">),</span> <span class="mf">3.0</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">{</span>
+         <span class="n">assertResult</span><span class="p">(</span><span class="n">myFunction</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">));)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This test case has some obvious maintainability issues in the implementation of
+the test script itself (see the sections about atomicity and readability
+above), but it will also fail to produce understandable test output.</p>
+
+<p>The catch is that the <code class="language-plaintext highlighter-rouge">EXPECT_EQ</code> macro is wrapped by the <code class="language-plaintext highlighter-rouge">assertResult()</code>
+function, which is called multiple times. Therefore, <code class="language-plaintext highlighter-rouge">EXPECT_EQ</code> will print
+to the test output information only related to its position inside
+<code class="language-plaintext highlighter-rouge">assertResult()</code>, and if a failure happens, it will not be clear which call of
+<code class="language-plaintext highlighter-rouge">assertResult()</code> caused it.</p>
+
+<p>Some people will argue that this is not a problem, as all you need to
+troubleshoot a problem is to fire up a debugger and run the test under it. That
+is to me symptom of a problematic mindset, and debuggers are not the right tool
+for this. A debugger is an incredibly powerful and useful tool, but in most
+cases it is an overkill. Needing to run a debugger to understand a test failure
+is not just a waste of time that could be avoided by writing good tests, but it
+is also not always feasible (some tests might be running in some remote and
+inaccessible environment that cannot be reproduced locally).</p>
+
+<p>The proper solution is to use the right tools offered by your test framework
+(such as fixtures, parametrizations, etc.) to write atomic and self-contained
+tests that always provide complete tracing information.</p>
+
+<p>If you need to put assertions in loops, or other scopes that might hide
+traceability, use proper tracing tools to ensure that information is present.
+Specifically to GTest, <code class="language-plaintext highlighter-rouge">SCOPED_TRACE</code> is always a handy tool, but don’t forget
+that it is possible to add tracing information by applying <code class="language-plaintext highlighter-rouge">operator&lt;&lt;</code> to the
+value expanded by the various assert/expect macros.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEST</span><span class="p">(</span><span class="n">MyClass</span><span class="p">,</span> <span class="n">Test</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="c1">// ...</span>
+
+   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">{};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+   <span class="p">{</span>
+       <span class="n">SCOPED_TRACE</span><span class="p">(</span><span class="s">"i = "</span> <span class="o">+</span> <span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">PrintToString</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+
+       <span class="n">EXPECT_EQ</span><span class="p">(...)</span> <span class="o">&lt;&lt;</span> <span class="s">"Extra info here"</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="learn-to-understand-coverage">Learn to understand coverage</h1>
+
+<p>Code coverage is both a good tool and a useless metric. It is a good tool in
+the sense that it helps spotting parts of the program that are not being
+tested. It is a useless metric because having a piece of code being covered
+does not mean that the behaviour of that piece of code is being tested, it
+merely means it is being executed in a test suite. This makes high coverage
+necessary, but not sufficient.</p>
+
+<p>Sadly, I personally had to work in multiple occasions on projects where
+developers where adding functionally useless tests solely for the purpose of
+boosting coverage values, while the tests themselves were not verifying any
+functional behaviour.</p>
+
+<p>When testing your product, reason more in terms of covering the expected
+behaviour, rather than covering lines or branches. If you have requirements for
+it, they can be a useful input for this.</p>
+
+<p>Pay attention to your changes. Did you make a change that altered existing
+behaviour but required no updates to your tests? Then there is a good chance
+that such part of your product is not actually being tested, no matter what
+your coverage metrics say.</p>
+
+<h1 id="use-good-oracles">Use good oracles</h1>
+
+<p>When working with <a href="https://en.wikipedia.org/wiki/Functional_programming">functional
+programming</a>,<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">6</a></sup> coming up
+with the right <a href="https://en.wikipedia.org/wiki/Test_oracle">test oracles</a> is one of
+the best ways to make your tests simpler, stronger, and easier to maintain.</p>
+
+<p>A test oracle is an entity that provides the expected results for a given set
+of inputs, which can then be compared with the tested program output to verify
+its correctness.</p>
+
+<p>Consider a function \(f\) that maps values from domain \(A\) to domain \(B\)</p>
+
+\[\begin{align*}
+f(x): ~ &amp;A \to B \\
+        &amp;x \mapsto y
+\end{align*}\]
+
+<p>One of the easiest ways to test such function is to use an oracle \(g\)
+implementing the same mapping</p>
+
+\[\begin{align*}
+g(x): ~ &amp;A \to B \\
+        &amp;x \mapsto y
+\end{align*}\]
+
+<p>and test that \(f(x) = g(x)\).</p>
+
+<p>If you already have some other function at hand that implements the same
+mapping (and that can you trust), then you have an easy solution at hand.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">7</a></sup>
+If not, you might be able to implement your own oracle.</p>
+
+<p>As a general rule, it is better to avoid mirroring the implementation of your
+feature in your oracle. Way too many times I had to comment in code reviews,
+pointing out how people were copypasting their feature code into a test file
+straight away. Besides obvious issues with duplication that hinder
+maintainability, such habit  makes it very likely that any defects and bugs in
+your feature code will also be present in your oracle, therefore hiding them
+from the tests. It also mirrors the complexity of your feature in your test
+code, which is undesirable, as test code should strive to be as simple as
+possible.</p>
+
+<p>Try instead using a different method or algorithm to implement the test oracle.
+Test code has generally less constraints compared to production, and that
+includes runtime performance, therefore you might be able to use a simpler
+algorithm as a test oracle to compare against (that maybe is too slow to be
+used in production).<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">8</a></sup> Using a simpler algorithm also means your test code
+will be simple, which is itself a win by itself.</p>
+
+<p>If possible, however, I find the best approach is to use an inverse oracle.
+In this case, instead of directly testing \(f(x) = g(x)\), the oracle
+implements the <a href="https://en.wikipedia.org/wiki/Inverse_function">inverse</a> of
+\(f\)</p>
+
+\[\begin{align*}
+g(y): ~ &amp;B \to A \\
+        &amp;y \mapsto x
+\end{align*}\]
+
+<p>and the test verifies that \(g(f(x)) = x\).</p>
+
+<p>When you are implementing the oracle yourself, this is a strong testing
+approach as it makes it easier to write oracles that are independent from the
+tested feature code. It is not always applicable however, because not all
+functions are invertible, and some invertible functions might actually be very
+hard to invert in practice.</p>
+
+<h1 id="pay-attention-to-speed">Pay attention to speed</h1>
+
+<p>Speed of tests is an important but often neglected aspect. The primary reason
+is that slow tests simply do not scale. One might naïvely think that having a
+test case taking one second is not a big deal. Now picture in your head a
+thousand test cases taking one second, and suddenly your unit test suite takes
+half an hour to run. And a thousand test cases is a very small number, it is
+barely enough to cover a very small (if not toy-sized) project.</p>
+
+<p>You want to be able to work with a fast edit-build-test loop locally, so slow
+tests would directly affect your own tight local development loop, and on top
+of that they would slow down (to an even larger extent) your remote execution
+and CI pipelines.
+A good introduction to the subject is provided by Michael Feathers in its
+well-known <em>Working effectively with legacy code</em> <a class="citation" href="#feathers2004working">[2]</a>.</p>
+
+<p>You want to be able to run at least several hundred test cases in a fraction of
+a second, which means that, as a rule of thumb, the runtime of your individual
+unit tests should be in the ballpark of milliseconds. Avoid remote resources
+(that are also a liability when it comes to robustness, which will be discussed
+separately) and avoid using the file system.</p>
+
+<p>Sometimes, slower tests (possibly involving complex or slow resources) are
+necessary. Keep in mind that such kind of tests should be a dedicated tool for
+specific scenarios (e.g. integration testing), it should not be the norm for
+unit tests. If possible, separate your expensive tests from regular unit tests
+(e.g. using tags that can be filtered upon, running them in dedicated
+pipelines, etc.).<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">9</a></sup></p>
+
+<!--
+# Write for readability (of the test output)
+# Write deterministic tests
+# Harness randomness (RapidCheck)
+# Get familiar with the GTest API
+# Avoid putting asserts outside tests
+# Use matchers
+# Make your types printable
+# Importance of test output
+# Testability as design quality
+# Use mocks carefully
+-->
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="sweag2020testing">A. Bender, <a href="https://abseil.io/resources/swe-book/html/ch11.html#why_do_we_write_testsquestion_mark">“Testing overview,”</a> in <i>Software engineering at Google: Lessons learned from programming over time</i>, O’Reilly Media, 2020.</span></li>
+<li><span id="feathers2004working">M. Feathers, <i>Working effectively with legacy code</i>. Prentice Hall Professional, 2004.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:8" role="doc-endnote">
+      <p>This one sounds flat-out crazy to me, yet I have seen it several times in
+the wild, and I had to review such kind of test code myself. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>Answering the “why” is important. As for the “how”, that should not be
+redundantly spelled out in comments, and should be self-evident by
+well-written code. But explanation of the “why” should not be left to the
+implementation, and should be made clear by the author. This ensures that
+the intended behaviour is understandable even in the unavoidable cases when
+the test script itself contains mistakes (or otherwise, said mistakes would
+be implicitly promoted as “intended behaviour”). <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>Honestly I would not be surprised if something in it was actually wrong.
+This is not a real example, it is just something I concocted on the spot as
+an illustrative example, without even testing it. Which further reinforces
+the point I am trying to make. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>Which should be only one, see section above about atomicity of test cases. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>Additionally, I do not pass around dimensional values in <code class="language-plaintext highlighter-rouge">double</code>
+variables, too easy to get them mixed up. The type system is our friend,
+and strong typing prevents possible issues. Here <a href="https://en.cppreference.com/w/cpp/language/user_literal">user-defined
+literals</a> are
+used, but it is only one of many possible ways of doing this. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>Which you should if possible, because functional programming allows to
+  avoid many footguns that come with stateful program entities, making your
+  programs easier to reason about and less error-prone. Note that
+  functional programming is a paradigm and it has nothing to do with the
+  choice of language (albeit some languages make it easier to do functional
+  programming with them). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>You might be wondering why you need to implement your own feature then,
+  and not just use the oracle in production. There might be a multitude of
+  different reasons:</p>
+      <ul>
+        <li>The oracle is too slow to meet performance requirements in production.</li>
+        <li>The oracle does not fulfill some requirements, related to safety,
+licensing, etc.</li>
+        <li>The oracle lacks some aspects that you need in production. For
+instance, assume you are working on a C++14 project and you need a
+<code class="language-plaintext highlighter-rouge">constexpr</code> sort function. You cannot use <code class="language-plaintext highlighter-rouge">std::sort</code> (as <code class="language-plaintext highlighter-rouge">std::sort</code>
+is not <code class="language-plaintext highlighter-rouge">constexpr</code> before C++17), but you can test the output of your
+implementation against the output of <code class="language-plaintext highlighter-rouge">std::sort</code>.</li>
+      </ul>
+      <p><a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>Though you should be careful to stay within reasonable bounds, and make
+  sure you set acceptable goals. Otherwise, your test and integration
+  routine and machinery will get slow, negatively affecting productivity as
+  a whole. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p><em>Software engineering at Google</em> provides an example of how tests can be
+  classified into different “sizes” and handled with different criteria and
+  rules based on that <a class="citation" href="#sweag2020testing">[1]</a>. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#googletest">googletest</a>
+          
+            <a href="/tags#googlemock">googlemock</a>
+          
+            <a href="/tags#testing">testing</a>
+          
+            <a href="/tags#unit testing">unit testing</a>
+          
+            <a href="/tags#C++">C++</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Testing+tips+for+junior+developers+https://martinopilia.com/posts/2025/01/06/testing-intro.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2025/01/06/testing-intro.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2025/01/06/testing-intro.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2024/10/27/vim-config-update.html" data-toggle="tooltip" data-placement="top" title="Vim and Neovim configuration overhaul">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2025
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
