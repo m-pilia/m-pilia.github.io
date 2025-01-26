@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Op-ed &mdash; My experience and reflections on AI assisted coding</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Reality check and thoughts on what lies ahead">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Op-ed &mdash; My experience and reflections on AI assisted coding" />
+  
+
+   
+  <meta property="og:description" content="Reality check and thoughts on what lies ahead">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2025/01/25/ai-oped.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2025/01/25/ai-oped.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Op-ed &mdash; My experience and reflections on AI assisted coding" />
+  
+
+  
+  <meta name="twitter:description" content="Reality check and thoughts on what lies ahead">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Posts</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Op-ed &mdash; My experience and reflections on AI assisted coding</h1>
+		  
+		    
+			<h2 class="post-subheading">Reality check and thoughts on what lies ahead</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fa fa-calendar"></i> Posted on January 25, 2025
+              <br/>
+              <i class="fa fa-clock-o"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+23 minutes
+
+read (4203 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Op-ed &mdash; My experience and reflections on AI assisted coding</h1>
+		  
+		    
+			<h2 class="post-subheading">Reality check and thoughts on what lies ahead</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on January 25, 2025</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This post is a bit of an exception (or maybe the start of a new genre) for this
+blog. While my usual content is strictly limited to presenting facts, this
+article is more of an op-ed presenting my personal take on “AI<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">1</a></sup> assisted”
+coding.</p>
+
+<p>While I do not consider myself a machine learning (ML) specialist, I have a
+strong background on the subject, and machine learning has been a big part of
+my work through my whole career. As such, I have been up-to-date with research
+trends and developments,<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup> and I have always had a positive attitude and an
+enthusiasm for developments in a field which, to some extent, I consider to be
+my own as well.</p>
+
+<p>However, despite of the innate enthusiasm that comes with working on the
+subject, I have always been cautious with drawing conclusions, and very
+interested in understanding the broader implications of such technology.</p>
+
+<p>My point of view is fairly complex but, oversimplifying it in a nutshell, I see
+some moderate benefits in the current generation of “AI” assisted coding tools,
+but also a swath of caveats. I disagree with the more luddite or catastrophist
+takes, and I see some limited value in adopting and using these tools
+intelligently, but at the same time I do not share the over-enthusiasm of many
+people in the broader software community, and I am wary  of the tones used to
+oversell this kind of solutions.</p>
+
+<h1 id="my-personal-journey-with-llm-assisted-coding">My personal journey with LLM assisted coding</h1>
+
+<p>Always enthusiast about new tools and finding new ways to optimize my own
+workflow, I tried out GitHub Copilot as soon as the one-year long technical
+preview was announced back in 2021.</p>
+
+<p>Testing it for the first time, the whole concept and its behaviour were far
+from surprising, having followed the developments of sequential models and
+their applications to natural language processing (NLP) for many years before,
+but it was of course interesting to see a large model trained on a vast dataset
+in action, which is something you cannot really do yourself in most but the
+more resourceful research contexts.</p>
+
+<p>At the time my expectations were down to Earth, and my reception was
+unsurprisingly lukewarm. I was not particularly impressed with it and with how
+little value it brought to my personal projects, therefore I decided it was not
+worth subscribing after the end of the tech preview.</p>
+
+<p>Nonetheless, I have been extremely interested in following not just the
+developments of AI assisted coding, but also its reception by the software
+engineering community and its impact on the profession.</p>
+
+<h2 id="local-models-at-work">Local models at work</h2>
+
+<p>Rather than my small scale personal projects, a more interesting application
+(and experimentation ground) would be on my job. There I work with a mid-sized
+<a href="https://en.wikipedia.org/wiki/Monorepo">monorepo</a> (a few million SLoCs) of
+fairly high quality code, subject to very strict standards, and in a complex
+application domain (signal processing) where we develop non-trivial algorithms
+structured in a non-trivial software architecture.</p>
+
+<p>Of course, the first and foremost concern is confidentiality, therefore I could
+not just slap a personal Copilot subscription in my work environment (which
+is not allowed by IT rules anyways, like in any sane organization).</p>
+
+<p>Therefore, I started experimenting with local models that I could run on my
+developer machine, avoiding confidentiality issues and any possible leak of IP.
+One of the upsides on working on signal processing is that even my work laptop
+is CUDA-capable, being equipped with an RTX 2000 Ada GPU that can handle
+inference of some reasonably sized LLMs. For this purpose I used
+<a href="https://github.com/ollama/ollama">Ollama</a> to run <code class="language-plaintext highlighter-rouge">llama3.2</code> and
+<code class="language-plaintext highlighter-rouge">nomic-embed-text</code> (for embeddings).</p>
+
+<p>This was fascinating, but the limited capability of the models make it clear
+that it was not going to be a particularly useful tool in my workflow, let
+alone a game-changing one.</p>
+
+<h2 id="copilot-enterprise">Copilot Enterprise</h2>
+
+<p>Shortly afterwards, however, my employer purchased a Copilot Enterprise plan,
+and dished out licenses to us developers. It felt like an exciting development
+and I immediately jumped in, and not just as a user.</p>
+
+<p>I reached out to the manager owning Copilot in our company to propose a plan to
+develop training material and make sure developers can properly take advantage
+of the tool while being aware of its pitfalls. I also brought the topic for
+discussion in our  C++ steering board and community of practice, of which I am
+an active member, to propose the development of <a href="https://web.archive.org/web/20250125201100/https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot">custom
+instructions</a>
+to align Copilot with our internal code standards and make the tool more useful
+and productive.</p>
+
+<h1 id="understanding-the-limitations">Understanding the limitations</h1>
+
+<p>Copilot (like similar models) can surely impress new users with its ability to
+generate snippets of code from context in ways not seen before. However, when
+examining closely, I see it being good mainly at two things:</p>
+
+<ul>
+  <li>Mimicking its context. This promotes repetition and duplication, that in
+virtually all serious projects will have a <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">negative effect on
+maintainability</a>, and
+should be addressed not by parroting code but by using
+<a href="https://en.wikipedia.org/wiki/Reflective_programming">reflection</a> or code
+generation.</li>
+  <li>Suggesting things learned from its training. This is potentially more
+interesting, but comes with a lot of dangers and pitfalls. The most obvious
+issue is the risk of incorporating into our codebase regurgitations of
+copyrighted training material that falls under an incompatible license (or
+that is flat-out not allowed to be reproduced at all). Even past any legal
+issues, these models tend to be reliable only for very simple things, for
+which they are not necessarily the best tool anyways. When it comes to
+anything nontrivial, they tend to fall flat pretty fast.</li>
+</ul>
+
+<p>All of this is enough for me to put a serious weight on the cons, and that is
+before we even factor in the problem of hallucinations and lack of semantic
+understanding.</p>
+
+<p>When prompt-engineering with the most recent Copilot model to date, using our
+enterprise plan, I was surprised by how easily the model could get confused on
+very simple things, and overall how little understanding of the language it
+possessed.</p>
+
+<p>Just for example, I added a line to the custom instructions file,
+instructing the agent to always specify a trailing return type when defining a
+C++ lambda.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> This caused it to start adding trailing return types to every
+function declaration (including free and member functions).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">myFunction</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+<span class="p">{</span>
+   <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is obviously not valid syntax, and a clear tell of how little syntactic
+understanding these models have (let alone semantic understanding). The
+surprising part is that I was careful in crafting a specific, clear, while
+still succinct prompt. The only solution turned out to also explicitly specify
+in the prompt that such instruction did not apply to free and member functions.</p>
+
+<p>Speaking about semantic understanding, there the problems are even graver.
+Again for the sake of example, I will tell one of the first silly moments I
+soon witnessed when trying Copilot at work. I was implementing some sorting
+routines, which is a particularly popular and mainstream topic covered from the
+very basic algorithm 101 undergrad courses all the way up to large amounts of
+academic research, industrial practice, and a plethora of production libraries.
+These models have plenty of training experience with it, making it a very
+“easy” scenario for them.</p>
+
+<p>I had a file where I had implemented a pretty standard hybrid heap-sort routine</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">namespace</span> <span class="n">detail</span>
+<span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Iterator</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Comparator</span><span class="p">&gt;</span>
+<span class="k">constexpr</span> <span class="kt">void</span> <span class="n">doInsertionSort</span><span class="p">(</span><span class="n">Iterator</span> <span class="n">begin</span><span class="p">,</span> <span class="n">Iterator</span> <span class="n">end</span><span class="p">,</span> <span class="n">Comparator</span> <span class="n">comparator</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Iterator</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Comparator</span><span class="p">&gt;</span>
+<span class="k">constexpr</span> <span class="kt">void</span> <span class="n">doHeapSort</span><span class="p">(</span><span class="n">Iterator</span> <span class="n">begin</span><span class="p">,</span> <span class="n">Iterator</span> <span class="n">end</span><span class="p">,</span> <span class="n">Comparator</span> <span class="n">comparator</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace detail</span>
+
+<span class="c1">/// Lengthy documentation here...</span>
+<span class="c1">///</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Iterator</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Comparator</span><span class="p">&gt;</span>
+<span class="k">constexpr</span> <span class="kt">void</span> <span class="nf">sort</span><span class="p">(</span><span class="n">Iterator</span> <span class="n">begin</span><span class="p">,</span> <span class="n">Iterator</span> <span class="n">end</span><span class="p">,</span> <span class="n">Comparator</span> <span class="n">comparator</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">beigin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">THRESHOLD</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">detail</span><span class="o">::</span><span class="n">doInsertionSort</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comparator</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">detail</span><span class="o">::</span><span class="n">doHeapSort</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comparator</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I wrote a reasonable prompt asking the model to implement a function performing
+quicksort. Which led to the following hilarious suggestion:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">/// Blurb of lengthy comment here...</span>
+<span class="c1">///</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Iterator</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Comparator</span><span class="p">&gt;</span>
+<span class="k">constexpr</span> <span class="kt">void</span> <span class="nf">quicksort</span><span class="p">(</span><span class="n">Iterator</span> <span class="n">begin</span><span class="p">,</span> <span class="n">Iterator</span> <span class="n">end</span><span class="p">,</span> <span class="n">Comparator</span> <span class="n">comparator</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">beigin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">THRESHOLD</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">detail</span><span class="o">::</span><span class="n">doInsertionSort</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comparator</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Perform quicksort</span>
+        <span class="n">detail</span><span class="o">::</span><span class="n">doHeapSort</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">comparator</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The snippet was implementing a quicksort function that actually uses heapsort
+under the hood, which obviously makes no sense whatsoever. Note the priceless
+comment stating <code class="language-plaintext highlighter-rouge">Perform quicksort</code> right before calling a heapsort routine.
+This says it all about the level of semantic understanding we are talking
+about. In all of this, the model obviously put a lot of effort in writing a
+lengthy Doxygen, and dutifully mimicking the structure I used in my own code,
+while it completely failed at the core essence of the problem.</p>
+
+<p>When explaining this to people in layman’s terms, what I usually say is this:
+these models do not have understanding of the language in any form that we
+might label as “understanding” in human terms (or in most types of artificial
+terms such as language servers or static analysis tools), they are simply
+trained to produce text that looks plausible, and that is pretty much all they
+do.</p>
+
+<h1 id="not-everything-is-bad">Not everything is bad</h1>
+
+<p>Not everything is bad of course, and focusing on the downsides and shortcomings
+should not let us forget the upsides of these LLM-based tools.</p>
+
+<p>They can still be pretty good at simple things, for instance they are more
+likely to be right when suggesting autocompletion for very simple snippets.
+Personally I still see little value in that, because in most cases those same simple
+autocompletion results can be provided much faster and more reliably by a good
+language server.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> We have already discussed also how they can be good a
+generating suggestions based on mimicking pre-existing patterns in the
+surrounding contexts. And this is also not particularly valuable to me, as
+those are low-value suggestions that would be better handled by code reuse,
+reflection, or code generation.</p>
+
+<p>What I personally find more appealing is their ability to do some refactoring
+tasks that would be annoying to do by hand, but are simple enough to be
+understood by the LLM. As a practical example from work, I was writing a piece
+of tooling code using OpenCV, and I wanted to rewrite some snippets of
+nested loops</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">y</span><span class="p">{};</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">image</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span> <span class="o">++</span><span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">x</span><span class="p">{};</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">iamge</span><span class="p">.</span><span class="n">cols</span><span class="p">;</span> <span class="o">++</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// something interesting ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>into <code class="language-plaintext highlighter-rouge">Mat::forEach()</code> calls</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image</span><span class="p">.</span><span class="n">forEach</span><span class="o">&lt;</span><span class="n">Pixel</span><span class="o">&gt;</span><span class="p">([](</span><span class="n">Pixel</span><span class="o">&amp;</span> <span class="n">pixel</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">position</span><span class="p">[])</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+    <span class="c1">// something interesting ...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The model handles these fairly well. In this case, it is true that I save time
+by avoiding this tedious handwork, but there is still a downside in the fact
+that I need to review the model output to make sure it does what I want. And
+reviewing someone else’s (or something else’s) code is generally
+effort-intensive, so it does not come for free.</p>
+
+<p>Another useful application of these models is assisted “brainstorming” or
+gathering of ideas, where polling a model or discussing with an LLM chat bot
+can be a way to gather or refine ideas. But arguably this already happens at a
+higher level than implementation, and goes against the illusion of a tool that
+spits out ready-made production code for you.</p>
+
+<h1 id="skill-factor">Skill factor</h1>
+
+<p>One aspect that surely intrigues me is the amount of praise received by LLM
+based coding assistants and tools. Part of it comes from suppliers of said
+tools, which should of course be taken with a grain of salt, but a big part of
+it also comes from the software development community as a whole, and can be
+easily experienced on the web and on social media. I have seen countless people
+bragging of how these tools have made them manifold more productive and save
+them countless amounts of work.</p>
+
+<p>This clashes with my practical experience, where the concrete usefulness of
+these tools is in reality so limited. And not just in my own experience, as I
+get the same feedback from coworkers and close friends on my same skill level.
+The feeling is further confirmed by the fact that Copilot usage statistics in
+my company show that most users actually just toyed with Copilot, and only a
+fraction of developers is actually using it for real in their daily work.</p>
+
+<p>I spent quite some time reflecting on this dichotomy and trying to better
+understand its reality. My take is that these tools provide significantly more
+values in two cases: in contexts where software quality and maintainability are
+less of a concern, and to juniors or less skilled developers.</p>
+
+<p>On the first point, the world of software development encompasses many
+different quality levels. I belong to a field where high quality is
+non-negotiable, and maintainability is a necessity. But I should not forget
+that there are many, many contexts where writing sub-optimal and poorly
+maintainable code is a viable business, all the way down to write-only code
+factories. I can see how AI automation can help there.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup></p>
+
+<p>On the second point, for simple tasks, other tools (such as regular
+expressions, a good language server, and good command of any decent IDE or text
+editor) are typically faster and more convenient than an LLM in the hands of a
+power user, which means LLMs have a more limited window of utility at my skill
+level. But I understand how they can feel so much more powerful and valuable to
+junior and inexperienced programmers, as we are reaching the point where these
+tools can effectively replace an unskilled coder.</p>
+
+<p>A core issue I see is how often, unfortunately, people confuse
+programming/coding with software engineering/development. As any experienced
+software developer well knows, coding is the simplest part of product
+development, and by far. The real challenges are streamlining the requirement
+analysis process, handling effective communication (both internal and
+external), managing data, structuring and maintaining an efficient and
+effective organization, designing a robust and maintainable architecture,
+developing efficient concepts and algorithms. Translating to code is a small
+step in comparison with all of that.</p>
+
+<p>When someone tells me that an LLM can save them 90% of their work time, the
+only thing that tells me is that said people spend 90% of their work time doing
+coding, not engineering, and probably also not the most challenging parts of
+the coding process itself.</p>
+
+<p>As a concrete example, I have seen several posts and articles in the past
+arguing how great LLMs are for their authors, because they could for instance
+automate the generation of Doxygen that looks like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">/// Open a socket</span>
+<span class="c1">/// @param[in] address The address</span>
+<span class="c1">/// @param[in] port    The port</span>
+<span class="c1">/// @return The operation result.</span>
+<span class="n">OperationResult</span> <span class="nf">openSocket</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">address</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">port</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now, the problem I see here is that documentation like that is not just
+completely useless to begin with, as it does not add any more value than what
+would already be conveyed by default-generated Doxygen if the function was not
+commented to begin with, it is also actively harmful as it adds maintenance
+cost to keep such useless comments up to date when the code itself evolves. In
+my team I have a clear rule, and this kind of Doxygen written purely for the
+sake of it, for a self-documenting function signature, is actively discouraged.</p>
+
+<p>If someone comes and tells me that automating tasks of this kind saves 90% of
+their time, my conclusion is that they spend 90% of their time doing things
+that are useless to begin with.</p>
+
+<h1 id="zeitgeist">Zeitgeist</h1>
+
+<p>It is really interesting for me to reflect upon the direction of the industry
+as a whole. It is undeniable that AI assisted tools are a hot topic and are
+having an impact on the software industry that it is impossible to ignore.</p>
+
+<p>Companies producing and selling AI tools are making big promises, gathering
+large investments, and proposing big infrastructure projects (such as power
+grid ramp-ups to keep up with energy-hungry datacenters needed to train and
+perform inference of such models). Some companies are promising an imminent
+come of artificial general intelligence that would open the doors of automation
+to vast portions of office work.</p>
+
+<p>The truth is that we barely have understandable definitions of intelligence,
+and sometimes the terminology in this context escapes definitions
+altogether.<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">6</a></sup> Expected (or maybe wished) timelines are also often presented
+in fuzzy and <a href="https://web.archive.org/web/20240923222436/https://arstechnica.com/information-technology/2024/09/ai-superintelligence-looms-in-sam-altmans-new-essay-on-the-intelligence-age/">intentionally unintuitive
+ways</a>.
+It does not help how facts are often blown out of proportion, in ways that can
+easily confuse non-technical audience (or investors).<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup> High energy
+consumption of model training and inference, with its environmental costs and
+related societal impact, are also hard to not take into consideration.</p>
+
+<p>Some people are buying into these promises and either envision revolutionary
+societal developments that borrow a great deal of optimism, or foresee doomsday
+scenarios that call for luddite reaction. On the other hand, some people are
+much more skeptical, ranging from mild disillusion to <a href="https://web.archive.org/web/20250106011028/https://www.wheresyoured.at/godot-isnt-making-it/">clear-cut
+arguments</a>
+about being in a bubble that might only have a short time to live before
+bursting.</p>
+
+<p>Many promises around AI are likely to be far-fetched, as we might be reaching a
+performance plateau and there is no obvious evidence that LLMs will necessarily
+scale to human-level intelligence, let alone super-intelligence. Despite of my
+technical insight on the subject, I do not want to make arguments for either
+side of this conversation.</p>
+
+<p>When it hear forecasts and personal views, I take them with a generous amount
+of salt, even when they come from “prominent figures”. I trust their scientific
+work because I trust the methodology, but I do not blindly trust anything that
+comes out based purely on their personal opinion.<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">8</a></sup> Not that all forecasts
+and opinions come from prominent or even just experienced figures: most of the
+posts and discussion on social media and social blogging come from people with
+limited if not minimal technical and scientific knowledge. Knowing how to use
+Gemini’s API or how to use off-the-shelf models in your scripts does not make
+you a machine learning expert.</p>
+
+<p>However, regardless of if and how the bubble will burst, it is very likely that
+some of the changes brought by LLMs are here to stay, even though the extent
+will surely be up for debate. And focusing again on the software development
+process and industry, it is likely that these tools will boost productivity to
+some degree.</p>
+
+<p>An interesting question is what the short-term impact will be on the software
+engineering landscape. Regardless on whether the promises of massive automation
+will be delivered or not, even just the existence of these promises is
+affecting investments, rewarding downsizing and inhibiting growth of
+engineering teams. And while senior and more experienced software engineer
+roles are unlikely to be made redundant at large scale any time soon, junior
+roles (exactly the ones that are the most enthusiastic about these new tools)
+are the ones to be <a href="https://web.archive.org/web/20241231222322/https://stackoverflow.blog/2024/12/31/generative-ai-is-not-going-to-build-your-engineering-team-for-you/">most directly
+threatened</a>
+in the short term, and with them the capability of growing and developing
+engineering teams in the long run.</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:2" role="doc-endnote">
+      <p>Technically speaking, the expression “artificial intelligence” (AI) has a
+broad meaning, and many problems and sub-fields of computer science
+traditionally fall into it. Lots of traditional problems and methods belong
+to its domain, also outside of large language models, deep learning, or
+even outside of machine learning altogether. The expression “AI” has lately
+been “rebranded” in mainstream conversation to refer to LLMs and their
+applications.</p>
+
+      <p>Here, for consistency with mainstream conversations, I use the expression
+in that sense even though, if I wanted to adopt a technically correct
+terminology, I would rather call this topic “LLM assisted coding”. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>My own work has been mostly related with image processing, computer
+vision, and adjacent topics, but a lot of the scientific baggage is common
+and concepts, algorithms, and tools are continuously shared and borrowed
+across adjacent fields. Methods developed for natural language processing
+have been routinely adopted and adapted to computer vision and vice versa. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>This does not come out of my personal preference, there is an AUTOSAR
+rule that puts a blanket ban on return type deduction, and compliance with
+it is not up for discussion. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>In my toolbox, a good language server is still order of magnitudes more
+useful and valuable than any LLM so far. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>A few weeks ago I stumbled upon a Reddit thread where some participants
+were arguing how terrible Gerrit is compared to GitHub. Being myself a
+longtime Gerrit user, I had a hard time understanding exactly their
+reasoning, until I realized what the underlying problem was: most
+participants in that thread had no concept of code reviews at all.</p>
+
+      <p>In that light, I can see why merging a change through Gerrit might look
+unnecessarily cumbersome to them compared to GitHub’s pull request model:
+they were completely ignoring the code review process itself, which is the
+whole point of using a tool ike Gerrit, while at the same time code review
+is a totally optional (and rather late addition) to GitHub’s workflow (to
+the point of often feeling like an afterthought).</p>
+
+      <p>On the spot, reading that conversation hit me like a cold shower, but it
+was really just a reminder of how diverse levels of quality exist in the
+programming community as a whole, and that large swaths of “programmers” or
+“software engineers” are not even familiar with practices that are commonly
+regarded as most basic in any serious software engineering effort. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p>For instance, as far as we know, OpenAI plans to declare artificial
+general intelligence as a reality upon <a href="https://web.archive.org/web/20250102103205/https://techcrunch.com/2024/12/26/microsoft-and-openai-have-a-financial-definition-of-agi-report/">reaching 100 billion USD in
+profits</a>,
+which would be a weird definition of intelligence to say the least. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>A good example was Google’s CEO
+<a href="https://web.archive.org/web/20241102071048/https://arstechnica.com/ai/2024/10/google-ceo-says-over-25-of-new-google-code-is-generated-by-ai/#gsc.tab=0">claiming</a>
+that “today, more than a quarter of all new code at Google is generated by
+AI”, when the <a href="https://web.archive.org/web/20240606172338/https://research.google/blog/ai-in-software-engineering-at-google-progress-and-the-path-ahead/">underlying data behind the
+claim</a>
+was actually referring to percentage of autocompletion characters accepted
+by developers. That paints a very different picture and does not make it
+sound like 25% of code is created without human insight or intervention, as
+“code generation” would make it sound instead. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>As a clear example, I cannot forget how in 2016 Hinton, amidst the
+hype around deep learning-based breakthroughs in computer vision and image
+understanding, memorably
+<a href="https://www.youtube.com/watch?v=2HMPRXstSvQ&amp;t=30s">said</a> “[We] should stop
+training radiologists now, it is just completely obvious that within five
+years deep learning is going to do better than radiologists”. In hindsight
+it is obvious how silly that sounds now, and even without hindsight that
+sounded already silly back then (at the time I was myself working on
+medical imaging research). And we are talking about the opinion of Geoffrey
+Hinton, the Turing- and Nobel-laureate “godfather” of deep learning.</p>
+
+      <p>There are probably more general analogies between the computer vision hype
+train that happened around 2016 (when self-driving cars were being promised
+to come within a few years at most) and the hype around natural language
+processing that we are witnessing today. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#ai">ai</a>
+          
+            <a href="/tags#oped">oped</a>
+          
+            <a href="/tags#copilot">copilot</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=Op-ed+%26mdash%3B+My+experience+and+reflections+on+AI+assisted+coding+https://martinopilia.com/posts/2025/01/25/ai-oped.html"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://martinopilia.com/posts/2025/01/25/ai-oped.html"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://martinopilia.com/posts/2025/01/25/ai-oped.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2025/01/06/testing-intro.html" data-toggle="tooltip" data-placement="top" title="Testing tips for junior developers">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2025
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

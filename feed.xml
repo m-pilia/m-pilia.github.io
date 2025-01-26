@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Op-ed &amp;mdash; My experience and reflections on AI assisted coding</title>
+        <description>
+          Reality check and thoughts on what lies ahead - 
+          This post is a bit of an exception (or maybe the start of a new genre) for this blog. While my usual content is strictly limited to presenting facts, this article is more of an op-ed presenting my personal take on “AI1 assisted” coding. While I do not consider myself...
+        </description>
+        <pubDate>Sat, 25 Jan 2025 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2025/01/25/ai-oped.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2025/01/25/ai-oped.html</guid>
+      </item>
+    
+      <item>
         <title>Testing tips for junior developers</title>
         <description>
           Or how to save me from repeating the same comments in code reviews - 
