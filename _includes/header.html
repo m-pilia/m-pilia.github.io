@@ -37,9 +37,9 @@
 
 		  {% if include.type == "post" %}
 		  <span class="post-meta">
-              <i class="fa fa-calendar"></i> Posted on {{ page.date | date: "%B %-d, %Y" }}
+              <i class="fas fa-calendar-alt"></i> Posted on {{ page.date | date: "%B %-d, %Y" }}
               <br/>
-              <i class="fa fa-clock-o"></i> {% include read_time.html %}
+              <i class="far fa-clock"></i> {% include read_time.html %}
           </span>
 		  {% endif %}
         </div>
