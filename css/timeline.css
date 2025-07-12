@@ -1,0 +1,149 @@
+:root {
+    --tl-marker-size: 40px;
+}
+
+.tl-timeline {
+    z-index: 0;
+    align-items: center;
+}
+
+.tl-filters {
+    position: sticky;
+    z-index: 1000;
+    top: 60px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.tl-filter {
+    margin-left: 1em;
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+.tl-check {
+    display: none;
+}
+
+.tl-filter,.tl-event {
+    transition-property: height, opacity;
+    transition-duration: 0.5s;
+    transition-behavior: allow-discrete;
+}
+
+.tl-events::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: #000000;
+}
+
+.tl-events {
+    position: relative;
+    display: flex;
+    margin-block: 0.5em;
+    flex-direction: column;
+    row-gap: 1em;
+}
+
+.tl-event {
+    display: flex;
+    align-items: baseline;
+}
+
+.tl-marker {
+    display: flex;
+    position: relative;
+    width: var(--tl-marker-size);
+    height: var(--tl-marker-size);
+    border-radius: 50%;
+}
+
+.tl-event .tl-marker {
+    left: calc(var(--tl-marker-size) * -0.5);
+}
+
+.tl-marker-icon {
+    width: 70%;
+    height: 80%;
+    margin: auto;
+    display: block;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.tl-event-content time {
+    font-weight: bold;
+}
+
+
+.tl-event .tl-event-content .tl-event-content-box {
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.tl-event .tl-event-content {
+    width: 80%;
+}
+
+@media (max-width: 850px) {
+    .tl-timeline {
+        margin-left: calc(var(--tl-marker-size) * 0.5)
+    }
+
+    .tl-event-content-box {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+
+@media (min-width: 850px) {
+    .tl-events::before {
+        left: 50%;
+    }
+
+    .tl-event .tl-marker {
+        order: 1;
+    }
+
+    .tl-event .tl-event-content {
+        width: 50%;
+        text-align: right;
+        padding-inline: 1em;
+    }
+
+    .tl-event:nth-child(odd) {
+        .tl-event-content {
+            padding-right: 2em;
+        }
+
+        .tl-event-content .tl-event-content-box {
+            padding-right: 0.5em;
+        }
+    }
+
+    .tl-event:nth-child(even) {
+        flex-direction: row-reverse;
+
+        .tl-event-content {
+            text-align: left;
+            padding-left: 2em;
+        }
+
+        .tl-event-content .tl-event-content-box {
+            padding-left: 0.5em;
+        }
+
+        .tl-marker {
+            left: calc(var(--tl-marker-size) * 0.5);
+        }
+    }
+}

@@ -49,6 +49,10 @@
   
 
   
+    
+      <link rel="stylesheet" href="/css/timeline.css" />
+    
+  
 
   
 
@@ -62,13 +66,7 @@
   
 
    
-  <meta property="og:description" content="I am an enthusiast [Arch Linux](https://www.archlinux.org/),
-[KDE](https://www.kde.org/), and [vim](http://www.vim.org/) user.
-
-I am not into social media, but on this website you can find some resources
-related to my activity.
-
-">
+  <meta property="og:description" content="{% timeline id: aboutme-timeline categories: academia: color: &quot;#66CCFF&quot; icon: /img/fontawesome/graduation-cap.svg project: color: &quot;#FFCC66&quot; icon: /img/fontawesome/code.svg life: color: &quot;#99FF99&quot; icon: /img/fontawesome/house-chimney.svg work: color: &quot;#FF9999&quot; icon: /img/fontawesome/briefcase.svg %} {% event life, January 2022 %} I moved back to Uppsala, Sweden. {% endevent %} {% event academia, Februrary 2021 %} I co-authored the...">
   
 
 
@@ -92,13 +90,7 @@ related to my activity.
   
 
   
-  <meta name="twitter:description" content="I am an enthusiast [Arch Linux](https://www.archlinux.org/),
-[KDE](https://www.kde.org/), and [vim](http://www.vim.org/) user.
-
-I am not into social media, but on this website you can find some resources
-related to my activity.
-
-">
+  <meta name="twitter:description" content="{% timeline id: aboutme-timeline categories: academia: color: &quot;#66CCFF&quot; icon: /img/fontawesome/graduation-cap.svg project: color: &quot;#FFCC66&quot; icon: /img/fontawesome/code.svg life: color: &quot;#99FF99&quot; icon: /img/fontawesome/house-chimney.svg work: color: &quot;#FF9999&quot; icon: /img/fontawesome/briefcase.svg %} {% event life, January 2022 %} I moved back to Uppsala, Sweden. {% endevent %} {% event academia, Februrary 2021 %} I co-authored the...">
   
 
   
@@ -138,7 +130,35 @@ related to my activity.
 
 
 
-<a href="/posts">Posts</a>
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
 
           </li>
         
@@ -166,21 +186,7 @@ related to my activity.
 
 
 
-<a href="https://aur.archlinux.org/packages/?SeB=m&K=m-pilia">AUR</a>
-
-          </li>
-        
-        
-        
-          <li>
-            
-
-
-
-
-
-
-<a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xCDEE463095565E17">PGP key</a>
+<a href="/links">Links</a>
 
           </li>
         
@@ -443,11 +449,514 @@ related to my activity.
 <div class="container" role="main">
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <p>I am an enthusiast <a href="https://www.archlinux.org/">Arch Linux</a>,
-<a href="https://www.kde.org/">KDE</a>, and <a href="http://www.vim.org/">vim</a> user.</p>
+      <style>
+        
+          #aboutme-timeline #tl-check-academia:checked ~ .tl-filters > .tl-filter.tl-academia {
+              opacity: 0.3;
+          }
 
-<p>I am not into social media, but on this website you can find some resources
-related to my activity.</p>
+          #aboutme-timeline #tl-check-academia:checked ~ .tl-events > .tl-event.tl-academia {
+              opacity: 0;
+              height: 0;
+          }
+
+          #aboutme-timeline .tl-academia.tl-marker {
+              background-color: #66CCFF;
+          }
+
+          #aboutme-timeline .tl-academia .tl-marker-icon {
+              background-image: url("/img/fontawesome/graduation-cap.svg");
+          }
+
+          #aboutme-timeline .tl-event.tl-academia .tl-event-content .tl-event-content-box {
+              border-color: #66CCFF;
+          }
+        
+          #aboutme-timeline #tl-check-project:checked ~ .tl-filters > .tl-filter.tl-project {
+              opacity: 0.3;
+          }
+
+          #aboutme-timeline #tl-check-project:checked ~ .tl-events > .tl-event.tl-project {
+              opacity: 0;
+              height: 0;
+          }
+
+          #aboutme-timeline .tl-project.tl-marker {
+              background-color: #FFCC66;
+          }
+
+          #aboutme-timeline .tl-project .tl-marker-icon {
+              background-image: url("/img/fontawesome/code.svg");
+          }
+
+          #aboutme-timeline .tl-event.tl-project .tl-event-content .tl-event-content-box {
+              border-color: #FFCC66;
+          }
+        
+          #aboutme-timeline #tl-check-life:checked ~ .tl-filters > .tl-filter.tl-life {
+              opacity: 0.3;
+          }
+
+          #aboutme-timeline #tl-check-life:checked ~ .tl-events > .tl-event.tl-life {
+              opacity: 0;
+              height: 0;
+          }
+
+          #aboutme-timeline .tl-life.tl-marker {
+              background-color: #99FF99;
+          }
+
+          #aboutme-timeline .tl-life .tl-marker-icon {
+              background-image: url("/img/fontawesome/house-chimney.svg");
+          }
+
+          #aboutme-timeline .tl-event.tl-life .tl-event-content .tl-event-content-box {
+              border-color: #99FF99;
+          }
+        
+          #aboutme-timeline #tl-check-work:checked ~ .tl-filters > .tl-filter.tl-work {
+              opacity: 0.3;
+          }
+
+          #aboutme-timeline #tl-check-work:checked ~ .tl-events > .tl-event.tl-work {
+              opacity: 0;
+              height: 0;
+          }
+
+          #aboutme-timeline .tl-work.tl-marker {
+              background-color: #FF9999;
+          }
+
+          #aboutme-timeline .tl-work .tl-marker-icon {
+              background-image: url("/img/fontawesome/briefcase.svg");
+          }
+
+          #aboutme-timeline .tl-event.tl-work .tl-event-content .tl-event-content-box {
+              border-color: #FF9999;
+          }
+        
+        </style>
+<div id="aboutme-timeline" class="tl-timeline">
+          
+              <input type="checkbox" id="tl-check-academia" class="tl-check" />
+            
+              <input type="checkbox" id="tl-check-project" class="tl-check" />
+            
+              <input type="checkbox" id="tl-check-life" class="tl-check" />
+            
+              <input type="checkbox" id="tl-check-work" class="tl-check" />
+            
+          <div class="tl-filters">
+            
+                <label for="tl-check-academia" class="tl-filter tl-academia tl-marker"><span class="tl-marker-icon"></span></label>
+              
+                <label for="tl-check-project" class="tl-filter tl-project tl-marker"><span class="tl-marker-icon"></span></label>
+              
+                <label for="tl-check-life" class="tl-filter tl-life tl-marker"><span class="tl-marker-icon"></span></label>
+              
+                <label for="tl-check-work" class="tl-filter tl-work tl-marker"><span class="tl-marker-icon"></span></label>
+              
+          </div>
+          <div class="tl-events">
+            
+
+<div class="tl-event tl-life">
+          <span class="tl-marker tl-life"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> January 2022 </time>
+              <div class="tl-event-text">
+                
+<p>I moved back to Uppsala, Sweden.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-academia">
+          <span class="tl-marker tl-academia"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> Februrary 2021 </time>
+              <div class="tl-event-text">
+                
+<p>I co-authored the paper <em><a href="https://doi.org/10.1117/1.JMI.8.1.014002">Faster dense deformable image registration by utilizing
+both CPU and GPU</a></em>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-work">
+          <span class="tl-marker tl-work"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> January 2020 </time>
+              <div class="tl-event-text">
+                
+<p>I started working at Bosch.</p>
+
+<p>I contributed to the development of the Bosch ConnectModule, a hardware
+component of the Bosch E-bike System providing geolocation, anti-theft, and IoT
+features to e-bikes.</p>
+
+<p>I primarily contributed to the design and implementation of the embedded
+network communication stack and of the embedded resource management.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-life">
+          <span class="tl-marker tl-life"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> January 2020 </time>
+              <div class="tl-event-text">
+                
+<p>I moved to Lund, Sweden.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> May 2020 </time>
+              <div class="tl-event-text">
+                
+<p>I implemented support for gocryptfs backend in KDE Plasma Vault
+<a href="https://cukic.co/2020/06/01/plasma-vaults-and-gocryptfs/">[1]</a>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-academia">
+          <span class="tl-marker tl-academia"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> December 2020 </time>
+              <div class="tl-event-text">
+                
+<p>I co-authored the paper <em><a href="https://doi.org/10.1145/3427423.3427465">Recent advances in large scale whole body MRI image
+analysis: Imiomics</a></em>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-academia">
+          <span class="tl-marker tl-academia"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> February 2020 </time>
+              <div class="tl-event-text">
+                
+<p>I released a <a href="https://github.com/m-pilia/tau-report">technical report</a> on large
+scale indoor simultaneous location and mapping (SLAM) solutions based on
+research work I performed at Tampere University.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> December 2019 </time>
+              <div class="tl-event-text">
+                
+<p>I released <a href="https://github.com/m-pilia/vim-ccls">colmap-docker</a>, a Docker
+container to run the <a href="https://colmap.github.io/">Colmap</a> structure-from-motion
+toolbox in a portable manner.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> October 2019 </time>
+              <div class="tl-event-text">
+                
+<p>Initial release of <a href="https://github.com/m-pilia/vim-mediawiki">vim-mediawiki</a>, a
+plugin to edit MediaWiki pages in vim/Neovim.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-academia">
+          <span class="tl-marker tl-academia"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> October 2019 </time>
+              <div class="tl-event-text">
+                
+<p>Published the paper <em><a href="https://doi.org/10.1371/journal.pone.0222700">Average volume reference space for large scale
+registration of whole-body magnetic resonance
+images</a></em>.</p>
+
+<p>An overview of the research work is summarized in <a href="/posts/2019/11/17/jacobian-registration.html">a blog
+post</a>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> May 2019 </time>
+              <div class="tl-event-text">
+                
+<p>Initial release of <a href="https://github.com/m-pilia/vim-yggdrasil">vim-yggdrasil</a>, a
+library plugin to create tree views in vim/Neovim.</p>
+
+<p>Initially developed as a reusable component for my
+<a href="https://github.com/m-pilia/vim-ccls">vim-ccls</a> project, has later been adopted
+by the popular <a href="https://github.com/prabirshrestha/vim-lsp">vim-lsp</a> project
+<a href="https://github.com/prabirshrestha/vim-lsp/blob/24d9f18bca370d7539079dcbea1fe13d0ae1dc8f/autoload/lsp/utils/tree.vim">[1]</a>
+and has been source of inspiration for similar plugins (like
+<a href="https://github.com/ranjithshegde/ccls.nvim">ccls.nvim</a>, that implemented a Lua
+port of vim-yggdrasil).</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> May 2019 </time>
+              <div class="tl-event-text">
+                
+<p>Initial release of <a href="https://github.com/m-pilia/vim-pkgbuild">vim-pkgbuild</a>, a
+plugin to edit PKGBUILD files on vim/Neovim.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> March 2019 </time>
+              <div class="tl-event-text">
+                
+<p>Initial release of <a href="https://github.com/m-pilia/vim-ccls">vim-ccls</a>,
+a plugin to integrate extended ccls language server features in vim/Neovim.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-work">
+          <span class="tl-marker tl-work"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> December 2018 </time>
+              <div class="tl-event-text">
+                
+<p>I started working at Veoneer.</p>
+
+<p>I contributed to the development of SVS4, including the design and
+implementation of new stereo camera calibration algorithms and of some object
+detection algorithms.</p>
+
+<p>My contributions ended up in several consumer car models, including the Mercedes
+EQS Drive Pilot
+<a href="https://www.veoneer.com/en/press/veoneer-radar-and-stereovision-mercedes-eqs-hands-self-driving-tech-1907213">[1]</a>,
+first customer vehicle in the world to deliver a certified Level 3 (hands-off)
+self-driving system
+<a href="https://arstechnica.com/cars/2021/12/mercedes-benz-gets-worlds-first-approval-for-automated-driving-system/">[2]</a>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-life">
+          <span class="tl-marker tl-life"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> December 2018 </time>
+              <div class="tl-event-text">
+                
+<p>I moved to Linköping, Sweden.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> July-October 2018 </time>
+              <div class="tl-event-text">
+                
+<p>Contributed to the development of <a href="https://github.com/simeks/deform">deform</a>, a
+then state-of-the-art deformable image registration library and toolkit.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> September 2018 </time>
+              <div class="tl-event-text">
+                
+<p>I implemented a <a href="https://github.com/m-pilia/CorrespondingPointsMeanDistanceMetric">groupwise landmark-based
+metric</a> for
+the Elastix image registration toolkit, together with an <a href="/posts/2018/09/23/goupwise-landmark-registration.html">accompanying blog
+post</a>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> July 2018 </time>
+              <div class="tl-event-text">
+                
+<p>Published <a href="https://github.com/m-pilia/volume-raycasting">volume-raycasting</a>, a
+minimal GPU-accelerated raycaster with an <a href="https://martinopilia.com/posts/2018/09/17/volume-raycasting.html">accompanying blog post
+tutorial</a>.</p>
+
+<p>Initially developed as a research tool, it has later been used and cited by
+unrelated researchers <a href="https://doi.org/10.21105/joss.02580">[1]</a> and part of
+the code has been incorporated in the official Qt6 SDK examples
+<a href="https://web.archive.org/web/20240721210046/https://doc.qt.io/qt-6/qtquick3d-attribution-alpha-blending-frag.html">[2]</a>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-academia">
+          <span class="tl-marker tl-academia"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> April 2018 </time>
+              <div class="tl-event-text">
+                
+<p>Published the <a href="https://github.com/m-pilia/disptools">Disptools</a> project, a
+medical imaging research toolkit implemented in C and CUDA with Python
+bindings, instrumental to my work on medical imaging.</p>
+
+<p>The project has been later used and cited by other unrelated researchers
+<a href="https://www.biorxiv.org/content/10.1101/2024.08.12.607581v1.full.pdf">[1]</a>.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-academia">
+          <span class="tl-marker tl-academia"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> March 2018 </time>
+              <div class="tl-event-text">
+                
+<p>At the <a href="https://ssba.org.se/ssba18-symposium/">Swedish Symposium on Image
+Analysis</a> (SSBA) in Stockholm I
+presented the research work performed as part of my then ongoing master thesis
+project.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-project">
+          <span class="tl-marker tl-project"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> June 2017 </time>
+              <div class="tl-event-text">
+                
+<p>Initial release of
+<a href="https://github.com/m-pilia/plasma-applet-ambientnoise">plasma-applet-ambientnoise</a>,
+a KDE plasmoid inspired by Ubuntu’s Anoise, providing a native solution on KDE
+with more flexible mixer controls.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+<div class="tl-event tl-life">
+          <span class="tl-marker tl-life"><span class="tl-marker-icon"></span></span>
+          <div class="tl-event-content">
+            <div class="tl-event-content-box">
+              <time> August 2016 </time>
+              <div class="tl-event-text">
+                
+<p>I moved to Uppsala, Sweden.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+
+          </div>
+        </div>
 
 
 	    
