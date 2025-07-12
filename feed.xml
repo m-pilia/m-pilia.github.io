@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>New timeline Jekyll plugin</title>
+        <description>
+          With a pure CSS solution - 
+          This is a meta-post about some updates I have been developing for the website. I decided to reorganize some of the content and provide information in a way that is easier to navigate. To provide bit-sized information in chronological order I decided to use a timeline layout, and I developed...
+        </description>
+        <pubDate>Sat, 12 Jul 2025 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2025/07/12/timeline-plugin.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2025/07/12/timeline-plugin.html</guid>
+      </item>
+    
+      <item>
         <title>One thing you must know before disassembling your G502 X</title>
         <description>
           Just to make sure you can put it back together - 

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>New timeline Jekyll plugin</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="With a pure CSS solution">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="New timeline Jekyll plugin" />
+  
+
+   
+  <meta property="og:description" content="With a pure CSS solution">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2025/07/12/timeline-plugin.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2025/07/12/timeline-plugin.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="New timeline Jekyll plugin" />
+  
+
+  
+  <meta name="twitter:description" content="With a pure CSS solution">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>New timeline Jekyll plugin</h1>
+		  
+		    
+			<h2 class="post-subheading">With a pure CSS solution</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on July 12, 2025
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+8 minutes
+
+read (1384 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>New timeline Jekyll plugin</h1>
+		  
+		    
+			<h2 class="post-subheading">With a pure CSS solution</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on July 12, 2025</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This is a meta-post about some updates I have been developing for the website.
+I decided to reorganize some of the content and provide information in a way
+that is easier to navigate.</p>
+
+<p>To provide bit-sized information in chronological order I decided to use a
+timeline layout, and I developed my own Jekyll plugin to create animated
+responsive timelines in pure CSS. This post shares a little background and some
+key insights.</p>
+
+<h1 id="background">Background</h1>
+
+<p>I started thinking about how to put together a timeline layout. Not reinventing
+the wheel is usually a good principle to live by, so I checked if I could find
+any pre-existing solutions that would fit my use case. A quick search for
+Jekyll plugins however did not find any interesting plug-and-play solution.</p>
+
+<p>However, I had at least some clear inspiration for what I wanted to achieve.
+Thinking about timelines brought back to my mind a nice layout I saw a few
+years ago on <a href="https://web.archive.org/web/20241003124559/https://lisaschwetlick.de/#TimelineScroll">Lisa Schwetlick’s
+website</a>
+(and that has probably been a latent inspiration for this whole idea).</p>
+
+<p>So I had a look at her site, and her solution seems to be at least partially
+based on <a href="https://web.archive.org/web/20250430022542/https://codyhouse.co/gem/vertical-timeline/">CodyHouse’s timeline
+component</a>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">1</a></sup>
+The CodyHouse components is distributed under a free license that in principle
+would be compatible with my website, but I considered some arguments for not
+using it:</p>
+
+<ul>
+  <li>The CodyHouse license prevents from distributing derivative work in plugin
+form (which is an option I want to keep on the table).</li>
+  <li>It depends on the CodyHouse framework, and I would prefer to avoid
+introducing external dependencies, especially on content that is freemium or
+not under fully free licenses.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup></li>
+  <li>Maybe it is time to learn some new web development tricks and have some fun
+while at it.</li>
+</ul>
+
+<p>For that reason, I decided to roll out my own solution in a reusable manner.</p>
+
+<h1 id="key-concepts">Key concepts</h1>
+
+<p>The first step is to organize the layout for the content. Thankfully, these
+days it is much easier to accomplish it with pure CSS.</p>
+
+<p>Each event in the timeline should be rendered as a tile, and the basic layout
+is structured with a vertical
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox">flexbox</a>
+for the events, where each event is itself a horizontal flexbox containing a
+marker on the vertical line and a box with text. Jonas Hietala has a <a href="https://www.jonashietala.se/blog/2024/08/25/a_simple_timeline_using_css_flexbox/">nice
+tutorial</a>
+explaining some basic ideas and a few neat tricks that I decided to adopt and
+adapt. I recommend reading it to get all the details.</p>
+
+<p>The vertical line in the timeline is drawn with the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::before"><code class="language-plaintext highlighter-rouge">::before</code>
+pseudo-element</a> of
+the element containing the timeline events.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.tl-events</span><span class="nd">::before</span> <span class="p">{</span>
+    <span class="nl">content</span><span class="p">:</span> <span class="s1">""</span><span class="p">;</span>
+    <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+    <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Events are placed alternating left
+and right of the vertical line using the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child"><code class="language-plaintext highlighter-rouge">:nth-child()</code>
+pseudo-class</a>,
+setting mirrored properties for elements on each side</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.tl-event</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">odd</span><span class="o">)</span> <span class="p">{</span>
+    <span class="err">.tl-event-content</span> <span class="err">{</span>
+        <span class="nl">padding-right</span><span class="p">:</span> <span class="m">2em</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nc">.tl-event-content</span> <span class="nc">.tl-event-content-box</span> <span class="p">{</span>
+        <span class="nl">padding-right</span><span class="p">:</span> <span class="m">0.5em</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="err">}</span>
+
+<span class="nc">.tl-event</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span> <span class="p">{</span>
+    <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">row-reverse</span><span class="p">;</span>
+
+    <span class="err">.tl-event-content</span> <span class="err">{</span>
+        <span class="nl">text-align</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
+        <span class="nl">padding-left</span><span class="p">:</span> <span class="m">2em</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nc">.tl-event-content</span> <span class="nc">.tl-event-content-box</span> <span class="p">{</span>
+        <span class="nl">padding-left</span><span class="p">:</span> <span class="m">0.5em</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nc">.tl-marker</span> <span class="p">{</span>
+        <span class="nl">left</span><span class="p">:</span> <span class="n">calc</span><span class="p">(</span><span class="n">var</span><span class="p">(</span><span class="n">--marker-size</span><span class="p">)</span> <span class="err">*</span> <span class="m">0.5</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<p>Like in my inspiring examples, I wanted to support multiple categories for
+timeline events, and correspondingly use different but matching colours and
+icons, and also add a filter to interactively select what categories to show or
+hide. A row of filter buttons are rendered on the top of the timeline, and
+clicking them allows to hide/show events belonging to the corresponding
+category.</p>
+
+<p>This is accomplished in pure CSS using the <a href="https://web.archive.org/web/20230220194827/https://css-tricks.com/the-checkbox-hack/">checkbox
+hack</a>,
+where the control buttons are labels of a hidden checkbox, therefore clicking
+them toggles the state of the checkbox, which in turn can be used to control
+the style of other elements using the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:checked"><code class="language-plaintext highlighter-rouge">:checked</code>
+pseudo-class</a>.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">#tl-check</span><span class="nd">:checked</span> <span class="o">~</span> <span class="nc">.tl-events</span> <span class="o">&gt;</span> <span class="nc">.tl-event</span> <span class="p">{</span>
+  <span class="nl">opacity</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The row of filter buttons is a horizontal flexbox. These controls need to be
+visible while scrolling, so the element is kept at the top of the page with
+<code class="language-plaintext highlighter-rouge">position: sticky</code>:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.tl-filters</span> <span class="p">{</span>
+    <span class="nl">position</span><span class="p">:</span> <span class="n">sticky</span><span class="p">;</span>
+    <span class="nl">z-index</span><span class="p">:</span> <span class="m">1000</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
+    <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">row</span><span class="p">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+    <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+    <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Animations are defined in CSS, and the new <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior"><code class="language-plaintext highlighter-rouge">transition-behavior</code>
+property</a>
+can be set to <code class="language-plaintext highlighter-rouge">allow-discrete</code> to animate appearance and disappearance of
+elements in pure CSS.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.tl-event</span> <span class="p">{</span>
+    <span class="nl">transition-property</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span> <span class="n">opacity</span><span class="p">;</span>
+    <span class="nl">transition-duration</span><span class="p">:</span> <span class="m">0.5s</span><span class="p">;</span>
+    <span class="py">transition-behavior</span><span class="p">:</span> <span class="n">allow-discrete</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="jekyll-plugin">Jekyll plugin</h1>
+
+<p>To wrap everything together, a couple Liquid tag blocks generate the underlying
+HTML and that part of the CSS that depends on user content (since each event
+category has its own styling, and the number and style of event categories can
+be freely defined by the user, the related CSS needs to be generated
+at build time).</p>
+
+<p>An outer <code class="language-plaintext highlighter-rouge">{% timeline %}</code> tag block defines the timeline
+and specifies the configuration (such as what event categories to use and their
+styling). The configuration is provided as a chunk of YAML passed as argument
+to the opening tag. <code class="language-plaintext highlighter-rouge">{% event %}</code> tag blocks placed inside
+it allow to define individual events.</p>
+
+<p>For instance, the following code</p>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">timeline</span><span class="w">
+</span><span class="na">id</span><span class="o">:</span><span class="w"> </span>example-timeline<span class="err">
+</span><span class="na">categories</span><span class="o">:</span><span class="err">
+</span><span class="w">    </span><span class="na">project</span><span class="o">:</span><span class="err">
+</span><span class="w">        </span><span class="na">color</span><span class="o">:</span><span class="w"> </span><span class="s2">"#FFCC66"</span><span class="err">
+</span><span class="w">        </span><span class="na">icon</span><span class="o">:</span><span class="w"> </span>/img/fontawesome/code.svg<span class="err">
+</span><span class="w">    </span><span class="na">life</span><span class="o">:</span><span class="err">
+</span><span class="w">        </span><span class="na">color</span><span class="o">:</span><span class="w"> </span><span class="s2">"#33CC33"</span><span class="err">
+</span><span class="w">        </span><span class="na">icon</span><span class="o">:</span><span class="w"> </span>/img/fontawesome/house-chimney.svg<span class="err">
+</span><span class="p">%}</span>
+
+<span class="p">{%</span><span class="w"> </span><span class="nt">event</span><span class="w"> </span>life,<span class="w"> </span>March<span class="w"> </span><span class="mi">2017</span><span class="w"> </span><span class="p">%}</span>
+First event.
+<span class="p">{%</span><span class="w"> </span><span class="nt">endevent</span><span class="w"> </span><span class="p">%}</span>
+
+<span class="p">{%</span><span class="w"> </span><span class="nt">event</span><span class="w"> </span>project,<span class="w"> </span>April<span class="w"> </span><span class="mi">2018</span><span class="w"> </span><span class="p">%}</span>
+Second event.
+<span class="p">{%</span><span class="w"> </span><span class="nt">endevent</span><span class="w"> </span><span class="p">%}</span>
+
+<span class="p">{%</span><span class="w"> </span><span class="nt">endtimeline</span><span class="w"> </span><span class="p">%}</span>
+</code></pre></div></div>
+
+<p>will produce this result:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/timeline_plugin/timeline_example.png" />
+</div>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>There is definitely room for improvements. Animations could be made nicer, e.g.
+by having the elements flow more smoothly when an item is shown or hidden.
+Also, the placement to the left or right of the line could be dynamically
+altered based on what elements are being shown or hidden (while currently it is
+statically determined based on the order of elements, including both visible
+and hidden). Dynamically loading events with infinite scroll could also be a
+nice improvements for longer timelines.</p>
+
+<p>These should be relatively easy to achieve by adding a bit of Javascript to the
+mix, but for now I have given more weight to the simplicity of a pure CSS
+solution. It is interesting to observe how much more powerful and versatile CSS
+has become in the years.</p>
+
+<p>The source code of this timeline plugin for Jekyll is available <a href="https://github.com/m-pilia/m-pilia.github.io/commit/37b517c6d911fcf0f6d602bf4e3632fb977464f8">on
+GitHub</a>.
+Enjoy!</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:2" role="doc-endnote">
+      <p>Or at least it is remarkably similar to it. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>This is not really about ideological reasons, one key concern is to
+retain freedom and full ownership of my own content from a legal
+perspective. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#Jekyll">Jekyll</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html&t=New+timeline+Jekyll+plugin"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html&text=New+timeline+Jekyll+plugin"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=New+timeline+Jekyll+plugin&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html&appkey=&title=New+timeline+Jekyll+plugin&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=New+timeline+Jekyll+plugin&text=New+timeline+Jekyll+plugin&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F07%2F12%2Ftimeline-plugin.html&title=New+timeline+Jekyll+plugin&description=New+timeline+Jekyll+plugin"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2025/05/03/mouse-fixing.html" data-toggle="tooltip" data-placement="top" title="One thing you must know before disassembling your G502 X">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2025
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
