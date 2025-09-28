@@ -72,7 +72,7 @@ author:
 # If you want to add a new link that isn't here, you'll need to also edit the file _data/SocialNetworks.yml
 social-network-links:
   rss: true
-  email: "martino.pilia@gmail.com"
+  email: "martino.pilia@proton.me"
   github: m-pilia
 
 # Select which share links to show in posts
