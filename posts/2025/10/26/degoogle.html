@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>How I de-googled my personal devices</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Switching out of Google products and services has been easier than expected">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="How I de-googled my personal devices" />
+  
+
+   
+  <meta property="og:description" content="Switching out of Google products and services has been easier than expected">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2025/10/26/degoogle.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2025/10/26/degoogle.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="How I de-googled my personal devices" />
+  
+
+  
+  <meta name="twitter:description" content="Switching out of Google products and services has been easier than expected">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>How I de-googled my personal devices</h1>
+		  
+		    
+			<h2 class="post-subheading">Switching out of Google products and services has been easier than expected</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on October 26, 2025
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+21 minutes
+
+read (3725 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>How I de-googled my personal devices</h1>
+		  
+		    
+			<h2 class="post-subheading">Switching out of Google products and services has been easier than expected</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on October 26, 2025</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This post is a recap of my experience migrating to a Google-free environment.
+This transition is part of a broader change of habits I made in recent times.
+It is not just a matter of putting more focus on privacy, but also of escaping
+<em><a href="https://en.wikipedia.org/wiki/Enshittification">enshittified</a></em> products, and
+creating some distance from (and not be a customer of) companies whose
+political and social stances have become more and more questionable.</p>
+
+<p>As part of this change, for instance, I stopped using Amazon altogether one
+year ago, and I started paying a lot more attention to use products and
+services that are free from questionable political ties.<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">1</a></sup></p>
+
+<p>Beyond political and social concerns, <em>enshittification</em> practices have become
+more and more frustrating to me personally. No longer passively enduring these
+changes but rather ditching these products and migrating to alternatives, even
+if sometimes more expensive or less mature, gives a much better feeling of
+regaining a customer role rather than being myself the product.</p>
+
+<p>Adding to that, more and more pieces of legislation are being pushed in
+different countries to put in place mechanisms enabling large-scale
+surveillance. <a href="https://fightchatcontrol.eu/">Chat control</a> is one of the most
+discussed proposals at the moment, but it only adds to many previous steps that
+have been eroding privacy and freedom of expression in recent times. Some
+successful acts of legislation in the opposite direction, such as
+<a href="https://en.wikipedia.org/wiki/General_Data_Protection_Regulation">GDPR</a>, are
+important milestones but do not feel anywhere near enough. In light of this,
+allowing companies to get a hold of unnecessary personal information becomes
+more and more dangerous, as that data can be sold (legally or illegally) to bad
+faith private entities or hostile government actors.</p>
+
+<p>The <a href="https://en.wikipedia.org/wiki/DeGoogle">DeGoogle</a> movement is not new but
+it gained significant popularity in the last couple years, likely in connection
+with recent political developments and the political stances taken not just by
+Google but also other large IT corporations.</p>
+
+<h1 id="background">Background</h1>
+
+<p>I have been using Android for almost fifteen years, since when I migrated from
+my last PDA<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup> to my first smartphone. My previous Android devices have been
+two iterations of the Nexus phone and a Pixel 5.</p>
+
+<p>I am used to custom ROMs and fiddling with system customization, as for a long
+time in the past I used
+<a href="https://en.wikipedia.org/wiki/CyanogenMod">CyanogenMod</a> (later
+<a href="https://en.wikipedia.org/wiki/LineageOS">LineageOS</a>). At the time I had three
+main motivating factors for using custom ROMs: having access to system features
+not yet part of AOSP or OEM Android,<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">3</a></sup> getting faster and longer update
+support,<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">4</a></sup> and avoiding OEM bloatware.</p>
+
+<p>However, as Android matured, I later settled for vanilla Google Android on
+Nexus (and later Pixel) devices, as it offered the features I needed with
+little bloatware compared to other OEMs. Update and support has remained short
+and underwhelming, but for the rest I found little to no appeal in other
+Android OEMs.</p>
+
+<p>I was however aware of the trade-off that came with using Google products, and
+the terrible privacy practices that came with it. In the last few years I came
+to like less and less the policies adopted by Google,<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup> both in terms of
+products and general stance, and on top of that I decided that the privacy
+trade-off was no longer acceptable.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">6</a></sup> For these reason, I decided to migrate
+out of the Google ecosystem entirely.</p>
+
+<h1 id="all-starts-with-the-email">All starts with the email</h1>
+
+<p>The obvious first step has been moving out of Google products. I started using
+the Google ecosystem with Gmail, and ironically email was the first step on
+the way out as well. Gmail is the only Google service I truly depended on, as
+for all other Google products I either only had minor and not strictly
+necessary use cases, or no use at all.</p>
+
+<p>For a privacy-oriented focus, I opted to make Proton Mail my new main email
+account. I have already had a free Proton account for some time as a secondary
+email, as I have been planning this transition for a couple years already,<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup>
+so I switched to a paid plan<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">8</a></sup> and migrated all my data from Gmail.</p>
+
+<p>The plan includes end-to-end encrypted cloud storage and will allow me to also
+get rid of my current cloud storage subscription,<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">9</a></sup> so the effective cost of
+this transition, even without accounting for the privacy benefits, is much
+lower than the label price.</p>
+
+<h2 id="ecosystem-vs-single-purpose">Ecosystem vs single-purpose</h2>
+
+<p>While Proton has a strong privacy-focused brand, the choice of email provider
+is not automatic and arguments could be made about it. One multi-faced aspect
+is that Proton is no longer just an email provider, but it now offers a cloud
+suite including file storage, VPN, LLMs,<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">10</a></sup> wallet, and now a small but slowly
+growing office suite.</p>
+
+<p>There would be reasons to prefer a single-purpose focused email provider over
+a wannabe cloud ecosystem, but in my case some other Proton products happen to
+fulfill my use cases, so this ends up being an advantage for me.</p>
+
+<p>The could storage is not particularly appealing over competitors in terms of
+available storage, pricing, speed, and software. The lack of a viable Linux
+client is a big negative for me, but the recent introduction of an SDK will
+hopefully fill that gap in the future. The lack of a fast and robust
+bidirectional synchronization is also limiting.</p>
+
+<p>In my use case, however, I routinely use only a small set of data, while the
+bulk of data is old items that I do not need to edit and that I rarely access.
+So I can move the bulk of rarely used data to Proton, without really needing a
+desktop client nor a mount point for it, and keep the small but frequently used
+data on Dropbox, which allows me to switch to a lower tier Dropbox subscription
+due to the now much smaller size requirement.</p>
+
+<p>The office suite is also useful to me, as I have very limited use cases where a
+Google Docs replacement is handy and saves me from the need for a separate
+solution.<sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">11</a></sup> The VPN is also handy, it is not an essential tool but I want to
+have one at hand for technical reasons, and this saves me the need to get it
+from a separate provider.</p>
+
+<p>Other products in the Proton ecosystem, like wallets and LLM/AI, are not really
+useful to me.</p>
+
+<h1 id="choice-of-phone">Choice of phone</h1>
+
+<p>I decided to get a new smartphone, which is a rare event<sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">12</a></sup> and usually
+requires going through many considerations. Switching to iPhone is not an
+option, as it implies exchanging one corporate ecosystem for another.<sup id="fnref:20" role="doc-noteref"><a href="#fn:20" class="footnote" rel="footnote">13</a></sup> I
+decided to get a <a href="https://en.wikipedia.org/wiki/Fairphone_6">Fairphone 6</a>, for
+a few different reasons.</p>
+
+<p><a href="https://en.wikipedia.org/wiki/Fairphone">Fairphone</a> is an EU-based company
+that manufactures devices with great lifespan and repairability. It also has a
+strong focus on sustainability, which is in line with my own values. Fairphone
+also partners with <a href="https://murena.com/">Murena</a> to offer a Google-free variant
+of their phones out of the box.</p>
+
+<p>The choice of operating system was one out of several options.
+<a href="https://en.wikipedia.org/wiki/GrapheneOS">GrapheneOS</a> is arguably the
+<a href="https://web.archive.org/web/20251009134134/https://eylenburg.github.io/android_comparison.htm">safest</a>
+mobile operating system available at the moment. However it only supports Pixel
+devices for the foreseeable future, making it a hard pass for me as I am not
+willing to buy more Google products, not even if just for the hardware. While
+GrapheneOS’s superior hardening is very interesting, it is an overkill for my
+personal threat model and not necessary to achieve my narrower goal of getting
+rid of Google products and services.</p>
+
+<p>In the past I used <a href="https://en.wikipedia.org/wiki/LineageOS">LineageOS</a> and
+appreciated it for its simplicity and freedom from bloat. A de-googled
+LineageOS installation could therefore be a candidate.
+<a href="https://en.wikipedia.org/wiki//e/_(operating_system)">/e/os</a> is a relatively
+new system, based on LineageOS, and I decided to give it a chance.</p>
+
+<p>I am aware that prioritising usability, as Murena (the company developing
+/e/os) does, implies some compromises that could be avoided by going for a more
+hard-core option like GrapheneOS. I also do not blindly trust the company and
+look critically ahead to how it will continue its mission in the future. I see
+this migration primarily as an experiment that might require corrections (all
+the way up to switching to a different Android ROM).</p>
+
+<h1 id="switching-to-eos">Switching to /e/os</h1>
+
+<p>Compared to other Android distributions, /e/os focuses on privacy and
+usability. For Fairphone buyers, this also includes a two years software
+warranty.<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">14</a></sup> For instance it ships built-in tracker protection,<sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">15</a></sup> and it
+anonymizes some services that still rely on interactions with Google.</p>
+
+<p><a href="https://github.com/microg/GmsCore/wiki">MicroG</a>, a free and open source
+reimplementation of Google Play Services, is pre-installed and configured with
+reasonable defaults, the App Lounge (/e/os’s app store) allows seamless access
+to both F-Droid and Google Play Store (either through log-in with a Google
+account or in an anonymous way) and allows to install apps from there without
+having to install the Play Store app itself.</p>
+
+<p>I am on the knowledgeable and experienced side of users, so having to configure
+everything from scratch would not be an issue, but I find it interesting to see
+a company putting effort into creating a privacy-focused alternative without
+the hassles that would normally come with it, making privacy accessible to
+everyone, not just seasoned users.</p>
+
+<p>Speaking of smoothening the user experience, Murena also offers a platform for
+cloud synchronization, which is something missing from most other alternatives
+(for good or bad). I have decided to go without cloud for now, as I want to
+avoid creating more ties with cloud providers, including Murena itself, and see
+what the experience is like without any cloud integration.</p>
+
+<p>The migration has been incredibly smooth, much less problematic than I
+expected.<sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">16</a></sup> All my apps worked just fine, even digital identity and banking
+apps, which are the ones with the most potential to be fussy. Only one manual
+settings adjustment was required to get some apps to always work when invoked
+from links in the browser, I had to manually select in the app settings which
+app link domains to enable (simply allowing those apps to open links was not
+enough).</p>
+
+<h1 id="caveats">Caveats</h1>
+
+<p>While the switch has been surprisingly smooth, there are some unpolished or
+underwhelming corners that I hit pretty quickly.</p>
+
+<h2 id="software">Software</h2>
+
+<p>The first one is of personal taste (<em>de gustibus non est disputandum</em> and all),
+but I personally am not a fan of the iPhone-like UI in the default
+Murena-developed Bliss launcher.<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup> Thankfully, however, /e/os is not tied to
+its default launcher, and for a Pixel escapee like me
+<a href="https://github.com/LawnchairLauncher/lawnchair">Lawnchair</a> provides the
+familiar clean and tidy UI experience with the advantage of a much greater deal
+of customizability compared to Pixel. Lawnchair is just one among several high
+quality options for open source Android launchers, so on this aspect there is
+ample room for choice.</p>
+
+<p>Most stock apps are very bare-bone and some of them are borderline unusable. As
+an example, at the time of writing, the gallery ignores
+<a href="https://en.wikipedia.org/wiki/Exif">exif</a> metadata (scrambling the
+chronological order of imported images) and does not even have a scrollbar,
+making it painful to navigate if you have more than just a few images. Some
+software functions feel also less calibrated compared to Pixel (for instance
+the automatic display rotation being too trigger-happy) and remember me of
+Google phones from many generations ago.</p>
+
+<p>Thankfully there are excellent open source and privacy-friendly projects to
+piece the puzzle, like the <a href="https://github.com/deckerst/aves">Aves</a> image
+gallery. I replaced Google Keep by moving my recipes to Proton Docs<sup id="fnref:19" role="doc-noteref"><a href="#fn:19" class="footnote" rel="footnote">18</a></sup> and
+using <a href="https://github.com/FossifyOrg/Notes">Fossify Notes</a> for grocery lists
+and similar.</p>
+
+<p>The built-in /e/os camera app also reminds me of older Android versions, but as
+an image processing professional I appreciate the large amount of settings,
+customization, and manual toggles it provides. I never liked the trend of
+Google to remove manual options and settings from the camera app.</p>
+
+<p>One big absence is Google Pay, which cannot be used through MicroG. This
+prevents from using any wallets and contactless payment services relying on it.
+I personally do not use contactless payments on the phone, as they serve no
+practical purpose (nor give any real benefit nor convenience) compared to
+directly using a contactless bank card, while on the downside they would
+require sharing my whole transaction history with a third party (like Google)
+for no good reason.</p>
+
+<p>This however does not mean it is impossible to use contactless payments without
+Google Pay. Some bank apps, and also some neobanks or banking intermediaries,
+implement their own NFC payment mechanism instead of relying on Google Pay,
+therefore allowing to execute contactless payments from Google-free phones.</p>
+
+<h2 id="privacy">Privacy</h2>
+
+<p>/e/os <a href="https://web.archive.org/web/20250906064834/https://doc.e.foundation/maps#how-magicearth-is-added-into-eos">ships
+MagicEarth</a>
+as its preinstalled maps app, which is not open source. It is considered one of
+the best alternatives to Google Maps for navigation, and since navigation is my
+biggest use case it might be a good enough tool. Nonetheless, and regardless of
+the privacy statement, the lack of openness is a turn down.<sup id="fnref:21" role="doc-noteref"><a href="#fn:21" class="footnote" rel="footnote">19</a></sup></p>
+
+<p>One also need to be careful about which advanced features one enables, as that
+is one of the aspects where privacy compromises might pop up. An example is the
+text-to-speech, that <a href="https://web.archive.org/web/20250922012725/https://community.e.foundation/t/voice-to-text-feature-using-open-ai/70509">currently relies on
+OpenAI</a>.</p>
+
+<p>/e/os also ships some pre-installed system apps (browser, maps, notes, etc.)
+that cannot be uninstalled. None of these seem to be invasive, but I still see
+this as a downside compared to cleaner systems like GrapheneOS.</p>
+
+<p>Another aspect to keep in mind is that custom ROMs (like LineageOS and /e/os)
+and OEMs (including Fairphone) can be slower in delivering Android updates in
+full.</p>
+
+<p>A detailed analysis of shortcomings in /e/os and Fairphone can be found in <a href="https://web.archive.org/web/20251006124000/https://discuss.grapheneos.org/d/24134-devices-lacking-standard-privacysecurity-patches-and-protections-arent-private">an
+official statement</a>
+from GrapheneOS. In a nutshell, GrapheneOS is presently the best option by
+far when it comes to hardening and safety. If one is willing to buy a Google
+Pixel phone to run it, which I am no longer willing to do.</p>
+
+<h2 id="hardware">Hardware</h2>
+
+<p>The most annoying usability complaints I personally found are hardware-related,
+however. I personally do not like the fingerprint reader on the power button,
+as it makes unnecessarily hard to turn the screen on and off without
+accidentally unlocking the device (even when disabling the always-on
+fingerprint unlocking). I will have to get used to turning the display off by
+double-tapping the top edge of the screen (which is not particularly
+practical). I wish I could also double-tap to turn it on, but always-on display
+is not supported on /e/os,<sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">20</a></sup> whose absence can be felt if one is used to it.</p>
+
+<p>I also dislike the placement of the up-down volume buttons on the opposite side
+of the device, being placed too low. It is easy to accidentally click the
+volume down button while pressing the power button on the other side, and I
+have already taken way too many unintentional screenshots because of it. While
+I can understand the choice of bundling the fingerprint reader with the power
+button to simplify the hardware design, the poor placement of the volume
+buttons is hard to justify, especially for a sixth generation product.</p>
+
+<p>I will also miss the convenience of wireless charging, and will have to get
+used again to fiddle with cables (or find a good charging dock), as I do not
+think I will be willing to deal with the bulkiness of an external wireless
+charge adapter.<sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">21</a></sup> Wireless charging is missing by design, as it is not a
+power-efficient solution. Even with a wireless charger on the lower end of
+efficiency, though, the amount of wasted power would be fairly limited in
+absolute terms, and I could be willing to trade it for the convenience.</p>
+
+<h1 id="is-it-really-google-free">Is it really Google-free?</h1>
+
+<p>In the end, the straight answer is no. Not entirely. While it is possible to
+set up a truly Google-free Android derivative (a stock GrapheneOS is a good
+example), the truth is that many apps have dependencies on Google Play
+Services, and will break without them.</p>
+
+<p>Applications such as digital identity, banking, and government-related services
+are becoming more and more important in most societies, approaching the
+borderline indispensable. Therefore a truly Google-free device (as in,
+completely free from Google Play Services) would be functionally broken in this
+context. And even the current approaches to tame Google Play Services, such as
+using MicroG or by running Google apps in sandboxed mode, feel brittle in terms
+of long-term viability, as Google could take action to break such solutions,
+and there would be no one that could realistically stop them.<sup id="fnref:22" role="doc-noteref"><a href="#fn:22" class="footnote" rel="footnote">22</a></sup></p>
+
+<p>My personal goal for this migration has been to get rid of first-hand
+dependency from Google services, and limiting interaction with Google APIs to
+the strict necessary and only for the apps I truly need. Nonetheless,
+reflecting on this gives a worrisome perspective of how how deeply society has
+become entangled with private actors like Google and other large IT firms, that
+have built for themselves a position which is becoming harder and harder to
+extricate from functional services in modern society, and would require some
+amount of re-thinking in terms of long term strategy and national sovereignty.</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:11" role="doc-endnote">
+      <p>To complete the tour of the FAANG knights of apocalypse: When it comes
+   to Microsoft products I am already in a good spot, as I only use Linux
+   systems on my machines. I also do not use Apple nor Meta products, and I
+   do not watch TV shows (so no Netflix or similar). <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>I have been using PDAs long before the smartphone era. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>Examples of deal-breaking feature for me at the time were tethering and
+  WiFi hotspots. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>At the time, Android OEMs could take months if not years to deliver major
+  Android updates, and support could be as short as a couple years or less. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>And of several other IT firms. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>Adding to that, the experience on Pixel 5 and 6 (I had the latter for
+  some time as a work phone) has been personally underwhelming, with the
+  feeling of being overpriced mid-range devices with outdated hardware, and
+  I found the later Pixel iterations not attractive in terms of design. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p>I have been postponing this for at least a couple years, partially due to
+  being busy, partially to overestimating the amount of effort and
+  complexity than the transition would require. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>As it is well-known, if you are not paying for a service, you are the
+  product, and I am happy to pay even for a product like email that is
+  often assumed to be a “free” service, if this gives me a guarantee on the
+  quality of the service and full ownership of my data. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>Dropbox, to which I add client-side encryption using
+  <a href="https://github.com/rfjakob/gocryptfs">gocryptfs</a>. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>Though, to be fair, who is not offering LLMs these days… <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10" role="doc-endnote">
+      <p>My documents are either simple enough to be plain text, or complex
+   enough to be LaTeX, there is generally no middle ground. Google Docs is
+   only for quick and unimportant things, especially if I need to share
+   them with other people on a pinch. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:12" role="doc-endnote">
+      <p>I tend to hold on phones for 5-6 years, until they become unusable. <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:20" role="doc-endnote">
+      <p>Additionally, I never particularly liked the iOS interface and
+   experience. <a href="#fnref:20" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:13" role="doc-endnote">
+      <p>The /e/os variant of Fairphone 6 is identical to the Fairphone OS-based
+   one but slightly more expensive. I take the price difference as a
+   donation to Murena plus the benefit of a two years software warranty.
+   Even though I do not give much importance to the latter, it might still
+   be valuable for less experienced users. <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:15" role="doc-endnote">
+      <p>Which I would previously get through DuckDuckGo, which would however
+   prevent me from using a VPN at the same time. <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:14" role="doc-endnote">
+      <p>Having set up some Huawei phones in the past, I am aware of how many
+   apps can break without Google Play Services. <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:17" role="doc-endnote">
+      <p>I understand how Murena might be trying to appeal to users that want to
+   escape from the Apple ecosystems, not just from Google. <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:19" role="doc-endnote">
+      <p>I am not even sure why I was storing them on Google Keep to begin
+   with, as it is far from being the best tool for the job. <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:21" role="doc-endnote">
+      <p>Google Maps has some useful features, such as satellite imagery and
+   StreetView, that I sometimes use. But I mostly use them from the PC, and
+   if I happened to need them on the phone I can always load the Google
+   Maps web version in the browser. Another popular use case for Google
+   Maps is to search for establishments and their opening hours, but at
+   least the latter proved to be unreliable more often than not for my use
+   cases. <a href="#fnref:21" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:18" role="doc-endnote">
+      <p>Fairphone OS supports always-on display, but on the Fairphone 6 it is
+   known, at the time of writing, to significantly increase battery drain. <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:16" role="doc-endnote">
+      <p>Or maybe I could look into buying a wireless charging coil and
+   controller and develop my own hardware solution. Sounds like an
+   interesting potential fun project. <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:22" role="doc-endnote">
+      <p>Recent anti-trust investigations in both the EU and US are promising,
+   especially the EU ones, but I feel like regulators are still trying to
+   catch up with the very basics of digital markets. <a href="#fnref:22" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#smartphone">smartphone</a>
+          
+            <a href="/tags#android">android</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html&t=How+I+de-googled+my+personal+devices"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html&text=How+I+de-googled+my+personal+devices"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=How+I+de-googled+my+personal+devices&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html&appkey=&title=How+I+de-googled+my+personal+devices&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=How+I+de-googled+my+personal+devices&text=How+I+de-googled+my+personal+devices&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2025%2F10%2F26%2Fdegoogle.html&title=How+I+de-googled+my+personal+devices&description=How+I+de-googled+my+personal+devices"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2025/07/12/timeline-plugin.html" data-toggle="tooltip" data-placement="top" title="New timeline Jekyll plugin">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2025
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

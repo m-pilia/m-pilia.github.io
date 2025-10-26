@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>How I de-googled my personal devices</title>
+        <description>
+          Switching out of Google products and services has been easier than expected - 
+          This post is a recap of my experience migrating to a Google-free environment. This transition is part of a broader change of habits I made in recent times. It is not just a matter of putting more focus on privacy, but also of escaping enshittified products, and creating some distance...
+        </description>
+        <pubDate>Sun, 26 Oct 2025 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2025/10/26/degoogle.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2025/10/26/degoogle.html</guid>
+      </item>
+    
+      <item>
         <title>New timeline Jekyll plugin</title>
         <description>
           With a pure CSS solution - 
