@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Designing a least squares fit confidence estimate</title>
+        <description>
+          But making it run very fast - 
+          While working on a project some time back, a friend asked me how to develop an effective confidence estimate for a model fitting problem such that it could run very fast in real time on a constrained system. While the question might sound mundane, I found the specific constraints called...
+        </description>
+        <pubDate>Sat, 17 Jan 2026 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2026/01/17/fit-confidence.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2026/01/17/fit-confidence.html</guid>
+      </item>
+    
+      <item>
         <title>How I de-googled my personal devices</title>
         <description>
           Switching out of Google products and services has been easier than expected - 

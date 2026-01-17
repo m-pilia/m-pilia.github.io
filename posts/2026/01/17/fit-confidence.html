@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Designing a least squares fit confidence estimate</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="But making it run very fast">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Designing a least squares fit confidence estimate" />
+  
+
+   
+  <meta property="og:description" content="But making it run very fast">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/01/17/fit-confidence.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/01/17/fit-confidence.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Designing a least squares fit confidence estimate" />
+  
+
+  
+  <meta name="twitter:description" content="But making it run very fast">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Designing a least squares fit confidence estimate</h1>
+		  
+		    
+			<h2 class="post-subheading">But making it run very fast</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on January 17, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+6 minutes
+
+read (1101 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Designing a least squares fit confidence estimate</h1>
+		  
+		    
+			<h2 class="post-subheading">But making it run very fast</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on January 17, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>While working on a project some time back, a friend asked me how to develop an
+effective confidence estimate for a model fitting problem such that it could
+run very fast in real time on a constrained system. While the question might
+sound mundane, I found the specific constraints called for an interesting
+solution. This post is a short elaboration of how to construct a good answer.</p>
+
+<h1 id="background">Background</h1>
+
+<p><a href="https://en.wikipedia.org/wiki/Least_squares">Least squares</a> is a well-known
+method to fit a model to data by minimising a loss based on the sum of squared
+residuals between the model function and the data being fitted. There are
+several categories of least squares methods based on the nature of the model
+function, with a first broad distinction based on whether it is linear in all
+variables or not. Some least squares methods use linearization, weighting of
+samples, or iterative refinement of the solution.</p>
+
+<p>The method was first published in the early 19th century but its broad concept,
+to some extent, has been understood since the 18th century if not earlier. What
+is commonly regarded as the first fully fledged example of least squares
+regression is the prediction of
+<a href="https://en.wikipedia.org/wiki/Ceres_(dwarf_planet)">Ceres</a>’s orbit by Gauss in
+1801,<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> four years before the first publication of the method by Legendre in
+1805 <a class="citation" href="#legendre1805nouvelles">[1]</a>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
+
+<p>In their problem, my friend was using
+<a href="https://en.wikipedia.org/wiki/Weighted_least_squares">weighted</a> and
+<a href="https://en.wikipedia.org/wiki/Non-linear_least_squares">non-linear</a> least
+squares:</p>
+
+\[S(\boldsymbol{x}) = \sum_i w_i \left( y_i - f(x_i) \right)^2\]
+
+<p>They wanted to develop an additional function providing a confidence value
+estimating whether the results produced by each run of their algorithm were
+trustworthy, expressed as a pseudo-probability scalar with values ranging in
+\([0, 1]\). In this confidence value they wanted to take the goodness-of-fit
+into account.</p>
+
+<p>They had tried several standard approaches based on analysis of the residuals.
+Since they were using a relatively large number of samples for the model fit,
+however, even a single additional pass over the input vector (or adding more
+calculations to the existing pass) was going to be too expensive under their
+system’s constraints.</p>
+
+<h1 id="approach">Approach</h1>
+
+<p>If I wanted to solve this without adding any more calculations to their kernel,
+I needed to construct an estimator based on quantities we already had at hand.</p>
+
+<p>A key observation, at the core of the solution I proposed to them, comes from
+theory. We know that the covariance \(\boldsymbol{C}\) of a least squares
+estimator is given by</p>
+
+\[\boldsymbol{C} = \sigma^2 \boldsymbol{H}^{-1}\]
+
+<p>where \(H\) is the Hessian matrix, which in the non-linear case is commonly
+approximated from the Jacobian \(\boldsymbol{J}\) as \(\boldsymbol{J}^\top
+\boldsymbol{J}\), and \(\sigma\) is the <a href="https://en.wikipedia.org/wiki/Reduced_chi-squared_statistic">reduced Chi-squared
+statistic</a>, which
+for weighted least squares is given by the inner product of the residuals
+\(\boldsymbol{r}\) with themselves (induced by the weights \(\boldsymbol{W}\)),
+i.e. the minimum value of the loss function, scaled by the degrees of freedom
+\(\nu\) as</p>
+
+\[\sigma^2 = \frac{\boldsymbol{r}^\top \boldsymbol{W} \boldsymbol{r}}{\nu}\]
+
+<p>Since the covariance matrix encodes information on the dispersion of the fitted
+estimator, it can be a good input to our confidence function. And good news, we
+are already computing the Hessian matrix as part of the non-linear least
+squares calculations, so we get it for free.</p>
+
+<p>In an optimized implementation we are not explicitly computing the value of the
+loss function, therefore we cannot afford to compute the value of the reduced
+Chi-squared statistic. By ignoring it we are still working with an
+approximation of the covariance that is still strongly correlated with the real
+covariance.</p>
+
+<p>To compute our approximate covariance we only need to pay the cost of a matrix
+inversion and a handful of scalar operations. Or, even better, we can avoid the
+matrix inversion altogether, for both cost and numerical stability reasons.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>
+After all our final goal is not to estimate the covariance but rather the
+confidence, which will be inversely related to it.</p>
+
+<p>The next step is to translate our matrix into a scalar quantity. The most
+straightforward way is probably to take its determinant, i.e. to work with the
+<a href="https://en.wikipedia.org/wiki/Generalized_variance">generalized variance</a>, or
+rather its inverse. The generalized variance captures the overall dispersion of
+the distribution (or lack thereof), while also accounting for correlations
+between parameters (if any).</p>
+
+<p>A much cheaper alternative is however to compute the trace instead. Compared to
+the determinant, it has the disadvantage of ignoring correlations (and
+therefore it only reflects total marginal variance), but it is much cheaper to
+compute and numerically more robust, as it is not affected by small
+eigenvalues. The value of the trace can be dominated by a single large
+eigenvalue, but that is not a problem for our application as this would still
+denote a low confidence scenario (while on the other hand, a determinant
+dominated by a very small eigenvalue could “hide” other dimensions with high
+uncertainty, which would be undesired).</p>
+
+<p>The final step is to map the trace to a pseudo-probability.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> I suggested a
+very simple approach, passing the trace \(t\) to an exponential function
+\(e^{-(a t + b)^2}\) with constant parameters \(a\) and \(b\) that are
+themselves fit from data, which worked fairly well for their problem despite
+its simplicity.</p>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>I liked this small problem and felt it was an interesting example, so even
+after a few years it was still lingering in the back of my mind and I decided
+to present it here, as I think it can be useful to others.</p>
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="legendre1805nouvelles">A.-M. Legendre, <i>Nouvelles méthodes pour la détermination des orbites des comètes</i>. Paris: Didot, 1805.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>The <a href="https://web.archive.org/web/20260112120234/http://ceres-solver.org/">Ceres</a>
+  solver is named after this fact. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>Gauss is known for not rushing to publish his results. More extreme
+  examples include fundamental results, such as his development of
+  non-Euclidean geometry, that he never published. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>Their problem had a small number of model parameters, so even the
+  inversion would have been relatively cheap. But avoiding the explicit
+  calculation of a matrix inverse whenever possible is a <a href="https://web.archive.org/web/20260103171942/https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/">general rule of
+  thumb</a>
+  in numerical analysis, as it has several benefits in terms of cost and
+  numerical stability. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>This pseudo-probability could then be combined with other domain-specific
+  signals that my friend already had at hand and that contributed to the
+  overall confidence of their problem, beyond the model fitting part itself.
+  But that is very much problem-specific and not relevant to the subject of
+  this post. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#model fitting">model fitting</a>
+          
+            <a href="/tags#statistical estimation">statistical estimation</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html&t=Designing+a+least+squares+fit+confidence+estimate"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html&text=Designing+a+least+squares+fit+confidence+estimate"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=Designing+a+least+squares+fit+confidence+estimate&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html&appkey=&title=Designing+a+least+squares+fit+confidence+estimate&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=Designing+a+least+squares+fit+confidence+estimate&text=Designing+a+least+squares+fit+confidence+estimate&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F01%2F17%2Ffit-confidence.html&title=Designing+a+least+squares+fit+confidence+estimate&description=Designing+a+least+squares+fit+confidence+estimate"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2025/10/26/degoogle.html" data-toggle="tooltip" data-placement="top" title="How I de-googled my personal devices">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
