@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Making a real-world algorithm run twenty times faster</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="A showcase of optimisation techniques from the trenches">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Making a real-world algorithm run twenty times faster" />
+  
+
+   
+  <meta property="og:description" content="A showcase of optimisation techniques from the trenches">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/02/15/runtime-optimization.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/02/15/runtime-optimization.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Making a real-world algorithm run twenty times faster" />
+  
+
+  
+  <meta name="twitter:description" content="A showcase of optimisation techniques from the trenches">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Making a real-world algorithm run twenty times faster</h1>
+		  
+		    
+			<h2 class="post-subheading">A showcase of optimisation techniques from the trenches</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on February 15, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+40 minutes
+
+read (7264 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Making a real-world algorithm run twenty times faster</h1>
+		  
+		    
+			<h2 class="post-subheading">A showcase of optimisation techniques from the trenches</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on February 15, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This post is a summary of an interesting code optimisation task I performed for
+a customer some time back. They had developed an algorithm for a product
+but they were way over budget on runtime, and due to the embedded and real-time
+nature of their product, not meeting the runtime budget meant the product would
+simply not work.</p>
+
+<p>My job was to take their code, which I had never seen before, and tweak it to
+run a lot faster. In this task I managed to apply a wide range of different
+optimisation techniques, which I think made it a very interesting showcase.</p>
+
+<h1 id="background">Background</h1>
+
+<p>I knew nothing about this product, and the code came with no documentation at
+all. The very first course of action, therefore, was to understand what the
+software was doing by reading the source code of tests and implementation.</p>
+
+<p>For context, the algorithm took as input a large collection of data samples and
+a list of candidate object detections, and it iterated over the candidates to
+perform some <a href="https://en.wikipedia.org/wiki/Least_squares">least squares</a> model
+fitting on each object.</p>
+
+<p>After getting an idea of what the code was doing, I could proceed with
+benchmarking its baseline performance, compile a list of candidate
+optimisations, prioritise them, and then implement some of the changes until
+reaching the desired performance. Meeting the desired runtime budget required
+to make the code twenty times faster than its baseline version.</p>
+
+<p>I used two main sources of input for decision-making:</p>
+<ul>
+  <li>Micro-profiling output to identify bottlenecks and other optimisation candidates.</li>
+  <li>High-level conceptual knowledge to identify alternative approaches.</li>
+</ul>
+
+<p>The candidate optimisation steps fell into three broad categories:</p>
+<ul>
+  <li>Mathematical improvements to the algorithm, replacing sub-algorithms with
+more cost-efficient alternatives but without significantly altering the
+result.</li>
+  <li>Optimizing data structures.</li>
+  <li>Code optimisation and low-level techniques.</li>
+</ul>
+
+<p>After defining the candidate optimisations, I prioritised the preliminary list
+based on cost-benefit, with the more-bang-for-the-buck coming first, and more
+involved (or risky) optimisations placed further down the line.</p>
+
+<p>Naturally, this work did not happen through a fixed or static plan, but rather
+in an iterative fashion. With the removal of each former performance
+bottleneck, while cycling between optimisation and profiling, new bottlenecks
+are iteratively identified in what is left of the program runtime, leading to
+more optimisation ideas.</p>
+
+<h1 id="speedup">Speedup</h1>
+
+<p>The following table is a summary of all optimisation steps in the order I
+performed them, including the approximate reduction in runtime (relative to the
+previous step) and the cumulative speedup (including all steps up to that
+point). The table gives a bird’s eye view of the work, while the next sections
+will explore each individual step in more detail.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Change</th>
+      <th style="text-align: center">Runtime reduction<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">1</a></sup></th>
+      <th style="text-align: center">Cumulative speedup<sup id="fnref:20" role="doc-noteref"><a href="#fn:20" class="footnote" rel="footnote">2</a></sup></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ensure inlining</td>
+      <td style="text-align: center">29%</td>
+      <td style="text-align: center">41%</td>
+    </tr>
+    <tr>
+      <td>Optimise indexing calculations</td>
+      <td style="text-align: center">9%</td>
+      <td style="text-align: center">55%</td>
+    </tr>
+    <tr>
+      <td>Avoid unnecessary copies</td>
+      <td style="text-align: center">19%</td>
+      <td style="text-align: center">91%</td>
+    </tr>
+    <tr>
+      <td>Switch to single precision</td>
+      <td style="text-align: center">11%</td>
+      <td style="text-align: center">115%</td>
+    </tr>
+    <tr>
+      <td>Data structure optimisation</td>
+      <td style="text-align: center">52%</td>
+      <td style="text-align: center">347%</td>
+    </tr>
+    <tr>
+      <td>Avoid multiple passes</td>
+      <td style="text-align: center">44%</td>
+      <td style="text-align: center">699%</td>
+    </tr>
+    <tr>
+      <td>Replace median with mean</td>
+      <td style="text-align: center">32%</td>
+      <td style="text-align: center">1074%</td>
+    </tr>
+    <tr>
+      <td>SIMD vectorisation</td>
+      <td style="text-align: center">34%</td>
+      <td style="text-align: center">1579%</td>
+    </tr>
+    <tr>
+      <td>Approximate reciprocal</td>
+      <td style="text-align: center">11%</td>
+      <td style="text-align: center">1899%</td>
+    </tr>
+    <tr>
+      <td>Avoid unnecessary zeroing</td>
+      <td style="text-align: center">5%</td>
+      <td style="text-align: center">2004%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that this is neither a comprehensive list of optimisation techniques, nor
+a list of “must do”. What I am describing here is a real case encountered in a
+real industrial product, not some artificial example, and the methods used are
+the ones fitting this problem best. Under different circumstances your mileage
+may vary, some of these optimisations might not be relevant, while others not
+mentioned here might be more important.</p>
+
+<h1 id="optimisation-steps">Optimisation steps</h1>
+
+<h2 id="step-0a-make-sure-you-have-tests">Step 0a: Make sure you have tests</h2>
+
+<p>Optimisation, just like refactoring, comes with a huge risk of introducing bugs
+and regressions. Making this kind of changes without a systematic way to
+protect yourself from regressions is a recipe for disaster.</p>
+
+<p>Thankfully, this product came with a reasonably comprehensive suite of unit
+tests verifying its behaviour, and the tests even ran reasonably fast. This
+allowed me to quickly iterate with the classic change-build-test loop, making
+sure that nothing would break in the process.</p>
+
+<h2 id="step-0b-make-sure-you-have-a-representative-benchmark">Step 0b: Make sure you have a representative benchmark</h2>
+
+<p>In order to optimise a piece of software you need to be able to measure its
+performance, and in order to measure performance you need a representative
+benchmark. Coming up with a meaningful and representative benchmark is probably
+the trickiest part of software optimisation.</p>
+
+<p>The benchmark needs to be representative of the intended workload. In the case
+of real-time systems, the product must have a worst-case time bound, and the
+benchmark needs to reproduce worst-case conditions. This requires identifying
+the region of the input domain that would trigger such conditions.</p>
+
+<p>The benchmark needs to perform enough work to produce statistically significant
+results, making sure that repeated work is not cancelled by caching effects or
+similar, while not significantly affecting the performance of the software
+being measured (you want to measure performance of the product, not of the
+benchmark itself).</p>
+
+<p>Measurements need to be performed with the target compiler, running on the
+target hardware (and operating system, if any). Sometimes, what may be a good
+optimisation on one platform might actually degrade performance on a different
+platform. You must use the target compiler flags and optimisation options: you
+want the compiler to do most of the work for you, so working under different
+compilation settings would be completely meaningless.</p>
+
+<p>Input initialisation, cache state, and any kind of warm-up effects are some
+basic examples of what the benchmark needs to take into account so as to not
+produce completely worthless (if not counterproductive) results.</p>
+
+<h2 id="step-0c-make-sure-you-have-the-right-profiling-tools">Step 0c: Make sure you have the right profiling tools</h2>
+
+<p>In principle, any reliable profiler can get the job done and enable good
+optimisations. However, finer-grained micro-profiling can give much more
+detailed information and significantly simplify the job.</p>
+
+<p>Profiling tools can be standalone products (like SystemView, that can be used
+on more or less any bare-metal platform) or can be shipped by the system
+vendor. For operating systems, profilers can even be directly baked into the
+kernel. For example, the Linux kernel includes
+<a href="https://en.wikipedia.org/wiki/Perf_%28Linux%29">perf</a>, Windows comes with
+<a href="https://en.wikipedia.org/wiki/Event_Viewer">Event Tracing</a> (ETW), NVidia
+provides Nsight, and most other systems ship with similar tools.</p>
+
+<p>Profilers like the ones mentioned allow, among other things, measuring time
+spent inside each function by capturing samples of the call stack, which
+provides a detailed and fine-grained allocation of runtime within the
+application.</p>
+
+<p>Captured profiling data is useless without a visualisation. A common way to
+display and analyse call data is by generating a <a href="https://web.archive.org/web/20260204194316/https://www.brendangregg.com/flamegraphs.html">flame
+graph</a>.
+Flame graphs not only allow to easily grasp how runtime is distributed, but
+also give a quick overview of what the call stack looks like, hinting for
+example at what parts of the software might be suffering from too much function
+call overhead.</p>
+
+<h2 id="step-1-ensure-inlining">Step 1: Ensure inlining</h2>
+
+<p>One of the first things I noticed when looking at the flame graph was the
+presence of some deep call stacks in unexpected places. The software used a
+real-time linear algebra library providing vector and matrix types and
+operations through template classes and functions. It struck me how many of
+these operations were not being inlined, generating many nested calls to
+internal library routines, which I suspected added a significant overhead.</p>
+
+<p>Moreover, this library was used inside hot loops, in some places by creating
+vector objects as local loop variables, which upon inspection of the assembly
+turned out to introduce additional copies.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">y</span><span class="p">{};</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">;</span> <span class="o">++</span><span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">x</span><span class="p">{};</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">;</span> <span class="o">++</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">linear_algebra</span><span class="o">::</span><span class="n">Vector2</span> <span class="k">const</span> <span class="n">position</span><span class="p">{</span>
+            <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+        <span class="p">};</span>
+        <span class="k">auto</span> <span class="k">const</span> <span class="n">estimate</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">position</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="k">const</span> <span class="n">error</span> <span class="o">=</span> <span class="n">estimate</span> <span class="o">-</span> <span class="n">data</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">error_norm</span> <span class="o">=</span> <span class="n">linear_algebra</span><span class="o">::</span><span class="n">norm</span><span class="p">(</span><span class="n">error</span><span class="p">);</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Analogously, some internal functions called from hot loops used these vector
+types in their interface</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Fit</span>
+<span class="p">{</span>
+    <span class="n">linear_algebra</span><span class="o">::</span><span class="n">Vector2</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">linear_algebra</span><span class="o">::</span><span class="n">Vector2</span> <span class="n">b</span><span class="p">;</span>
+
+    <span class="kt">double</span> <span class="n">loss</span><span class="p">(</span><span class="n">linear_algebra</span><span class="o">::</span><span class="n">Vector2</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">,</span> <span class="n">linear_algebra</span><span class="o">::</span><span class="n">Vector2</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>which would then be called on specifically constructed vector objects inside
+hot loops</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fit</span><span class="p">.</span><span class="n">loss</span><span class="p">({</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">},</span> <span class="p">{</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">});</span>
+</code></pre></div></div>
+
+<p>Removing the vector objects, preventing unnecessary copies in their
+construction and ensuring inlining of scalar operations, caused a significant
+improvement.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">3</a></sup></p>
+
+<p>In the specific case, manually inlining these operations was a quick and easy
+optimisation to perform (hence being at the top of my list), requiring me to
+only modify half a dozen lines in a couple places of the code, yet it caused a
+reduction of the total program runtime close to thirty percent.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">y_index</span><span class="p">{};</span> <span class="n">y_index</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">;</span> <span class="o">++</span><span class="n">y_index</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">x_index</span><span class="p">{};</span> <span class="n">x_index</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">;</span> <span class="o">++</span><span class="n">x_index</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">x</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x_index</span><span class="p">)};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">y</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y_index</span><span class="p">)};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">estimate_x</span><span class="p">{</span><span class="n">a_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">input_x</span><span class="p">[</span><span class="n">x_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_x</span><span class="p">};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">estimate_y</span><span class="p">{</span><span class="n">a_y</span> <span class="o">*</span> <span class="p">(</span><span class="n">input_y</span><span class="p">[</span><span class="n">y_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_y</span><span class="p">};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">error_x</span><span class="p">{</span><span class="n">estimate_x</span> <span class="o">-</span> <span class="n">data_x</span><span class="p">[</span><span class="n">x_index</span><span class="p">]};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">error_y</span><span class="p">{</span><span class="n">estimate_y</span> <span class="o">-</span> <span class="n">data_y</span><span class="p">[</span><span class="n">y_index</span><span class="p">]};</span>
+        <span class="kt">double</span> <span class="k">const</span> <span class="n">error_norm</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))};</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="nc">Fit</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">a_x</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">a_y</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">b_x</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">b_y</span><span class="p">;</span>
+
+    <span class="kt">double</span> <span class="n">loss</span><span class="p">(</span><span class="kt">double</span> <span class="k">const</span> <span class="n">input_x</span><span class="p">,</span> <span class="kt">double</span> <span class="k">const</span> <span class="n">input_y</span><span class="p">,</span> <span class="kt">double</span> <span class="k">const</span> <span class="n">data_x</span><span class="p">,</span> <span class="kt">double</span> <span class="k">const</span> <span class="n">data_y</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>This is obviously not a universal solution. While in this context the impact on
+code quality was minimal, in different situations manual inlining might lead to
+code duplication or to reinventing the wheel. There might be other
+alternatives, such as switching to a different linear algebra library that
+suffer less from function call overhead, or switching to a different compiler
+that does a better job at inlining. Switches of this kind, however, are
+sometimes not feasible within the constraints of real-world systems.</p>
+
+<h2 id="step-2-optimise-integral-indexing-calculations">Step 2: Optimise integral indexing calculations</h2>
+
+<p>For the next step, I noticed how a non-negligible amount of runtime was spent
+in a function performing some data resampling.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="nf">index</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">x</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">always_enabled_assert</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">MIN_X</span><span class="p">)</span> <span class="n">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">MAX_X</span><span class="p">));</span>
+    <span class="n">always_enabled_assert</span><span class="p">((</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">MIN_Y</span><span class="p">)</span> <span class="n">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">MAX_Y</span><span class="p">));</span>
+    <span class="k">auto</span> <span class="k">const</span> <span class="n">scaled_x</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">floor</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">OFFSET_X</span><span class="p">)</span> <span class="o">/</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">SCALE_X</span><span class="p">))};</span>
+    <span class="k">auto</span> <span class="k">const</span> <span class="n">scaled_y</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">floor</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">OFFSET_Y</span><span class="p">)</span> <span class="o">/</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">SCALE_Y</span><span class="p">))};</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">WIDTH</span> <span class="o">*</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">scaled_y</span><span class="p">))</span> <span class="o">+</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That prompted some simple integer arithmetic optimisations, such as removing
+unnecessary conversions and moving some assertions from production to debug builds.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="nf">index</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">x</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">debug_assert</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">MIN_X</span><span class="p">)</span> <span class="n">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">MAX_X</span><span class="p">));</span>
+    <span class="n">debug_assert</span><span class="p">((</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">MIN_Y</span><span class="p">)</span> <span class="n">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">MAX_Y</span><span class="p">));</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">scaled_x</span><span class="p">{(</span><span class="n">x</span> <span class="o">-</span> <span class="n">OFFSET_X</span><span class="p">)</span> <span class="o">/</span> <span class="n">SCALE_X</span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">scaled_y</span><span class="p">{(</span><span class="n">y</span> <span class="o">-</span> <span class="n">OFFSET_Y</span><span class="p">)</span> <span class="o">/</span> <span class="n">SCALE_Y</span><span class="p">};</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">WIDTH</span> <span class="o">*</span> <span class="n">scaled_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This simple optimisation shaved off close to ten percent of the runtime. Of
+course there are additional ways to reduce the amount of indexing work, but
+they will be captured in the next steps.</p>
+
+<h2 id="step-3-avoid-unnecessary-data-copies">Step 3: Avoid unnecessary data copies</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Pure_function">Function purity</a> and <a href="https://en.wikipedia.org/wiki/Referential_transparency">referential
+transparency</a> are
+valuable properties that are generally good to enforce in interface design, as
+they make functions much safer to reason about, leading to less error-prone and
+more malleable code (especially, but not limited to, when dealing with
+concurrency).</p>
+
+<p>It is important however to remember that C++ is not Haskell, and the C++
+compiler has more limited optimisation opportunities when it comes to passing
+larger data types by value. So sometimes purity can come at a great cost if one
+is not careful.</p>
+
+<p>An example I found in this program was a function computing an order statistic
+over a vector of data. It was taking the vector by copy, allowing the
+implementation to sort the elements without affecting the caller.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="nf">order_statistic</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{...}</span>
+</code></pre></div></div>
+
+<p>This sounds good in theory, but since this program was operating on relatively
+large data vectors, the cost of the copy was non-negligible. In fact, I spotted
+this issue by noticing a large amount of time being spent inside <code class="language-plaintext highlighter-rouge">memcpy</code> in
+the flame graph.</p>
+
+<p>Considering that this function was internal, and not part of any public API,
+burdening it with a side effect on its input could be acceptable, as long as it
+was well documented.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">/// @attention This function sorts its input data</span>
+<span class="kt">double</span> <span class="nf">order_statistic</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{...}</span>
+</code></pre></div></div>
+
+<p>Adding a single character to the code might look like a small change, but it
+shaved off an additional 19% from the runtime at this stage.</p>
+
+<h2 id="step-4-switch-to-single-precision">Step 4: Switch to single precision</h2>
+
+<p>You might have noticed how the examples so far involved double-precision
+arithmetic. That aroused my suspicion, as the types of algorithms used in this
+program did not strike me as calculations that would benefit from the
+additional digits of double precision types. Changing <code class="language-plaintext highlighter-rouge">double</code> to <code class="language-plaintext highlighter-rouge">float</code>, as
+expected, caused no meaningful change in the quality of the output results,
+while reducing runtime by about one tenth.</p>
+
+<p>Reducing the arithmetic type width has also the benefit of doubling the
+throughput of SIMD registers, which will come to play a few steps later.</p>
+
+<h2 id="step-5-optimise-data-structures">Step 5: Optimise data structures</h2>
+
+<p>The next optimisation step was not directly prompted by profiling, but rather
+by observing the structure of the program.</p>
+
+<p>There were two different parts of the program performing two separate passes
+over the input data (stored as a bidimensional array). The second loop looked
+something like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">y_index</span><span class="p">{};</span> <span class="n">y_index</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">;</span> <span class="o">++</span><span class="n">y_index</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">x_index</span><span class="p">{};</span> <span class="n">x_index</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">;</span> <span class="o">++</span><span class="n">x_index</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_relevant_sample</span><span class="p">(</span><span class="n">x_index</span><span class="p">,</span> <span class="n">y_index</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">x</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x_index</span><span class="p">)};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">y</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y_index</span><span class="p">)};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">position_x</span><span class="p">{</span><span class="n">input_x</span><span class="p">[</span><span class="n">x_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">position_y</span><span class="p">{</span><span class="n">input_y</span><span class="p">[</span><span class="n">y_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">estimate_x</span><span class="p">{(</span><span class="n">a_x</span> <span class="o">*</span> <span class="n">position_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_x</span><span class="p">};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">estimate_y</span><span class="p">{(</span><span class="n">a_y</span> <span class="o">*</span> <span class="n">position_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_y</span><span class="p">};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">error_x</span><span class="p">{</span><span class="n">estimate_x</span> <span class="o">-</span> <span class="n">data_x</span><span class="p">[</span><span class="n">x_index</span><span class="p">]};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">error_y</span><span class="p">{</span><span class="n">estimate_y</span> <span class="o">-</span> <span class="n">data_y</span><span class="p">[</span><span class="n">y_index</span><span class="p">]};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">error_norm</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))};</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Pre-processing the data could reduce the amount of required calculations, by
+avoiding the need to repeat some simple calculations (including calculation of
+indices) in the second pass. Additionally, the preprocessing step can take care
+of discarding irrelevant data samples, allowing to remove some branching from
+hot loops that consume the data.</p>
+
+<p>Switching to a more suitable data structure
+(<a href="https://en.wikipedia.org/wiki/Array_of_structures">array-of-structures</a>) to
+store the preprocessed data also allowing to take advantage of data locality
+and enabling better cache usage.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Element</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">position_x</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">position_y</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">data_x</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">data_y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// ...</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">element</span> <span class="o">:</span> <span class="n">elements</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">estimate_x</span><span class="p">{(</span><span class="n">a_x</span> <span class="o">*</span> <span class="n">element</span><span class="p">.</span><span class="n">position_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_x</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">estimate_y</span><span class="p">{(</span><span class="n">a_y</span> <span class="o">*</span> <span class="n">element</span><span class="p">.</span><span class="n">position_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_y</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">error_x</span><span class="p">{</span><span class="n">estimate_x</span> <span class="o">-</span> <span class="n">element</span><span class="p">.</span><span class="n">data_x</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">error_y</span><span class="p">{</span><span class="n">estimate_y</span> <span class="o">-</span> <span class="n">element</span><span class="p">.</span><span class="n">data_y</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">error_norm</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))};</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>While on the surface this change does not seem to remove much from the logic,
+its combined effects halved the remaining runtime of the program.</p>
+
+<p>Note that this data structure is not compatible with SIMD vectorisation. But
+the target compiler does not support automated SIMD vectorisation, so this is
+not a degradation. We will revisit SIMD vectorisation a few steps later.</p>
+
+<h2 id="step-6-avoid-multiple-passes">Step 6: Avoid multiple passes</h2>
+
+<p>One thing that caught my attention was how the software was performing multiple
+passes of the top-level algorithm, which in a nutshell looked a bit like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Result</span> <span class="nf">main_routine</span><span class="p">(</span><span class="n">containers</span><span class="o">::</span><span class="n">static_vector</span><span class="o">&lt;</span><span class="n">Data</span><span class="o">&gt;</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Result</span> <span class="n">result</span><span class="p">{};</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">{};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ITERATIONS</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">top_level_algorithm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Multi-pass algorithms, iteratively refining the result by applying the same
+algorithm multiple times, each time taking as input the result from the
+previous pass, are quite common in numerical analysis, especially when working
+with geometric methods.</p>
+
+<p>What piqued my interest is how a two-pass approach was used with a fairly high
+level algorithm, which I suspected would not yield much benefit while almost
+doubling the runtime of the product.</p>
+
+<p>So switching to a single-pass approach, with only minimal adjustments to the
+logic, allowed to cut the runtime by over 40% without causing meaningful
+changes to the quality of the output.</p>
+
+<p>I see this as a good example of premature optimisation (of output quality)
+that straight turns into a performance pessimisation (of runtime).</p>
+
+<h2 id="step-7-replace-median-with-mean">Step 7: Replace median with mean</h2>
+
+<p>The median is well-known in <a href="https://en.wikipedia.org/wiki/Robust_statistics">robust statistical
+estimation</a> for being a robust
+<a href="https://en.wikipedia.org/wiki/Central_tendency">centrality</a> estimator,
+significantly less sensitive to outliers compared e.g. to the sample mean. The
+downside of the median, however, is that it can be significantly more expensive
+to estimate compared to the sample mean. While the mean can be easily
+estimated<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">4</a></sup> in \(O(n)\) and can easily benefit from caching and data
+parallelisation, calculating the median usually requires<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">5</a></sup> \(O\left(n
+\log(n)\right)\) and makes heavier use of branching.</p>
+
+<p>In this algorithm, however, the median was being used to produce an initial
+centrality estimate for the input data distribution, which was then fed as
+input to a subsequent step of the algorithm. Here I also suspected premature
+pessimisation. Indeed, experimenting with it I observed that using the sample
+mean would not degrade the quality of the results in any meaningful way, while
+reducing the overall runtime by almost a third.</p>
+
+<p>Note that I do not advocate for blindly using the mean as a centrality
+estimator, especially in places where outliers can be an issue. Robustness of
+the estimation has to be weighted against the cost: in some applications the
+resilience of the median can be a necessity, while in other cases (like in this
+example) the mean is going to be good enough.</p>
+
+<h2 id="step-8-simd-vectorisation">Step 8: SIMD vectorisation</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Single_instruction,_multiple_data">SIMD</a>
+vectorisation was naturally one of the first improvements I thought of. I left
+it as a later step however because, as we have seen so far, there were several
+lower-hanging fruits that required less effort to be implemented. Nonetheless,
+vectorisation is such a valuable optimisation and there is generally no good
+reason to <em>not</em> go for it.</p>
+
+<p>When it comes to SIMD vectorisation, the first and foremost suggestion is to
+let the compiler do it for you as much as possible. Modern compilers are able
+to vectorise <a href="https://web.archive.org/web/20260105144240/https://gcc.gnu.org/projects/tree-ssa/vectorization.html">a lot of different
+patterns</a>
+without requiring any changes from the developer’s side. For example, when
+using a gcc-compatible compiler, running with <code class="language-plaintext highlighter-rouge">-O2</code> (or <code class="language-plaintext highlighter-rouge">-ftree-vectorize</code>),
+together with a suitable architecture flag, will enable automatic
+vectorisation. Adding the <code class="language-plaintext highlighter-rouge">-ftree-vectorizer-verbose=5</code> and
+<code class="language-plaintext highlighter-rouge">-fopt-info-vec-missed</code> flags will make the compiler log to console what parts
+of the code (mainly loops) is managed to vectorise and, more importantly, which
+ones it did not.</p>
+
+<p>For example, let assume we have a reduction operation implemented suboptimally
+as follows<sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">6</a></sup></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="nf">suboptimal_reduction</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="p">,</span> <span class="mi">1024U</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">uint32_t</span> <span class="n">i</span><span class="p">{</span><span class="mi">1U</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1U</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The loop carries a dependency across iterations, and the compiler will point the problem
+out to us. Compiling with <code class="language-plaintext highlighter-rouge">g++ -O2 -ftree-vectorizer-verbose=5
+-fopt-info-vec-missed</code> will produce something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>simd.cpp:3:33: missed: couldn't vectorize loop
+simd.cpp:5:17: missed: not vectorized, possible dependence between data-refs MEM &lt;struct array&gt;
+</code></pre></div></div>
+
+<p>Getting rid of the dependency</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="nf">reduction_without_dependencies</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="p">,</span> <span class="mi">1024U</span><span class="o">&gt;</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">sum</span><span class="p">{};</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span> <span class="n">x</span> <span class="o">:</span> <span class="n">data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>will indeed make the compiler emit vector instructions, for instance on ARMv8</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        vmov.i32   q8, #0  @ v4si
+        add        r3, r0, #4096
+.L6:
+        vld1.32    {q9}, [r0]!
+        vadd.i32   q8, q9, q8
+        cmp        r0, r3
+        bne        .L6
+        vadd.i32   d7, d16, d17
+        vpadd.i32  d7, d7, d7
+        vmov       r0, s14 @ int
+        bx         lr
+</code></pre></div></div>
+
+<p>Addressing the impediments pointed out by the compiler, when feasible,<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup>
+allows to get more vectorisation done for free. There are however some patterns
+that cannot be reasonably auto-vectorised by today’s compilers,<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">8</a></sup> and in that
+case case a different approach is needed. A simple example is represented by
+many kinds of loops involving floating point arithmetic: since floating point
+operators are not associative, the compiler is not allowed to perform most
+kinds of re-ordering unless unsafe math optimisations are enabled (and there
+are many cases where enabling them is undesirable).</p>
+
+<p>If automatic vectorisation is not sufficient, the next step I would recommend
+is to consider using a vectorising DSL, for instance
+<a href="https://en.wikipedia.org/wiki/Halide_(programming_language)">Halide</a> or
+<a href="https://github.com/ispc/ispc">ISPC</a>. It will save quite a lot of work and at
+the same time produce much cleaner, readable, and maintainable code compared to
+manual vectorisation. These tools, however, might not always be an option, e.g.
+they might not be available for a particular platform, or might be disallowed
+by other constraints of the project.<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">9</a></sup> And even if those tools are available,
+they might still not be able to implement some very specific patterns.</p>
+
+<p>If other avenues are exhausted, manual vectorisation is still an option. For
+obvious portability reasons, together also with maintainability and
+readability, I strongly discourage hard-coding platform-specific intrinsics in
+your code (or at leas, in the business logic). Using a SIMD abstraction library
+will make the code both portable and cleaner. Example libraries are
+<a href="https://github.com/jfalcou/eve">eve</a>,
+<a href="https://github.com/xtensor-stack/xsimd">xsimd</a>, or
+<a href="https://github.com/google/highway">highway</a>. C++26 introduces
+<a href="https://en.cppreference.com/w/cpp/experimental/simd.html">std::simd</a>, bringing
+native support within the STL.</p>
+
+<p>After having clarified this context, back to the subject. In my particular
+problem, the target compiler did not support automatic vectorisation,<sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">10</a></sup> the
+project was C++14, so no <code class="language-plaintext highlighter-rouge">std::simd</code> yet,<sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">11</a></sup> and using third party libraries
+was not an option. The solution was to use an in-house developed SIMD
+abstraction library, and manually vectorise the code.</p>
+
+<p>The structure of one of the hot loops, after our previous data structure
+optimisation step, was roughly along these lines</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Element</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">position_x</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">position_y</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">data_x</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">data_y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// ...</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">element</span> <span class="o">:</span> <span class="n">elements</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">estimate_x</span><span class="p">{(</span><span class="n">a_x</span> <span class="o">*</span> <span class="n">element</span><span class="p">.</span><span class="n">position_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_x</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">estimate_y</span><span class="p">{(</span><span class="n">a_y</span> <span class="o">*</span> <span class="n">element</span><span class="p">.</span><span class="n">position_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_y</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">error_x</span><span class="p">{</span><span class="n">estimate_x</span> <span class="o">-</span> <span class="n">element</span><span class="p">.</span><span class="n">data_x</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">error_y</span><span class="p">{</span><span class="n">estimate_y</span> <span class="o">-</span> <span class="n">element</span><span class="p">.</span><span class="n">data_y</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">error_norm</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">error_y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))};</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>While the
+<a href="https://en.wikipedia.org/wiki/Array_of_structures">array-of-structures</a> is
+beneficial in terms of data locality, it is incompatible with vectorisation as
+it prevents vector load/store operations. The way I had structured the code in
+the previous steps would, however, easily allow to switch between AoS and
+SoA.<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">12</a></sup></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Elements</span>
+<span class="p">{</span>
+    <span class="k">alignas</span><span class="p">(</span><span class="n">CACHE_LINE</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">SIZE</span><span class="o">&gt;</span> <span class="n">position_x</span><span class="p">;</span>
+    <span class="k">alignas</span><span class="p">(</span><span class="n">CACHE_LINE</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">SIZE</span><span class="o">&gt;</span> <span class="n">position_y</span><span class="p">;</span>
+    <span class="k">alignas</span><span class="p">(</span><span class="n">CACHE_LINE</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">SIZE</span><span class="o">&gt;</span> <span class="n">data_x</span><span class="p">;</span>
+    <span class="k">alignas</span><span class="p">(</span><span class="n">CACHE_LINE</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">SIZE</span><span class="o">&gt;</span> <span class="n">data_y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// ...</span>
+
+<span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">vector_count</span><span class="p">{</span><span class="n">ceil</span><span class="p">(</span><span class="n">data_length</span> <span class="o">/</span> <span class="n">simd_vector_size</span><span class="p">)};</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">i</span><span class="p">{};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vector_count</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">x</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">load_aligned</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">y</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">load_aligned</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">)};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">data_x</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">load_aligned</span><span class="p">(</span><span class="n">elements</span><span class="p">.</span><span class="n">data_x</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">i</span><span class="p">)};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">data_y</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">load_aligned</span><span class="p">(</span><span class="n">elements</span><span class="p">.</span><span class="n">data_y</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">i</span><span class="p">)};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">position_x</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">load_aligned</span><span class="p">(</span><span class="n">elements</span><span class="p">.</span><span class="n">position_x</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">i</span><span class="p">)};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">position_y</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">load_aligned</span><span class="p">(</span><span class="n">elements</span><span class="p">.</span><span class="n">position_y</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">i</span><span class="p">)};</span>
+
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">estimate_x</span><span class="p">{(</span><span class="n">a_x</span> <span class="o">*</span> <span class="n">position_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_x</span><span class="p">};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">estimate_y</span><span class="p">{(</span><span class="n">a_y</span> <span class="o">*</span> <span class="n">position_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_y</span><span class="p">};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">error_x</span><span class="p">{</span><span class="n">estimate_x</span> <span class="o">-</span> <span class="n">data_x</span><span class="p">};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">error_y</span><span class="p">{</span><span class="n">estimate_y</span> <span class="o">-</span> <span class="n">data_y</span><span class="p">};</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">error_norm</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">sqrt</span><span class="p">((</span><span class="n">error_x</span> <span class="o">*</span> <span class="n">error_x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">error_y</span> <span class="o">*</span> <span class="n">error_y</span><span class="p">))};</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note how the abstraction library does not just make the code portable but also
+significantly easier to read (and write). Note how to go from scalar to
+vectorised we mostly just need to replace array access with load operations,
+and change the data type from <code class="language-plaintext highlighter-rouge">float</code> to <code class="language-plaintext highlighter-rouge">simd_lib::vector&lt;float&gt;</code>.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">13</a></sup></p>
+
+<p>Note also how we do not explicitly deal with leftover elements that do not fit
+in a full vector at the end of the loop. This saves us from the need of
+unrolling the remaining elements (or to add a separate scalar loop after the
+vectorised loop). The trick I used is to fill the excess elements in the
+incomplete input vector with padding values that will cancel themselves out
+from the result in the calculations result. This is both more efficient and
+leads to simpler code.</p>
+
+<h2 id="step-9-approximate-reciprocal">Step 9: Approximate reciprocal</h2>
+
+<p>One of the hot loops above contained a reciprocal operation</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(...)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="k">const</span> <span class="n">weight</span><span class="p">{</span><span class="mf">1.0</span><span class="n">F</span> <span class="o">/</span> <span class="n">error_norm</span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Floating point division/reciprocation is a fairly expensive arithmetic
+operation, so it would be good if we could replace it with something faster.
+Thankfully there is a neat solution to this problem.</p>
+
+<p>Finding the reciprocal <code class="language-plaintext highlighter-rouge">x</code> of some number <code class="language-plaintext highlighter-rouge">y</code> means finding a value <code class="language-plaintext highlighter-rouge">x</code> such
+that</p>
+
+\[y = \frac{1}{x}\]
+
+<p>This problem is equivalent to finding the root of</p>
+
+\[f(x) = \frac{1}{x} - y\]
+
+<p><a href="https://en.wikipedia.org/wiki/Newton%27s_method">Newton’s method</a> provides a
+sequence \(x_n\) converging (with quadratic rate) to the root of \(f(x)\)</p>
+
+\[x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n)}\]
+
+<p>and since \(f'(x) = - \frac{1}{x^2}\)</p>
+
+\[x_{n + 1} = x_n \left( 2 - y x_n \right)\]
+
+<p>This is known as <a href="https://en.wikipedia.org/wiki/Newton-Raphson_division">Newton-Raphson
+division</a>. Given an
+initial guess \(x_0\), it is possible to get an approximation of the reciprocal
+with just two multiplications and one subtraction for each iteration.</p>
+
+<p>The initial guess can be computed with <code class="language-plaintext highlighter-rouge">vrecpeq_f32</code> on Arm Neon or
+<code class="language-plaintext highlighter-rouge">_mm_rcp_ps</code> on SSE2,<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">14</a></sup> and a Newton-Raphson iteration is also accelerated on
+Neon with <code class="language-plaintext highlighter-rouge">vrecpsq_f32</code>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">15</a></sup> Given the fast rate of convergence of the method,
+two Newton-Raphson iterations are enough to cover all significant digits of a
+single-precision floating point value,<sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">16</a></sup> and a single iteration can be
+sufficient in many practical use cases.</p>
+
+<p>With this in mind, I could implement a <code class="language-plaintext highlighter-rouge">simd_lib::approximate_reciprocal</code>
+function using the relevant intrinsics, which allowed to replace the exact
+reciprocal</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(...)</span>
+<span class="p">{</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="k">const</span> <span class="n">weight</span><span class="p">{</span><span class="n">simd_lib</span><span class="o">::</span><span class="n">approximate_reciprocal</span><span class="p">(</span><span class="n">error_norm</span><span class="p">)};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code contained a single division in a hot loop, but even just replacing
+that one division with an approximate reciprocal (using a single Newton-Raphson
+iteration) reduced the runtime of the product by about 11%, without any
+significant impact on the quality of the output.</p>
+
+<h2 id="step-10-avoid-unnecessary-zeroing">Step 10: Avoid unnecessary zeroing</h2>
+
+<p>Looking again at the flame graph after the previous step, it caught my
+attention how a non-negligible amount of time was now spent inside <code class="language-plaintext highlighter-rouge">memset</code>.
+Reason for this was due to using a fixed-size vector container<sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">17</a></sup> which,
+dutifully, zero-initialised the storage before constructing its elements in
+place.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">containers</span><span class="o">::</span><span class="n">static_vector</span><span class="o">&lt;</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FIT_COUNT</span><span class="o">&gt;</span> <span class="n">fit_models</span><span class="p">{...};</span>
+</code></pre></div></div>
+
+<p>Zeroing the memory before constructing an object (or after destructing it) is a
+generally good practice, but in high-performance contexts it is important to be
+aware of the overhead it causes. In this case, switching to a container like
+<code class="language-plaintext highlighter-rouge">std::array</code> for storage allowed to avoid the extra cost of memory
+initialisation, with no significant downside.<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">18</a></sup></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FIT_COUNT</span><span class="o">&gt;</span> <span class="n">fit_models</span><span class="p">{...};</span>
+</code></pre></div></div>
+
+<h1 id="bonus-optimisations">Bonus optimisations</h1>
+
+<p>At this point, the software was meeting the customer’s performance goals. I
+however still had a few optimisations planned that could have allowed to reduce
+the runtime even further if needed. And, on top of them, it would likely have
+been possible to find more ways to optimise the software by just iterating
+profiling and flame graph analysis.</p>
+
+<p>I had left these optimisations to the end because of their worse cost-benefit
+ratio, due to either requiring more work to be implemented when compared to the
+other steps, or because of the higher potential to affect the quality of the
+output and consequently requiring some tuning or trade-offs.</p>
+
+<h2 id="stochastic-optimisation">Stochastic optimisation</h2>
+
+<p>When dealing with optimisation problems, <a href="https://en.wikipedia.org/wiki/Stochastic_optimization">stochastic
+optimisation</a> is a
+powerful technique that can greatly reduce runtime when dealing with larger
+problems.</p>
+
+<p>It could have been applied to the least squares method used in this software by
+accumulating the terms of the normal equation on a random subset of input
+samples, instead of iterating over the whole input vector. When the input
+vector is large enough, this method can significantly reduce runtime without
+noticeably affecting the quality of the model fit on average.</p>
+
+<p>To avoid introducing non-determinism in the system and ensuring easy
+reproducibility of results, the “random” sampling can be performed using a
+seeded sequence, for instance computing the seed based on timestamp or some
+checksum of the input.<sup id="fnref:19" role="doc-noteref"><a href="#fn:19" class="footnote" rel="footnote">19</a></sup></p>
+
+<p>While being a powerful technique in general, I kept stochastic optimisation on
+a low priority tier not just because of its potential impact on the quality of
+the result (which makes it not a cost-free optimisation), but also because its
+runtime benefit diminishes when interacting with other optimisations.</p>
+
+<p>For instance, to fully benefit from downsampling, it would not be enough to
+follow the naïve approach and select individual samples from the data, but it
+would rather be required to sample whole cache lines (keeping vector and cache
+alignment in mind). However, taking sequences of adjacent samples biases the
+sampling and requires attention to make sure that it does not impact the
+quality of the result.</p>
+
+<h2 id="switch-to-l1-norm">Switch to L1 norm</h2>
+
+<p>The algorithm computed norms in a few different places to measure closeness of
+vectors. One possible way to make this algorithm faster could have been to
+replace usage of the <a href="https://en.wikipedia.org/wiki/Lp_space">L2 norm with the L1
+norm</a>.</p>
+
+<p>This has however some pros and cons<sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">20</a></sup> that would likely have required some
+validation and potentially needed some tuning, and since I expected a limited
+runtime improvement from it, I kept this optimisation low in the priority list.</p>
+
+<h2 id="gather-scatter-of-vector-inputs">Gather-scatter of vector inputs</h2>
+
+<p>The software used some vector inputs</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Sample</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">y</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Sample</span> <span class="p">,</span> <span class="n">SIZE</span><span class="o">&gt;</span> <span class="n">samples</span><span class="p">{...};</span>
+</code></pre></div></div>
+
+<p>Vectorisation of one loop taking this kind of array as input could have been
+optimised with
+<a href="https://en.wikipedia.org/wiki/Gather/scatter_(vector_addressing)">gather-scatter</a>
+operations.</p>
+
+<p>This would have however required some relatively involved additional work. With
+the need of following the restrictions in the safety guidelines, packaging this
+particular optimisation under their project’s constraints would have required
+refactoring of some interfaces, which in turn would cascade more changes in
+other parts of the product.</p>
+
+<p>Given that I only expected a fairly limited speedup from this optimisation, I
+significantly de-prioritised it with respect to other actions.</p>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>This work package struck me not just as an interesting showcase of variegated
+optimisation techniques, but also as a demonstrative example of what
+bottlenecks and suboptimal design look like in real products.</p>
+
+<p>Some of the techniques I used are high-performance coding technical
+optimisations that come from expertise (e.g. dealing with vectorisation,
+inlining, or any domain-specific algorithmic considerations), but others
+definitely struck me as lower-hanging fruits whose avoidance should not require
+as much experience (e.g. avoiding data copies or other unnecessary work).</p>
+
+<p>It is also a reminder of how, in many products, other considerations come into
+play, some of them fairly domain-specific (e.g. safety guidelines) and others
+more generic (e.g. balancing cost of design and maintainability vs pure speed).
+In real applications, chasing runtime speed for the sake of it can be
+detrimental if done without context, while it is tempting to think that faster
+simply equals better, making changes to a product can have associated costs
+(possibly even in the long term).</p>
+
+<p>To be good at optimising software products, it is important not just to
+understand the technicality of how to make software run faster, but even more
+so to understand how to do it without adding complexity (even just in terms of
+making the code harder to read) nor creating maintenance costs.</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:4" role="doc-endnote">
+      <p>Relative to the previous step. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:20" role="doc-endnote">
+      <p>Relative to the baseline, which is already enabling all applicable
+   compiler optimisation flags. <a href="#fnref:20" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>The downside of inlining vector operations is the repetition of logic
+  across elements, but duplication can be avoided by moving the logic of
+  individual operations into auxiliary functions that are guaranteed to be
+  inlined instead (not included in these examples for brevity and clarity). <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>In the number of input elements. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>A naïve approach using comparison-based sorting has an average \(n
+  \log(n)\) complexity. A more sophisticated approach would be to use
+  <a href="https://en.wikipedia.org/wiki/Quickselect">quickselect</a>, with a
+  complexity of \(n\) in the average case and \(n \log(n)\) in the worst
+  case. An approximate
+  <a href="https://en.wikipedia.org/wiki/Median_of_medians">median-of-medians</a>
+  estimation has a worst-case complexity of \(n\). All these methods are
+  slower than estimating the arithmetic mean in practice. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10" role="doc-endnote">
+      <p>This is actually a <a href="https://en.wikipedia.org/wiki/Prefix_sum">prefix sum</a>. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p>Typical impediments that can be refactored away include loop-carried
+  false <a href="https://en.wikipedia.org/wiki/Loop_dependence_analysis">data
+  dependencies</a>,
+  <a href="https://en.wikipedia.org/wiki/Aliasing_(computing)">aliasing</a>, branching
+  inside loops, non-inlined function calls, unsupported or too complex
+  <a href="https://en.wikipedia.org/wiki/Gather/scatter_(vector_addressing)">gather-scatter</a>,
+  unclear loop bounds. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>These include some algorithms such as prefix sums, other non-trivial
+  reduction operations, non-trivial data-dependent gather-scatter,
+  branching inside loops, etc. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11" role="doc-endnote">
+      <p>Lack of safety qualification is a common reason in safety-critical application. <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:12" role="doc-endnote">
+      <p>Technically, the compiler implemented some automatic vectorisation, but
+   the compiler’s safety manual disallowed its usage in safety-critical
+   applications. <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:15" role="doc-endnote">
+      <p>Note also that, at the time, <code class="language-plaintext highlighter-rouge">std::simd</code> was still far from being
+   standardised, and C++26 was still years away. <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:13" role="doc-endnote">
+      <p>It would also be possible to combine the benefits of AoS and SoA, by
+   having an array-of-structure-of-array, where the fields of each
+   structure are arrays of one SIMD vector’s size each. <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>Could be <code class="language-plaintext highlighter-rouge">auto</code>, but I make it more explicit for clarity. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>Notably, the SSE2 and Neon instructions produce different results. So an
+  interesting part of this task was to implement a software emulation of
+  <code class="language-plaintext highlighter-rouge">vrecpeq_f32</code> producing bitwise exact results for testing and simulation
+  purposes on non-Arm platforms. This was made easy by the fact that the
+  Arm documentation includes pseudocode of the full instruction
+  specification. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>Looking at the names of intrinsics, it should be clear why a SIMD
+  abstraction library helps with readability. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:14" role="doc-endnote">
+      <p>Except maybe for the correct rounding of the last digit. <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:16" role="doc-endnote">
+      <p>Similar in fashion to <code class="language-plaintext highlighter-rouge">std::inplace_vector</code> from C++26. <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:17" role="doc-endnote">
+      <p>For a container with fixed allocated size but variable number of
+   elements, using a vector-like interface has some benefits, as it makes
+   the code cleaner and less error-prone by internally managing the number
+   of valid entries. <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:19" role="doc-endnote">
+      <p>Note that this will be terrible advice if any part of your algorithm is
+   security-related and requires cryptographically strong RNG. Here I could
+   safely assume that choices in how to perform calculations in the
+   algorithm I was optimising had no security impact whatsoever. <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:18" role="doc-endnote">
+      <p>For instance, the L1 norm is generally more robust to outliers, but it is
+   not differentiable. <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#C++">C++</a>
+          
+            <a href="/tags#optimisation">optimisation</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html&t=Making+a+real-world+algorithm+run+twenty+times+faster"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html&text=Making+a+real-world+algorithm+run+twenty+times+faster"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=Making+a+real-world+algorithm+run+twenty+times+faster&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html&appkey=&title=Making+a+real-world+algorithm+run+twenty+times+faster&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=Making+a+real-world+algorithm+run+twenty+times+faster&text=Making+a+real-world+algorithm+run+twenty+times+faster&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F02%2F15%2Fruntime-optimization.html&title=Making+a+real-world+algorithm+run+twenty+times+faster&description=Making+a+real-world+algorithm+run+twenty+times+faster"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/01/17/fit-confidence.html" data-toggle="tooltip" data-placement="top" title="Designing a least squares fit confidence estimate">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>

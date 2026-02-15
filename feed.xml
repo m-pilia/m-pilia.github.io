@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Making a real-world algorithm run twenty times faster</title>
+        <description>
+          A showcase of optimisation techniques from the trenches - 
+          This post is a summary of an interesting code optimisation task I performed for a customer some time back. They had developed an algorithm for a product but they were way over budget on runtime, and due to the embedded and real-time nature of their product, not meeting the runtime...
+        </description>
+        <pubDate>Sun, 15 Feb 2026 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2026/02/15/runtime-optimization.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2026/02/15/runtime-optimization.html</guid>
+      </item>
+    
+      <item>
         <title>Designing a least squares fit confidence estimate</title>
         <description>
           But making it run very fast - 
