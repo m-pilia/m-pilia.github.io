@@ -431,9 +431,9 @@
               <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
 
 
-40 minutes
+41 minutes
 
-read (7264 words)
+read (7298 words)
 
           </span>
 		  
@@ -1002,7 +1002,7 @@ using a gcc-compatible compiler, running with <code class="language-plaintext hi
 together with a suitable architecture flag, will enable automatic
 vectorisation. Adding the <code class="language-plaintext highlighter-rouge">-ftree-vectorizer-verbose=5</code> and
 <code class="language-plaintext highlighter-rouge">-fopt-info-vec-missed</code> flags will make the compiler log to console what parts
-of the code (mainly loops) is managed to vectorise and, more importantly, which
+of the code (mainly loops) it managed to vectorise and, more importantly, which
 ones it did not.</p>
 
 <p>For example, let assume we have a reduction operation implemented suboptimally
@@ -1027,7 +1027,7 @@ out to us. Compiling with <code class="language-plaintext highlighter-rouge">g++
 simd.cpp:5:17: missed: not vectorized, possible dependence between data-refs MEM &lt;struct array&gt;
 </code></pre></div></div>
 
-<p>Getting rid of the dependency</p>
+<p>Getting rid of the dependency<sup id="fnref:21" role="doc-noteref"><a href="#fn:21" class="footnote" rel="footnote">7</a></sup></p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="nf">reduction_without_dependencies</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="p">,</span> <span class="mi">1024U</span><span class="o">&gt;</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
@@ -1057,9 +1057,9 @@ simd.cpp:5:17: missed: not vectorized, possible dependence between data-refs MEM
         bx         lr
 </code></pre></div></div>
 
-<p>Addressing the impediments pointed out by the compiler, when feasible,<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup>
+<p>Addressing the impediments pointed out by the compiler, when feasible,<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">8</a></sup>
 allows to get more vectorisation done for free. There are however some patterns
-that cannot be reasonably auto-vectorised by today’s compilers,<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">8</a></sup> and in that
+that cannot be reasonably auto-vectorised by today’s compilers,<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">9</a></sup> and in that
 case case a different approach is needed. A simple example is represented by
 many kinds of loops involving floating point arithmetic: since floating point
 operators are not associative, the compiler is not allowed to perform most
@@ -1073,14 +1073,14 @@ is to consider using a vectorising DSL, for instance
 the same time produce much cleaner, readable, and maintainable code compared to
 manual vectorisation. These tools, however, might not always be an option, e.g.
 they might not be available for a particular platform, or might be disallowed
-by other constraints of the project.<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">9</a></sup> And even if those tools are available,
+by other constraints of the project.<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">10</a></sup> And even if those tools are available,
 they might still not be able to implement some very specific patterns.</p>
 
 <p>If other avenues are exhausted, manual vectorisation is still an option. For
 obvious portability reasons, together also with maintainability and
 readability, I strongly discourage hard-coding platform-specific intrinsics in
-your code (or at leas, in the business logic). Using a SIMD abstraction library
-will make the code both portable and cleaner. Example libraries are
+your code (or at least, in the business logic). Using a SIMD abstraction
+library will make the code both portable and cleaner. Example libraries are
 <a href="https://github.com/jfalcou/eve">eve</a>,
 <a href="https://github.com/xtensor-stack/xsimd">xsimd</a>, or
 <a href="https://github.com/google/highway">highway</a>. C++26 introduces
@@ -1088,8 +1088,8 @@ will make the code both portable and cleaner. Example libraries are
 native support within the STL.</p>
 
 <p>After having clarified this context, back to the subject. In my particular
-problem, the target compiler did not support automatic vectorisation,<sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">10</a></sup> the
-project was C++14, so no <code class="language-plaintext highlighter-rouge">std::simd</code> yet,<sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">11</a></sup> and using third party libraries
+problem, the target compiler did not support automatic vectorisation,<sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">11</a></sup> the
+project was C++14, so no <code class="language-plaintext highlighter-rouge">std::simd</code> yet,<sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">12</a></sup> and using third party libraries
 was not an option. The solution was to use an in-house developed SIMD
 abstraction library, and manually vectorise the code.</p>
 
@@ -1123,7 +1123,7 @@ optimisation step, was roughly along these lines</p>
 beneficial in terms of data locality, it is incompatible with vectorisation as
 it prevents vector load/store operations. The way I had structured the code in
 the previous steps would, however, easily allow to switch between AoS and
-SoA.<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">12</a></sup></p>
+SoA.<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">13</a></sup></p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Elements</span>
 <span class="p">{</span>
@@ -1159,15 +1159,15 @@ SoA.<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel=
 <p>Note how the abstraction library does not just make the code portable but also
 significantly easier to read (and write). Note how to go from scalar to
 vectorised we mostly just need to replace array access with load operations,
-and change the data type from <code class="language-plaintext highlighter-rouge">float</code> to <code class="language-plaintext highlighter-rouge">simd_lib::vector&lt;float&gt;</code>.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">13</a></sup></p>
+and change the data type from <code class="language-plaintext highlighter-rouge">float</code> to <code class="language-plaintext highlighter-rouge">simd_lib::vector&lt;float&gt;</code>.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">14</a></sup></p>
 
 <p>Note also how we do not explicitly deal with leftover elements that do not fit
 in a full vector at the end of the loop. This saves us from the need of
 unrolling the remaining elements (or to add a separate scalar loop after the
 vectorised loop). The trick I used is to fill the excess elements in the
-incomplete input vector with padding values that will cancel themselves out
-from the result in the calculations result. This is both more efficient and
-leads to simpler code.</p>
+incomplete input vector with padding values that will cancel themselves out in
+the calculations, leaving the result unaffected. This is both more efficient
+and leads to simpler code.</p>
 
 <h2 id="step-9-approximate-reciprocal">Step 9: Approximate reciprocal</h2>
 
@@ -1207,10 +1207,10 @@ initial guess \(x_0\), it is possible to get an approximation of the reciprocal
 with just two multiplications and one subtraction for each iteration.</p>
 
 <p>The initial guess can be computed with <code class="language-plaintext highlighter-rouge">vrecpeq_f32</code> on Arm Neon or
-<code class="language-plaintext highlighter-rouge">_mm_rcp_ps</code> on SSE2,<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">14</a></sup> and a Newton-Raphson iteration is also accelerated on
-Neon with <code class="language-plaintext highlighter-rouge">vrecpsq_f32</code>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">15</a></sup> Given the fast rate of convergence of the method,
+<code class="language-plaintext highlighter-rouge">_mm_rcp_ps</code> on SSE2,<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">15</a></sup> and a Newton-Raphson iteration is also accelerated on
+Neon with <code class="language-plaintext highlighter-rouge">vrecpsq_f32</code>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">16</a></sup> Given the fast rate of convergence of the method,
 two Newton-Raphson iterations are enough to cover all significant digits of a
-single-precision floating point value,<sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">16</a></sup> and a single iteration can be
+single-precision floating point value,<sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">17</a></sup> and a single iteration can be
 sufficient in many practical use cases.</p>
 
 <p>With this in mind, I could implement a <code class="language-plaintext highlighter-rouge">simd_lib::approximate_reciprocal</code>
@@ -1232,7 +1232,7 @@ significant impact on the quality of the output.</p>
 
 <p>Looking again at the flame graph after the previous step, it caught my
 attention how a non-negligible amount of time was now spent inside <code class="language-plaintext highlighter-rouge">memset</code>.
-Reason for this was due to using a fixed-size vector container<sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">17</a></sup> which,
+Reason for this was due to using a fixed-size vector container<sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">18</a></sup> which,
 dutifully, zero-initialised the storage before constructing its elements in
 place.</p>
 
@@ -1243,7 +1243,7 @@ place.</p>
 generally good practice, but in high-performance contexts it is important to be
 aware of the overhead it causes. In this case, switching to a container like
 <code class="language-plaintext highlighter-rouge">std::array</code> for storage allowed to avoid the extra cost of memory
-initialisation, with no significant downside.<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">18</a></sup></p>
+initialisation, with no significant downside.<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">19</a></sup></p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FIT_COUNT</span><span class="o">&gt;</span> <span class="n">fit_models</span><span class="p">{...};</span>
 </code></pre></div></div>
@@ -1277,7 +1277,7 @@ noticeably affecting the quality of the model fit on average.</p>
 <p>To avoid introducing non-determinism in the system and ensuring easy
 reproducibility of results, the “random” sampling can be performed using a
 seeded sequence, for instance computing the seed based on timestamp or some
-checksum of the input.<sup id="fnref:19" role="doc-noteref"><a href="#fn:19" class="footnote" rel="footnote">19</a></sup></p>
+checksum of the input.<sup id="fnref:19" role="doc-noteref"><a href="#fn:19" class="footnote" rel="footnote">20</a></sup></p>
 
 <p>While being a powerful technique in general, I kept stochastic optimisation on
 a low priority tier not just because of its potential impact on the quality of
@@ -1298,7 +1298,7 @@ vectors. One possible way to make this algorithm faster could have been to
 replace usage of the <a href="https://en.wikipedia.org/wiki/Lp_space">L2 norm with the L1
 norm</a>.</p>
 
-<p>This has however some pros and cons<sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">20</a></sup> that would likely have required some
+<p>This has however some pros and cons<sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">21</a></sup> that would likely have required some
 validation and potentially needed some tuning, and since I expected a limited
 runtime improvement from it, I kept this optimisation low in the priority list.</p>
 
@@ -1387,6 +1387,10 @@ making the code harder to read) nor creating maintenance costs.</p>
     </li>
     <li id="fn:10" role="doc-endnote">
       <p>This is actually a <a href="https://en.wikipedia.org/wiki/Prefix_sum">prefix sum</a>. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:21" role="doc-endnote">
+      <p>This is written as a loop for the sake of explanation, but normally one
+   would use <code class="language-plaintext highlighter-rouge">std::accumulate</code> in its place. <a href="#fnref:21" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:8" role="doc-endnote">
       <p>Typical impediments that can be refactored away include loop-carried
