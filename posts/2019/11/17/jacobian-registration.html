@@ -433,7 +433,7 @@
 
 21 minutes
 
-read (3795 words)
+read (3791 words)
 
           </span>
 		  
@@ -566,7 +566,7 @@ PET atlas.</p>
 
 <p>After all subjects are registered to the common reference space, each voxel of
 the atlas is mapped to a point in each subject \(I_k\) by a transform \(f_k\),
-forming a vector of samples that can be used for statistical analysis.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>
+forming a vector of samples that can be used for statistical analysis.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>
 Moreover, the spatial Jacobian determinant \(J[f]\) of a transform \(f\)
 mapping the atlas to subject \(I_n\)</p>
 
@@ -580,7 +580,7 @@ equal to one denotes no volume change, a value greater than one denotes local
 expansion, a value between zero and one denotes local compression. Values
 lesser or equal than zero denote a physically unfeasible transform, and
 typically emerge from errors or imperfections in the image registration
-process.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
+process.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p>
 
 <p>While the transform \(f\) maps points from reference space coordinates to
 source image coordinates, in the context of image registration it is often
@@ -668,7 +668,7 @@ requirement on neutrality with respect to volume changes is unlikely to happen
 by chance. Since the subcutaneous fat deposits contribute to a significant
 portion of the body volume variability for subjects of comparable height, a
 possible heuristic is to select as the reference a subject that both height and
-total fat mass<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> simultaneously close to the respective medians for the
+total fat mass<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> simultaneously close to the respective medians for the
 population. This helps to get a good guess of the average volume for the
 cohort, but it is obviously far from having the desired mean volume everywhere
 in a pointwise fashion <a class="citation" href="#pilia2019average">[9]</a>.</p>
@@ -727,7 +727,7 @@ problem, since infinite transforms can share the same Jacobian determinant.</p>
 <p>One possibility is to model the problem as a mechanical deformation. In
 principle, different assumptions can be made, leading to different deformation
 models, and the resulting system of partial differential equations can be
-solved numerically, for instance with finite differences <a class="citation" href="#khanal2017simulating">[10]</a> or finite elements <a class="citation" href="#smith2003biomechanical">[11], [12]</a>.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> This approach has some advantages, such as a
+solved numerically, for instance with finite differences <a class="citation" href="#khanal2017simulating">[10]</a> or finite elements <a class="citation" href="#smith2003biomechanical">[11], [12]</a>.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> This approach has some advantages, such as a
 well understood mathematical and physical model, and the possibility to control
 the physical properties of the tissues being deformed by manipulating the
 parameters of such model. On the downside, however, the numerical solution of
@@ -898,7 +898,7 @@ available on <a href="https://github.com/m-pilia/disptools">GitHub</a> and
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
 
       <p>The transform \(f_k\) goes from the reference space of \(I_R\) to the
 coordinate system of each input image \(I_k\) to be registered. While at a
@@ -906,17 +906,17 @@ first glance this may seem to be the opposite of what intuition would
 suggest, the transform goes in this direction because it allows to resample
 the warped image in reference space. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
 
       <p>For short, the Jacobian determinant is simply referred as “the Jacobian” in
 the following. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
 
       <p>That can be cheaply estimated via bioelectrical impedance analysis, and it
 is measured as part of such studies. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
 
       <p>An implementation of the finite difference approach has been made publicly
 available by the authors as the <a href="https://github.com/Inria-Asclepios/simul-atrophy">Simul@trophy

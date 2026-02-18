@@ -433,7 +433,7 @@
 
 21 minutes
 
-read (3744 words)
+read (3742 words)
 
           </span>
 		  
@@ -567,7 +567,7 @@ image, which will be the n+1-dimensional volume representing the group of
 images, and to use a transform that maps from an implicit reference space to
 such volume.  However, just using a regular n+1-dimensional transform is
 unlikely to give the expected results, since we do not want to allow movements
-along the last dimension, i.e. between different images.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> For this reason, a
+along the last dimension, i.e. between different images.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> For this reason, a
 special
 <a href="http://elastix.isi.uu.nl/doxygen/classelastix_1_1BSplineStackTransform.html">BSplineStackTransform</a>
 is implemented for groupwise registration: as the name suggests, it is actually
@@ -782,7 +782,7 @@ are considering falls within the mask</p>
 
 <p>The transform also exposes a <code class="language-plaintext highlighter-rouge">Jacobian()</code> member function to get the derivative
 of the transform with respect to its parameters, which is referred as the
-Jacobian.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup> The Jacobian is returned in a sparse representation formed by the
+Jacobian.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> The Jacobian is returned in a sparse representation formed by the
 matrix columns containing any non-zero entry, together with another vector
 containing the indices of the parameters that have non-zero Jacobian. This is
 motivated by the fact that B-splines have local support, so for a given point
@@ -832,19 +832,19 @@ class, that is built-in in Elastix.</p>
 three circles, and we put a landmark in the centre of each circle. We use a
 different colour for each image to make it easier to visualise.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
-<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">]</span> <span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">]</span> <span class="p">])</span>
 <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">),</span>
             <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">127</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="p">]</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colours</span><span class="p">)):</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">20</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">uint32</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">cv2</span><span class="p">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">colours</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">colours</span><span class="p">)):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">20</span><span class="p">).</span><span class="nf">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">uint32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">cv2</span><span class="p">.</span><span class="nf">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nf">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">colours</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="center-block" style="padding-bottom: 5px;">
@@ -961,14 +961,14 @@ images (in colour):</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
 
       <p>When registering a time series, however, we may be interested to the
 partial derivatives with respect to the last dimension, along which we may
 want to have a smooth transform, corresponding to a smooth movement of the
 image content in time. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
 
       <p>While being technically correct, this is perhaps a confusing notation,
 since the term “Jacobian” is commonly associated to the spatial Jacobian of

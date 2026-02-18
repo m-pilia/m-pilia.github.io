@@ -62,7 +62,7 @@
   
 
    
-  <meta property="og:description" content="{%- capture site_tags -%} {%- for tag in site.tags -%} {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%} {%- endfor -%} {%- endcapture -%} {%- assign tags_list = site_tags | split:',' | sort -%} {%- for tag in tags_list -%} &amp;nbsp;{{- tag -}}&amp;nbsp;({{site.tags[tag].size}}) {%- endfor -%} {%- for...">
+  <meta property="og:description" content="{%- capture site_tags -%} {%- for tag in site.tags -%} {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%} {%- endfor -%} {%- endcapture -%} {%- assign tags_list = site_tags | split:&apos;,&apos; | sort -%} {%- for tag in tags_list -%} &amp;nbsp;{{- tag -}}&amp;nbsp;({{site.tags[tag].size}}) {%- endfor -%} {%- for...">
   
 
 
@@ -86,7 +86,7 @@
   
 
   
-  <meta name="twitter:description" content="{%- capture site_tags -%} {%- for tag in site.tags -%} {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%} {%- endfor -%} {%- endcapture -%} {%- assign tags_list = site_tags | split:',' | sort -%} {%- for tag in tags_list -%} &amp;nbsp;{{- tag -}}&amp;nbsp;({{site.tags[tag].size}}) {%- endfor -%} {%- for...">
+  <meta name="twitter:description" content="{%- capture site_tags -%} {%- for tag in site.tags -%} {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%} {%- endfor -%} {%- endcapture -%} {%- assign tags_list = site_tags | split:&apos;,&apos; | sort -%} {%- for tag in tags_list -%} &amp;nbsp;{{- tag -}}&amp;nbsp;({{site.tags[tag].size}}) {%- endfor -%} {%- for...">
   
 
   

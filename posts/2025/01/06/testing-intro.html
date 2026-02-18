@@ -433,7 +433,7 @@
 
 24 minutes
 
-read (4382 words)
+read (4373 words)
 
           </span>
 		  
@@ -512,7 +512,7 @@ behaviour in the test code (i.e. writing tests based on knowledge of the
 implementation that is not supposed to be part of its public API), misusing
 mocks to manipulate internals of the implementation, befriending the production
 code with the test fixture to access non public members from the test
-cases,<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">1</a></sup> and the likes.</p>
+cases,<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> and the likes.</p>
 
 <p>Tests should not be tied to implementation details, for at least two main
 reasons.</p>
@@ -618,7 +618,7 @@ its output. This section argues over the former.</p>
 unfortunately, they lack proper documentation), in which case test scripts
 often double their role as documentation for the intended behaviour of the
 product. For this reason, it is very important to make it clear what behaviour
-is being tested and why.<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">2</a></sup></p>
+is being tested and why.<sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p>
 
 <p>Way too many times I had to deal with test cases composed of excessively
 lengthy and unstructured blobs of code, where it was not even clear what was
@@ -674,7 +674,7 @@ and I get to review a test case written like this:</p>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>This is hard to follow and easy to get wrong.<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">3</a></sup> In my opinion, this test is
+<p>This is hard to follow and easy to get wrong.<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> In my opinion, this test is
 way longer and more complex than it should be acceptable. Yet in practice it is
 not uncommon to see test code that is significantly worse than this.</p>
 
@@ -697,7 +697,7 @@ strict. Well, in my experience it is not. Any piece of non-trivial logic
 parts should be moved into self-contained, clearly written, and well-named
 auxiliary classes or functions.</li>
   <li>Use a good pattern to create a clear separation across initialization logic,
-action under test,<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">4</a></sup> and verification of the results. The
+action under test,<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> and verification of the results. The
 <a href="https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/">Arrange-Act-Assert (AAA)
 pattern</a>
 is usually a good one to follow as a rule of thumb.</li>
@@ -741,7 +741,7 @@ case.</p>
 <p>Out of context this might look like an overkill. But consider that, in order to
 properly test your odometer, this test alone is not enough and dozens more of
 similar tests (at best) will be needed. That is where having good abstract test
-machinery suddenly gives a lot of value.<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">5</a></sup></p>
+machinery suddenly gives a lot of value.<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p>
 
 <h1 id="write-for-readability-of-the-test-output">Write for readability (of the test output)</h1>
 
@@ -837,7 +837,7 @@ your coverage metrics say.</p>
 <h1 id="use-good-oracles">Use good oracles</h1>
 
 <p>When working with <a href="https://en.wikipedia.org/wiki/Functional_programming">functional
-programming</a>,<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">6</a></sup> coming up
+programming</a>,<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> coming up
 with the right <a href="https://en.wikipedia.org/wiki/Test_oracle">test oracles</a> is one of
 the best ways to make your tests simpler, stronger, and easier to maintain.</p>
 
@@ -863,7 +863,7 @@ g(x): ~ &amp;A \to B \\
 <p>and test that \(f(x) = g(x)\).</p>
 
 <p>If you already have some other function at hand that implements the same
-mapping (and that can you trust), then you have an easy solution at hand.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">7</a></sup>
+mapping (and that can you trust), then you have an easy solution at hand.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">7</a></sup>
 If not, you might be able to implement your own oracle.</p>
 
 <p>As a general rule, it is better to avoid mirroring the implementation of your
@@ -880,7 +880,7 @@ possible.</p>
 Test code has generally less constraints compared to production, and that
 includes runtime performance, therefore you might be able to use a simpler
 algorithm as a test oracle to compare against (that maybe is too slow to be
-used in production).<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">8</a></sup> Using a simpler algorithm also means your test code
+used in production).<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">8</a></sup> Using a simpler algorithm also means your test code
 will be simple, which is itself a win by itself.</p>
 
 <p>If possible, however, I find the best approach is to use an inverse oracle.
@@ -928,7 +928,7 @@ necessary. Keep in mind that such kind of tests should be a dedicated tool for
 specific scenarios (e.g. integration testing), it should not be the norm for
 unit tests. If possible, separate your expensive tests from regular unit tests
 (e.g. using tags that can be filtered upon, running them in dedicated
-pipelines, etc.).<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">9</a></sup></p>
+pipelines, etc.).<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">9</a></sup></p>
 
 <!--
 # Write for readability (of the test output)
@@ -952,11 +952,11 @@ pipelines, etc.).<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="foo
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:8" role="doc-endnote">
+    <li id="fn:8">
       <p>This one sounds flat-out crazy to me, yet I have seen it several times in
 the wild, and I had to review such kind of test code myself. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:9" role="doc-endnote">
+    <li id="fn:9">
       <p>Answering the “why” is important. As for the “how”, that should not be
 redundantly spelled out in comments, and should be self-evident by
 well-written code. But explanation of the “why” should not be left to the
@@ -965,23 +965,23 @@ the intended behaviour is understandable even in the unavoidable cases when
 the test script itself contains mistakes (or otherwise, said mistakes would
 be implicitly promoted as “intended behaviour”). <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:7" role="doc-endnote">
+    <li id="fn:7">
       <p>Honestly I would not be surprised if something in it was actually wrong.
 This is not a real example, it is just something I concocted on the spot as
 an illustrative example, without even testing it. Which further reinforces
 the point I am trying to make. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:5" role="doc-endnote">
+    <li id="fn:5">
       <p>Which should be only one, see section above about atomicity of test cases. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:6" role="doc-endnote">
+    <li id="fn:6">
       <p>Additionally, I do not pass around dimensional values in <code class="language-plaintext highlighter-rouge">double</code>
 variables, too easy to get them mixed up. The type system is our friend,
 and strong typing prevents possible issues. Here <a href="https://en.cppreference.com/w/cpp/language/user_literal">user-defined
 literals</a> are
 used, but it is only one of many possible ways of doing this. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>Which you should if possible, because functional programming allows to
   avoid many footguns that come with stateful program entities, making your
   programs easier to reason about and less error-prone. Note that
@@ -989,7 +989,7 @@ used, but it is only one of many possible ways of doing this. <a href="#fnref:6
   choice of language (albeit some languages make it easier to do functional
   programming with them). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>You might be wondering why you need to implement your own feature then,
   and not just use the oracle in production. There might be a multitude of
   different reasons:</p>
@@ -1005,13 +1005,13 @@ implementation against the output of <code class="language-plaintext highlighter
       </ul>
       <p><a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
       <p>Though you should be careful to stay within reasonable bounds, and make
   sure you set acceptable goals. Otherwise, your test and integration
   routine and machinery will get slow, negatively affecting productivity as
   a whole. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
       <p><em>Software engineering at Google</em> provides an example of how tests can be
   classified into different “sizes” and handled with different criteria and
   rules based on that <a class="citation" href="#sweag2020testing">[1]</a>. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>

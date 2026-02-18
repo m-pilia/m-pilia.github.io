@@ -429,7 +429,7 @@
 
 15 minutes
 
-read (2683 words)
+read (2769 words)
 
           </span>
 		  
@@ -504,9 +504,9 @@ within the Python REPL. We can do it using the
 <a href="https://docs.python.org/3.7/library/ctypes.html">ctypes</a> module, with the
 following three lines of code</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">CDLL</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span> <span class="o">=</span> <span class="n">CDLL</span><span class="p">(</span><span class="s">'libc.so.6'</span><span class="p">)</span> <span class="c1"># The exact filename may vary on your system
-</span><span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">b"We compute %d + %d = %d!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="n">ctypes</span> <span class="kn">import</span> <span class="n">CDLL</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span> <span class="o">=</span> <span class="nc">CDLL</span><span class="p">(</span><span class="sh">'</span><span class="s">libc.so.6</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># The exact filename may vary on your system
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span><span class="p">.</span><span class="nf">printf</span><span class="p">(</span><span class="sa">b</span><span class="sh">"</span><span class="s">We compute %d + %d = %d!</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
 </code></pre></div></div>
 <p>whose output, unsurprisingly, is</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We compute 1 + 2 = 3!
@@ -531,7 +531,7 @@ structure the basics of a C extension. Here I am writing a very minimal
 example, whose code should be pretty self-explanatory, implementing a module
 that exports a single function to perform integer division.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;Python.h&gt;
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp">
 </span>
 <span class="c1">// This is the definition of a method</span>
 <span class="k">static</span> <span class="n">PyObject</span><span class="o">*</span> <span class="nf">division</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
@@ -573,11 +573,11 @@ that exports a single function to perform integer division.</p>
 
 <p>The module is defined in a standard <a href="https://docs.python.org/3.7/distutils/setupscript.html">setup.py</a> script, here in a very minimal form. Calling the setup script allows to build, package, or install a Python module (regardless of the fact that it includes a C extension or not).</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
 
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"mymath"</span><span class="p">,</span>
-      <span class="n">version</span> <span class="o">=</span> <span class="s">"0.1"</span><span class="p">,</span>
-      <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s">"mymath"</span><span class="p">,</span> <span class="p">[</span><span class="s">"mymath.c"</span><span class="p">])]</span>
+<span class="nf">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="sh">"</span><span class="s">mymath</span><span class="sh">"</span><span class="p">,</span>
+      <span class="n">version</span> <span class="o">=</span> <span class="sh">"</span><span class="s">0.1</span><span class="sh">"</span><span class="p">,</span>
+      <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="nc">Extension</span><span class="p">(</span><span class="sh">"</span><span class="s">mymath</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="sh">"</span><span class="s">mymath.c</span><span class="sh">"</span><span class="p">])]</span>
       <span class="p">);</span>
 </code></pre></div></div>
 
@@ -639,24 +639,24 @@ allows to tinker with the compiler settings and build options. This can be done
 by creating a subclass of <code class="language-plaintext highlighter-rouge">setuptools.command.build_ext</code>, and then passing an
 instance of this class to the <code class="language-plaintext highlighter-rouge">setup()</code> function.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
-<span class="kn">from</span> <span class="nn">setuptools.command.build_ext</span> <span class="kn">import</span> <span class="n">build_ext</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">Extension</span>
+<span class="kn">from</span> <span class="n">setuptools.command.build_ext</span> <span class="kn">import</span> <span class="n">build_ext</span>
 
 <span class="k">class</span> <span class="nc">my_build_ext</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">compiler</span><span class="p">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">"Visual Studio is not supported"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">compiler</span><span class="p">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="sh">'</span><span class="s">msvc</span><span class="sh">'</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nc">Exception</span><span class="p">(</span><span class="sh">"</span><span class="s">Visual Studio is not supported</span><span class="sh">"</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">extensions</span><span class="p">:</span>
-            <span class="n">e</span><span class="p">.</span><span class="n">extra_compile_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'--pedantic'</span><span class="p">]</span>
-            <span class="n">e</span><span class="p">.</span><span class="n">extra_link_args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-lgomp'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="n">e</span><span class="p">.</span><span class="n">extra_compile_args</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">--pedantic</span><span class="sh">'</span><span class="p">]</span>
+            <span class="n">e</span><span class="p">.</span><span class="n">extra_link_args</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">-lgomp</span><span class="sh">'</span><span class="p">]</span>
 
-        <span class="n">build_ext</span><span class="p">.</span><span class="n">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">build_ext</span><span class="p">.</span><span class="nf">build_extensions</span><span class="p">(</span><span class="n">self</span><span class="p">)</span>
 
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"mymath"</span><span class="p">,</span>
-      <span class="n">version</span> <span class="o">=</span> <span class="s">"0.1"</span><span class="p">,</span>
-      <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s">"mymath"</span><span class="p">,</span> <span class="p">[</span><span class="s">"mymath.c"</span><span class="p">])],</span>
-      <span class="n">cmdclass</span> <span class="o">=</span> <span class="p">{</span><span class="s">'build_ext'</span><span class="p">:</span> <span class="n">my_build_ext</span><span class="p">},</span>
+<span class="nf">setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="sh">"</span><span class="s">mymath</span><span class="sh">"</span><span class="p">,</span>
+      <span class="n">version</span> <span class="o">=</span> <span class="sh">"</span><span class="s">0.1</span><span class="sh">"</span><span class="p">,</span>
+      <span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="nc">Extension</span><span class="p">(</span><span class="sh">"</span><span class="s">mymath</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="sh">"</span><span class="s">mymath.c</span><span class="sh">"</span><span class="p">])],</span>
+      <span class="n">cmdclass</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">build_ext</span><span class="sh">'</span><span class="p">:</span> <span class="n">my_build_ext</span><span class="p">},</span>
       <span class="p">);</span>
 </code></pre></div></div>
 
@@ -729,71 +729,71 @@ folder of the CMake project (<code class="language-plaintext highlighter-rouge">
 parameter to an empty list, since in the base class it is not an optional
 argument, but we do not want setuptools to directly compile any file for us.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CMakeExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmake_lists_dir</span><span class="o">=</span><span class="s">'.'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwa</span><span class="p">):</span>
-        <span class="n">Extension</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwa</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">cmake_lists_dir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cmake_lists_dir</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmake_lists_dir</span><span class="o">=</span><span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwa</span><span class="p">):</span>
+        <span class="n">Extension</span><span class="p">.</span><span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwa</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">cmake_lists_dir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">abspath</span><span class="p">(</span><span class="n">cmake_lists_dir</span><span class="p">)</span>
 </code></pre></div></div>
 <p>We can then proceed to define the actual <code class="language-plaintext highlighter-rouge">build_ext</code> subclass that is in charge
 to launch CMake.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">cmake_build_ext</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">build_extensions</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
         <span class="c1"># Ensure that CMake is present and working
 </span>        <span class="k">try</span><span class="p">:</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--version'</span><span class="p">])</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">check_output</span><span class="p">([</span><span class="sh">'</span><span class="s">cmake</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">--version</span><span class="sh">'</span><span class="p">])</span>
         <span class="k">except</span> <span class="nb">OSError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'Cannot find CMake executable'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="nc">RuntimeError</span><span class="p">(</span><span class="sh">'</span><span class="s">Cannot find CMake executable</span><span class="sh">'</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">extensions</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">extensions</span><span class="p">:</span>
 
-            <span class="n">extdir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">get_ext_fullpath</span><span class="p">(</span><span class="n">ext</span><span class="p">.</span><span class="n">name</span><span class="p">)))</span>
-            <span class="n">cfg</span> <span class="o">=</span> <span class="s">'Debug'</span> <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s">'--debug'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'ON'</span> <span class="k">else</span> <span class="s">'Release'</span>
+            <span class="n">extdir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">abspath</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">get_ext_fullpath</span><span class="p">(</span><span class="n">ext</span><span class="p">.</span><span class="n">name</span><span class="p">)))</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="sh">'</span><span class="s">Debug</span><span class="sh">'</span> <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="sh">'</span><span class="s">--debug</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="s">ON</span><span class="sh">'</span> <span class="k">else</span> <span class="sh">'</span><span class="s">Release</span><span class="sh">'</span>
 
             <span class="n">cmake_args</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="s">'-DCMAKE_BUILD_TYPE=%s'</span> <span class="o">%</span> <span class="n">cfg</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">-DCMAKE_BUILD_TYPE=%s</span><span class="sh">'</span> <span class="o">%</span> <span class="n">cfg</span><span class="p">,</span>
                 <span class="c1"># Ask CMake to place the resulting library in the directory
 </span>                <span class="c1"># containing the extension
-</span>                <span class="s">'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
+</span>                <span class="sh">'</span><span class="s">-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="nf">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
                 <span class="c1"># Other intermediate static libraries are placed in a
 </span>                <span class="c1"># temporary build directory instead
-</span>                <span class="s">'-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">),</span>
+</span>                <span class="sh">'</span><span class="s">-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="nf">upper</span><span class="p">(),</span> <span class="n">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">),</span>
                 <span class="c1"># Hint CMake to use the same Python executable that
 </span>                <span class="c1"># is launching the build, prevents possible mismatching if
 </span>                <span class="c1"># multiple versions of Python are installed
-</span>                <span class="s">'-DPYTHON_EXECUTABLE={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">),</span>
+</span>                <span class="sh">'</span><span class="s">-DPYTHON_EXECUTABLE={}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">),</span>
                 <span class="c1"># Add other project-specific CMake arguments if needed
 </span>                <span class="c1"># ...
 </span>            <span class="p">]</span>
 
             <span class="c1"># We can handle some platform-specific settings at our discretion
-</span>            <span class="k">if</span> <span class="n">platform</span><span class="p">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">'Windows'</span><span class="p">:</span>
-                <span class="n">plat</span> <span class="o">=</span> <span class="p">(</span><span class="s">'x64'</span> <span class="k">if</span> <span class="n">platform</span><span class="p">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'64bit'</span> <span class="k">else</span> <span class="s">'Win32'</span><span class="p">)</span>
+</span>            <span class="k">if</span> <span class="n">platform</span><span class="p">.</span><span class="nf">system</span><span class="p">()</span> <span class="o">==</span> <span class="sh">'</span><span class="s">Windows</span><span class="sh">'</span><span class="p">:</span>
+                <span class="n">plat</span> <span class="o">=</span> <span class="p">(</span><span class="sh">'</span><span class="s">x64</span><span class="sh">'</span> <span class="k">if</span> <span class="n">platform</span><span class="p">.</span><span class="nf">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="s">64bit</span><span class="sh">'</span> <span class="k">else</span> <span class="sh">'</span><span class="s">Win32</span><span class="sh">'</span><span class="p">)</span>
                 <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
                     <span class="c1"># These options are likely to be needed under Windows
-</span>                    <span class="s">'-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE'</span><span class="p">,</span>
-                    <span class="s">'-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
+</span>                    <span class="sh">'</span><span class="s">-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE</span><span class="sh">'</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="nf">upper</span><span class="p">(),</span> <span class="n">extdir</span><span class="p">),</span>
                 <span class="p">]</span>
                 <span class="c1"># Assuming that Visual Studio and MinGW are supported compilers
-</span>                <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">compiler</span><span class="p">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="s">'msvc'</span><span class="p">:</span>
+</span>                <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">compiler</span><span class="p">.</span><span class="n">compiler_type</span> <span class="o">==</span> <span class="sh">'</span><span class="s">msvc</span><span class="sh">'</span><span class="p">:</span>
                     <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
-                        <span class="s">'-DCMAKE_GENERATOR_PLATFORM=%s'</span> <span class="o">%</span> <span class="n">plat</span><span class="p">,</span>
+                        <span class="sh">'</span><span class="s">-DCMAKE_GENERATOR_PLATFORM=%s</span><span class="sh">'</span> <span class="o">%</span> <span class="n">plat</span><span class="p">,</span>
                     <span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">cmake_args</span> <span class="o">+=</span> <span class="p">[</span>
-                        <span class="s">'-G'</span><span class="p">,</span> <span class="s">'MinGW Makefiles'</span><span class="p">,</span>
+                        <span class="sh">'</span><span class="s">-G</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">MinGW Makefiles</span><span class="sh">'</span><span class="p">,</span>
                     <span class="p">]</span>
 
             <span class="n">cmake_args</span> <span class="o">+=</span> <span class="n">cmake_cmd_args</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">):</span>
-                <span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">):</span>
+                <span class="n">os</span><span class="p">.</span><span class="nf">makedirs</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
 
             <span class="c1"># Config
-</span>            <span class="n">subprocess</span><span class="p">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="n">ext</span><span class="p">.</span><span class="n">cmake_lists_dir</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmake_args</span><span class="p">,</span>
-                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
+</span>            <span class="n">subprocess</span><span class="p">.</span><span class="nf">check_call</span><span class="p">([</span><span class="sh">'</span><span class="s">cmake</span><span class="sh">'</span><span class="p">,</span> <span class="n">ext</span><span class="p">.</span><span class="n">cmake_lists_dir</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmake_args</span><span class="p">,</span>
+                                  <span class="n">cwd</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
 
             <span class="c1"># Build
-</span>            <span class="n">subprocess</span><span class="p">.</span><span class="n">check_call</span><span class="p">([</span><span class="s">'cmake'</span><span class="p">,</span> <span class="s">'--build'</span><span class="p">,</span> <span class="s">'.'</span><span class="p">,</span> <span class="s">'--config'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">],</span>
-                                  <span class="n">cwd</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
+</span>            <span class="n">subprocess</span><span class="p">.</span><span class="nf">check_call</span><span class="p">([</span><span class="sh">'</span><span class="s">cmake</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">--build</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">--config</span><span class="sh">'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">],</span>
+                                  <span class="n">cwd</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">build_temp</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>A real-life example of Python extension built this way is the

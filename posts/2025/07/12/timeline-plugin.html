@@ -429,7 +429,7 @@
 
 8 minutes
 
-read (1384 words)
+read (1377 words)
 
           </span>
 		  
@@ -497,7 +497,7 @@ website</a>
 
 <p>So I had a look at her site, and her solution seems to be at least partially
 based on <a href="https://web.archive.org/web/20250430022542/https://codyhouse.co/gem/vertical-timeline/">CodyHouse’s timeline
-component</a>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">1</a></sup>
+component</a>.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>
 The CodyHouse components is distributed under a free license that in principle
 would be compatible with my website, but I considered some arguments for not
 using it:</p>
@@ -507,7 +507,7 @@ using it:</p>
 form (which is an option I want to keep on the table).</li>
   <li>It depends on the CodyHouse framework, and I would prefer to avoid
 introducing external dependencies, especially on content that is freemium or
-not under fully free licenses.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup></li>
+not under fully free licenses.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></li>
   <li>Maybe it is time to learn some new web development tricks and have some fun
 while at it.</li>
 </ul>
@@ -557,7 +557,7 @@ setting mirrored properties for elements on each side</p>
 <span class="err">}</span>
 
 <span class="nc">.tl-event</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span> <span class="p">{</span>
-    <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">row-reverse</span><span class="p">;</span>
+    <span class="nl">flex-direction</span><span class="p">:</span> <span class="nb">row-reverse</span><span class="p">;</span>
 
     <span class="err">.tl-event-content</span> <span class="err">{</span>
         <span class="nl">text-align</span><span class="p">:</span> <span class="nb">left</span><span class="p">;</span>
@@ -569,7 +569,7 @@ setting mirrored properties for elements on each side</p>
     <span class="p">}</span>
 
     <span class="nc">.tl-marker</span> <span class="p">{</span>
-        <span class="nl">left</span><span class="p">:</span> <span class="n">calc</span><span class="p">(</span><span class="n">var</span><span class="p">(</span><span class="n">--marker-size</span><span class="p">)</span> <span class="err">*</span> <span class="m">0.5</span><span class="p">);</span>
+        <span class="nl">left</span><span class="p">:</span> <span class="nf">calc</span><span class="p">(</span><span class="nf">var</span><span class="p">(</span><span class="l">--marker-size</span><span class="p">)</span> <span class="o">*</span> <span class="m">0.5</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="err">}</span>
 </code></pre></div></div>
@@ -599,10 +599,10 @@ visible while scrolling, so the element is kept at the top of the page with
 <code class="language-plaintext highlighter-rouge">position: sticky</code>:</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.tl-filters</span> <span class="p">{</span>
-    <span class="nl">position</span><span class="p">:</span> <span class="n">sticky</span><span class="p">;</span>
+    <span class="nl">position</span><span class="p">:</span> <span class="nb">sticky</span><span class="p">;</span>
     <span class="nl">z-index</span><span class="p">:</span> <span class="m">1000</span><span class="p">;</span>
-    <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
-    <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">row</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">flex</span><span class="p">;</span>
+    <span class="nl">flex-direction</span><span class="p">:</span> <span class="nb">row</span><span class="p">;</span>
     <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
     <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
     <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
@@ -615,7 +615,7 @@ can be set to <code class="language-plaintext highlighter-rouge">allow-discrete<
 elements in pure CSS.</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.tl-event</span> <span class="p">{</span>
-    <span class="nl">transition-property</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span> <span class="n">opacity</span><span class="p">;</span>
+    <span class="nl">transition-property</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span> <span class="nf">opacity</span><span class="p">;</span>
     <span class="nl">transition-duration</span><span class="p">:</span> <span class="m">0.5s</span><span class="p">;</span>
     <span class="py">transition-behavior</span><span class="p">:</span> <span class="n">allow-discrete</span><span class="p">;</span>
 <span class="p">}</span>
@@ -637,26 +637,26 @@ it allow to define individual events.</p>
 
 <p>For instance, the following code</p>
 
-<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">timeline</span><span class="w">
-</span><span class="na">id</span><span class="o">:</span><span class="w"> </span>example-timeline<span class="err">
-</span><span class="na">categories</span><span class="o">:</span><span class="err">
-</span><span class="w">    </span><span class="na">project</span><span class="o">:</span><span class="err">
-</span><span class="w">        </span><span class="na">color</span><span class="o">:</span><span class="w"> </span><span class="s2">"#FFCC66"</span><span class="err">
-</span><span class="w">        </span><span class="na">icon</span><span class="o">:</span><span class="w"> </span>/img/fontawesome/code.svg<span class="err">
-</span><span class="w">    </span><span class="na">life</span><span class="o">:</span><span class="err">
-</span><span class="w">        </span><span class="na">color</span><span class="o">:</span><span class="w"> </span><span class="s2">"#33CC33"</span><span class="err">
-</span><span class="w">        </span><span class="na">icon</span><span class="o">:</span><span class="w"> </span>/img/fontawesome/house-chimney.svg<span class="err">
-</span><span class="p">%}</span>
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">{%</span><span class="w"> </span><span class="nt">timeline</span><span class="w">
+</span><span class="na">id</span><span class="o">:</span><span class="w"> </span><span class="nv">example-timeline</span><span class="w">
+</span><span class="na">categories</span><span class="o">:</span><span class="w">
+    </span><span class="na">project</span><span class="o">:</span><span class="w">
+        </span><span class="na">color</span><span class="o">:</span><span class="w"> </span><span class="s2">"#FFCC66"</span><span class="w">
+        </span><span class="na">icon</span><span class="o">:</span><span class="w"> </span>/img/fontawesome/code.svg<span class="w">
+    </span><span class="na">life</span><span class="o">:</span><span class="w">
+        </span><span class="na">color</span><span class="o">:</span><span class="w"> </span><span class="s2">"#33CC33"</span><span class="w">
+        </span><span class="na">icon</span><span class="o">:</span><span class="w"> </span>/img/fontawesome/house-chimney.svg<span class="w">
+</span><span class="cp">%}</span>
 
-<span class="p">{%</span><span class="w"> </span><span class="nt">event</span><span class="w"> </span>life,<span class="w"> </span>March<span class="w"> </span><span class="mi">2017</span><span class="w"> </span><span class="p">%}</span>
+<span class="cp">{%</span><span class="w"> </span><span class="nt">event</span><span class="w"> </span><span class="nv">life</span><span class="p">,</span><span class="w"> </span><span class="nv">March</span><span class="w"> </span><span class="mi">2017</span><span class="w"> </span><span class="cp">%}</span>
 First event.
-<span class="p">{%</span><span class="w"> </span><span class="nt">endevent</span><span class="w"> </span><span class="p">%}</span>
+<span class="cp">{%</span><span class="w"> </span><span class="nt">endevent</span><span class="w"> </span><span class="cp">%}</span>
 
-<span class="p">{%</span><span class="w"> </span><span class="nt">event</span><span class="w"> </span>project,<span class="w"> </span>April<span class="w"> </span><span class="mi">2018</span><span class="w"> </span><span class="p">%}</span>
+<span class="cp">{%</span><span class="w"> </span><span class="nt">event</span><span class="w"> </span><span class="nv">project</span><span class="p">,</span><span class="w"> </span><span class="nv">April</span><span class="w"> </span><span class="mi">2018</span><span class="w"> </span><span class="cp">%}</span>
 Second event.
-<span class="p">{%</span><span class="w"> </span><span class="nt">endevent</span><span class="w"> </span><span class="p">%}</span>
+<span class="cp">{%</span><span class="w"> </span><span class="nt">endevent</span><span class="w"> </span><span class="cp">%}</span>
 
-<span class="p">{%</span><span class="w"> </span><span class="nt">endtimeline</span><span class="w"> </span><span class="p">%}</span>
+<span class="cp">{%</span><span class="w"> </span><span class="nt">endtimeline</span><span class="w"> </span><span class="cp">%}</span>
 </code></pre></div></div>
 
 <p>will produce this result:</p>
@@ -688,10 +688,10 @@ Enjoy!</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>Or at least it is remarkably similar to it. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>This is not really about ideological reasons, one key concern is to
 retain freedom and full ownership of my own content from a legal
 perspective. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>

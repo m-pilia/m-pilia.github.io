@@ -429,7 +429,7 @@
 
 10 minutes
 
-read (1865 words)
+read (1857 words)
 
           </span>
 		  
@@ -504,7 +504,7 @@ inline diagnostics and semantic autocompletion.</p>
 <p>Shortening the feedback loop is one of the most important aspects of optimising
 a developer’s way of working, and being able to see diagnostics as I type is
 one of the most extreme forms of
-<a href="https://en.wikipedia.org/wiki/Shift-left_testing">shift-left</a>.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">1</a></sup> For the
+<a href="https://en.wikipedia.org/wiki/Shift-left_testing">shift-left</a>.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> For the
 same reason, I value using as many linters and static analysers as possible,
 not just to improve quality of my work but also to learn more and more about
 code quality and best practices through them.</p>
@@ -534,14 +534,14 @@ having inline diagnostics and semantic autocompletion for all the languages I
 wanted was becoming true.</p>
 
 <p>While YCM had already pioneered the idea of decoupling the semantic back-end
-from the text editor<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup> before LSP itself, the LSP had a much broader span and
+from the text editor<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> before LSP itself, the LSP had a much broader span and
 unfortunately the YCM project was a bit slow to switch to the new protocol.
 That pushed me to abandon YCM in favour of an LSP client.</p>
 
 <p>There were several options for vim clients since early times, and after testing
 a few alternatives I decided to go with
 <a href="https://github.com/prabirshrestha/vim-lsp">vim-lsp</a>, which seemed the
-leanest<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">3</a></sup> to me while at the same time having all the features I wanted (I
+leanest<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> to me while at the same time having all the features I wanted (I
 contributed a few features to the project myself).</p>
 
 <h1 id="cocnvim">coc.nvim</h1>
@@ -550,7 +550,7 @@ contributed a few features to the project myself).</p>
 decided to try a more ambitious plugin developed by a subset of the Chinese
 (Neo)vim community, <a href="https://github.com/neoclide/coc.nvim">coc.nvim</a>, whose
 aspiration was to port the VSCode ecosystem to (Neo)vim. Given the big feature
-scope of coc.nvim, this was a major overhaul of my vim setup.<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">4</a></sup></p>
+scope of coc.nvim, this was a major overhaul of my vim setup.<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></p>
 
 <p>While coc.nvim served me well for a long time, I have always been torn over it
 since the very beginning, and even before switching to it I was already
@@ -577,7 +577,7 @@ work where I hardly ever have node.js as part of my development environment.</p>
 saw the need for a more modern development approach in the vim project.
 However, I did not jump ship immediately. In its early days Neovim suffered of
 stability and platform portability issues. It was also not obvious whether the
-project would take off or if it would end up as a dead end.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">5</a></sup> I therefore
+project would take off or if it would end up as a dead end.<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">5</a></sup> I therefore
 preferred to wait and see whether the project would stabilize.</p>
 
 <p>Neovim turned out to be a solid project that started to offer not just a better
@@ -611,11 +611,11 @@ by itself did not justify a change, for the reasons mentioned above.</p>
 
 <p>Similarly, while many Neovim users have their entire configuration in Lua, I
 did not see a reason to port my entire configuration to Lua. While I see Lua as
-a much “better”<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">6</a></sup> scripting language than Vim script,<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">7</a></sup> I have an advanced
+a much “better”<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> scripting language than Vim script,<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">7</a></sup> I have an advanced
 knowledge of Vim script myself, having implemented and published several
 complex plugins, which differentiates me from newcoming Neovim users. And for
 simpler things I find a Vim script configuration cleaner and more concise than
-a Lua counterpart.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">8</a></sup></p>
+a Lua counterpart.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">8</a></sup></p>
 
 <h1 id="embracing-neovim">Embracing Neovim</h1>
 
@@ -651,7 +651,7 @@ post</a>.</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:5" role="doc-endnote">
+    <li id="fn:5">
       <p>To give a practical example, in one of my previous jobs we used to have
   our in-house C coding guidelines, and an in-house tool developed to check
   compliance and enforce them (back then <code class="language-plaintext highlighter-rouge">clang-tidy</code> was not as viable as
@@ -661,34 +661,34 @@ post</a>.</p>
   for VSCode to offer the same experience to other coworkers (even though I
   did not use VSCode myself, it was the most popular IDE at work there). <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>For instance, there was <a href="https://github.com/abingham/emacs-ycmd">an Emacs
   client</a> that used the same YCM
   daemon. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>I highly value cleanliness and simplicity. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:7" role="doc-endnote">
+    <li id="fn:7">
       <p>I still remember spending several hours during a long layover at
    Amsterdam Schiphol porting my configuration to coc.nvim. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
       <p>The Neovim schism injected some renewed energy in the roadmap of vim
   itself, for instance pushing towards the implementation of long-requested
   features such as terminal embedding, asynchronous execution, etc. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:8" role="doc-endnote">
+    <li id="fn:8">
       <p>“Better” in the sense of cleaner, less error-prone, and with less obscure
   idiosyncrasies. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:6" role="doc-endnote">
+    <li id="fn:6">
       <p>I am capitalizing “vim” (as in the text editor) as lowercase, and “Vim
   script” (as in the programming language, also known as “VimL””) as
   uppercase, following the capitalization used in the official
   documentation for the latter. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
       <p>Admittedly, this might also be influenced by my long experience with
   Vim script. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>

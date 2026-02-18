@@ -429,7 +429,7 @@
 
 10 minutes
 
-read (1773 words)
+read (1787 words)
 
           </span>
 		  
@@ -570,15 +570,15 @@ multiple targets, and that can be easily re-used as it is on several projects.</
 	<span class="nb">mkdir</span> <span class="nt">-p</span> build
 	docker run <span class="se">\</span>
 		<span class="nt">--rm</span> <span class="se">\</span>
-		<span class="nt">-v</span> <span class="s2">"</span><span class="err">$</span><span class="nv">$(pwd)</span><span class="s2">:/mnt"</span> <span class="se">\</span>
+		<span class="nt">-v</span> <span class="s2">"</span><span class="p">$$(</span><span class="s2">pwd</span><span class="p">)</span><span class="s2">:/mnt"</span> <span class="se">\</span>
 		<span class="nt">-w</span> /mnt <span class="se">\</span>
 		adnrv/texlive:full <span class="se">\</span>
 		bash <span class="nt">-x</span> <span class="nt">-o</span> pipefail <span class="nt">-c</span> <span class="s1">'\
-			pdflatex </span><span class="nv">$(OPTIONS)</span><span class="s1"> $&lt; &amp;&amp; \
-			bibtex "</span><span class="nv">${BUILD_DIR}</span><span class="s1">"/$* &amp;&amp; \
-			makeglossaries -d </span><span class="nv">$(BUILD_DIR)</span><span class="s1"> "$*" &amp;&amp; \
-			pdflatex </span><span class="nv">$(OPTIONS)</span><span class="s1"> $&lt; &amp;&amp; \
-			pdflatex </span><span class="nv">$(OPTIONS)</span><span class="s1"> $&lt; \
+			pdflatex </span><span class="p">$(</span><span class="s1">OPTIONS</span><span class="p">)</span><span class="s1"> $&lt; &amp;&amp; \
+			bibtex "</span><span class="p">${</span><span class="s1">BUILD_DIR</span><span class="p">}</span><span class="s1">"/$* &amp;&amp; \
+			makeglossaries -d </span><span class="p">$(</span><span class="s1">BUILD_DIR</span><span class="p">)</span><span class="s1"> "$*" &amp;&amp; \
+			pdflatex </span><span class="p">$(</span><span class="s1">OPTIONS</span><span class="p">)</span><span class="s1"> $&lt; &amp;&amp; \
+			pdflatex </span><span class="p">$(</span><span class="s1">OPTIONS</span><span class="p">)</span><span class="s1"> $&lt; \
 			'</span>
 </code></pre></div></div>
 
@@ -591,7 +591,7 @@ a project with two documents whose main files are <code class="language-plaintex
 build patterns:</p>
 
 <div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">FILES</span> <span class="o">=</span> document1 document2
-<span class="nv">OUTPUTS</span> <span class="o">=</span> <span class="nf">$(</span><span class="nb">patsubst</span> %,build/%.pdf,<span class="nv">$(FILES)</span><span class="nf">)</span>
+<span class="nv">OUTPUTS</span> <span class="o">=</span> <span class="p">$(</span>patsubst %,build/%.pdf,<span class="p">$(</span>FILES<span class="p">))</span>
 </code></pre></div></div>
 
 <p>An <code class="language-plaintext highlighter-rouge">all</code> rule makes it easy to build the whole project:</p>
@@ -610,17 +610,17 @@ output from it in order to decide whether the build should be marked as failed.<
 	find <span class="nb">.</span> <span class="nt">-maxdepth</span> 1 <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s1">'*.tex'</span> <span class="nt">-exec</span> <span class="se">\</span>
 		docker run <span class="se">\</span>
 			<span class="nt">--rm</span> <span class="se">\</span>
-			<span class="nt">-v</span> <span class="s2">"</span><span class="err">$</span><span class="nv">$(pwd)</span><span class="s2">:/mnt"</span> <span class="se">\</span>
+			<span class="nt">-v</span> <span class="s2">"</span><span class="p">$$(</span><span class="s2">pwd</span><span class="p">)</span><span class="s2">:/mnt"</span> <span class="se">\</span>
 			<span class="nt">-w</span> /mnt <span class="se">\</span>
 			adnrv/texlive:full <span class="se">\</span>
-			bash <span class="nt">-c</span> <span class="s2">"chktex {} | tee build/chktex &amp;&amp; [ </span><span class="err">$$</span><span class="s2">(cat build/chktex | wc -l) -le 0 ]"</span> <span class="se">\;</span>
+			bash <span class="nt">-c</span> <span class="s2">"chktex {} | tee build/chktex &amp;&amp; [ </span><span class="p">$$(</span><span class="s2">cat build/chktex | wc -l</span><span class="p">)</span><span class="s2"> -le 0 ]"</span> <span class="se">\;</span>
 </code></pre></div></div>
 
 <p>Last, we can write a rule to clean up the working tree.</p>
 
 <div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">clean</span>
 <span class="nl">clean</span><span class="o">:</span>
-	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">${BUILD_DIR}</span>
+	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="p">${</span>BUILD_DIR<span class="p">}</span>
 </code></pre></div></div>
 
 <p>With such a Makefile in place, it is now possible to build the PDF or to lint

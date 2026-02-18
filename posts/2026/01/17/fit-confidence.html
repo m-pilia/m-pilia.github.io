@@ -433,7 +433,7 @@
 
 6 minutes
 
-read (1101 words)
+read (1097 words)
 
           </span>
 		  
@@ -498,8 +498,8 @@ to some extent, has been understood since the 18th century if not earlier. What
 is commonly regarded as the first fully fledged example of least squares
 regression is the prediction of
 <a href="https://en.wikipedia.org/wiki/Ceres_(dwarf_planet)">Ceres</a>’s orbit by Gauss in
-1801,<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> four years before the first publication of the method by Legendre in
-1805 <a class="citation" href="#legendre1805nouvelles">[1]</a>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
+1801,<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> four years before the first publication of the method by Legendre in
+1805 <a class="citation" href="#legendre1805nouvelles">[1]</a>.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p>
 
 <p>In their problem, my friend was using
 <a href="https://en.wikipedia.org/wiki/Weighted_least_squares">weighted</a> and
@@ -555,7 +555,7 @@ covariance.</p>
 
 <p>To compute our approximate covariance we only need to pay the cost of a matrix
 inversion and a handful of scalar operations. Or, even better, we can avoid the
-matrix inversion altogether, for both cost and numerical stability reasons.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>
+matrix inversion altogether, for both cost and numerical stability reasons.<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>
 After all our final goal is not to estimate the covariance but rather the
 confidence, which will be inversely related to it.</p>
 
@@ -576,7 +576,7 @@ denote a low confidence scenario (while on the other hand, a determinant
 dominated by a very small eigenvalue could “hide” other dimensions with high
 uncertainty, which would be undesired).</p>
 
-<p>The final step is to map the trace to a pseudo-probability.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> I suggested a
+<p>The final step is to map the trace to a pseudo-probability.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> I suggested a
 very simple approach, passing the trace \(t\) to an exponential function
 \(e^{-(a t + b)^2}\) with constant parameters \(a\) and \(b\) that are
 themselves fit from data, which worked fairly well for their problem despite
@@ -596,16 +596,16 @@ to present it here, as I think it can be useful to others.</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>The <a href="https://web.archive.org/web/20260112120234/http://ceres-solver.org/">Ceres</a>
   solver is named after this fact. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>Gauss is known for not rushing to publish his results. More extreme
   examples include fundamental results, such as his development of
   non-Euclidean geometry, that he never published. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
       <p>Their problem had a small number of model parameters, so even the
   inversion would have been relatively cheap. But avoiding the explicit
   calculation of a matrix inverse whenever possible is a <a href="https://web.archive.org/web/20260103171942/https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/">general rule of
@@ -613,7 +613,7 @@ to present it here, as I think it can be useful to others.</p>
   in numerical analysis, as it has several benefits in terms of cost and
   numerical stability. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
       <p>This pseudo-probability could then be combined with other domain-specific
   signals that my friend already had at hand and that contributed to the
   overall confidence of their problem, beyond the model fitting part itself.

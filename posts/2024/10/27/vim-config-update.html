@@ -429,7 +429,7 @@
 
 14 minutes
 
-read (2555 words)
+read (2545 words)
 
           </span>
 		  
@@ -483,7 +483,7 @@ setup and how it reached the point where it now stands. This however developed
 into a lengthy text that I decided to publish as a <a href="/posts/2024/10/27/vim-background.html">standalone
 post</a>.</p>
 
-<p>The change is a fairly large<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">1</a></sup>
+<p>The change is a fairly large<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>
 <a href="https://github.com/m-pilia/.vim/commit/a90c3ecc5c">commit</a> to the
 <a href="https://github.com/m-pilia/.vim">m-pilia/.vim</a> GitHub repository, publicly
 hosting my vim and Neovim configuration under version control.</p>
@@ -508,8 +508,8 @@ with newer plugins that did not exist at the time.</p>
 
 <h1 id="language-choice">Language choice</h1>
 
-<p>Being compatible with vim,<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">2</a></sup> my configuration was entirely implemented in Vim
-script.<sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">3</a></sup> I will add some Lua alongside to it, but I do not see the need to
+<p>Being compatible with vim,<sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> my configuration was entirely implemented in Vim
+script.<sup id="fnref:10"><a href="#fn:10" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> I will add some Lua alongside to it, but I do not see the need to
 rewrite my entire configuration in Lua, for several reasons.</p>
 
 <p>Lua is more performant than legacy Vim script, but when it comes to my own
@@ -554,7 +554,7 @@ reimplement a mechanism analogous to <code class="language-plaintext highlighter
 <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>. I wanted to switch out from
 using git submodules, with all their quirks, and I also liked the idea of being
 able to easily break down the plugin configuration in smaller and
-self-contained files for each plugin.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">4</a></sup> As a side effect of the configuration
+self-contained files for each plugin.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> As a side effect of the configuration
 overhaul, my <code class="language-plaintext highlighter-rouge">vimrc</code>/<code class="language-plaintext highlighter-rouge">init.vim</code> halved in size, and there is likely margin
 for further modularization in the future.</p>
 
@@ -586,7 +586,7 @@ available in Neovim nightly and to be part of Neovim 0.11 in the future. This
 work, driven by <a href="https://github.com/MariaSolOs">Maria José Solano</a> (also author
 of Neovim’s built-in snippet implementation), makes it very easy to get
 LSP-based autocompletion to work with only a handful lines of configuration,
-potentially obsoleting the need for an autocompletion plugin.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">5</a></sup></p>
+potentially obsoleting the need for an autocompletion plugin.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p>
 
 <p>With just <a href="https://gist.github.com/m-pilia/2273f1c53bea11f201985e835706d810">a few
 lines</a> of
@@ -633,7 +633,7 @@ autocompletion and <a href="https://github.com/L3MON4D3/LuaSnip">LuaSnip</a> for
 In this process, I switched out of
 <a href="https://github.com/SirVer/ultisnips">UltiSnips</a> and ported my own custom
 snippets from the UltiSnips format to the <a href="https://web.archive.org/web/20240906214319/https://code.visualstudio.com/docs/editor/userdefinedsnippets#_create-your-own-snippets">JSON format used by
-VSCode</a>.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">6</a></sup></p>
+VSCode</a>.<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">6</a></sup></p>
 
 <p>As a corollary, I promptly <a href="https://github.com/m-pilia/vim-mediawiki/commit/7539fbbd63">added a nvim-cmp completion
 source</a> to my own
@@ -642,7 +642,7 @@ itself was simple, as I could easily implement it as a Lua wrapper around the
 existing coc.nvim source, converting inputs and outputs between the formats
 used by the two plugins. Nevertheless, it was a useful way to have a peek under
 the hood and work with the  nvim-cmp API from a plugin developer’s
-perspective.<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">7</a></sup></p>
+perspective.<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">7</a></sup></p>
 
 <h1 id="auto-pairs">Auto-pairs</h1>
 
@@ -662,12 +662,12 @@ iterations, but it should be good enough as a starting point.</p>
 
 <h1 id="gutter-signs">Gutter signs</h1>
 
-<p>I primarily need two features to work in the gutter:<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">8</a></sup> signs for diagnostics,
+<p>I primarily need two features to work in the gutter:<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">8</a></sup> signs for diagnostics,
 and signs for git diffs. For the former, Neovim now offers built-in gutter
 signs for diagnostic, so that already works out of the box and I only needed a
 few lines of Lua settings to get the desired appearance. For the latter, I went
 back to <a href="https://github.com/airblade/vim-gitgutter">vim-gitgutter</a>, that I used
-before coc.nvim and still seems to be a reasonable go-to solution for me.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">9</a></sup></p>
+before coc.nvim and still seems to be a reasonable go-to solution for me.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">9</a></sup></p>
 
 <h1 id="status-line">Status line</h1>
 
@@ -710,7 +710,7 @@ self-contained to be worth adding to my configuration.</p>
 point. In late times my vim/Neovim configuration had been fairly stable and
 almost stationary, likely due to the fact of being already fairly advanced,
 paired with the fact that I am generally not motivated to make changes just for
-the sake of it.<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">10</a></sup></p>
+the sake of it.<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">10</a></sup></p>
 
 <p>But I see some margin to further refine and improve my setup, so I will
 evaluate improvements and possibly new plugins to try (or to develop myself) in
@@ -720,29 +720,29 @@ the future to cover more advanced use cases that I have been developing.</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:8" role="doc-endnote">
+    <li id="fn:8">
       <p>While I greatly prefer small and self-contained changes, and I vehemently
   advocate for them at work, in this case I think an atomic update is the
   most reasonable solution, while small incremental configuration changes
   would be harder to follow and would almost unavoidably leave parts of the
   configuration broken in the intermediate steps. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:9" role="doc-endnote">
+    <li id="fn:9">
       <p>I am capitalizing “vim” (as in the text editor) as lowercase, and “Vim
   script” (as in the programming language, also known as “VimL”) as
   uppercase, following the capitalization used in the official
   documentation for the latter. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:10" role="doc-endnote">
+    <li id="fn:10">
       <p>What is now known as “Vim script version 1”, i.e. legacy Vim script
    without any of the new language features introduced since Vim 9. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>That would have always been possible to do by using smaller vim scripts
   and a mechanism to source them. But Lazy offers such mechanism basically
   out of the box and so, once more, no need to reinvent the wheel. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>Technically, autocompletion plugins have never been strictly
   necessary, as it has always possible to get a working autocompletion by
   providing a user-made
@@ -754,14 +754,14 @@ the future to cover more advanced use cases that I have been developing.</p>
   it (such as doing things better or differently than existing plugins),
   ends up in reinventing the wheel. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3" role="doc-endnote">
+    <li id="fn:3">
       <p>LuaSnip supports different formats and has loaders for them. While Lua
   snippets are potentially more versatile, JSON ones are more portable and
   support all features I need at the moment. And of course nothing prevents
   me to also add custom Lua snippets to the side if more advanced features
   are needed. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:6" role="doc-endnote">
+    <li id="fn:6">
       <p>The only limitation I found was that
   <a href="https://github.com/junegunn/vader.vim">Vader</a> tests did not seem to play
   well with Lua, and I would get an error due to the fact that apparently,
@@ -771,14 +771,14 @@ the future to cover more advanced use cases that I have been developing.</p>
   help. I will need to look into this, and probably consider a different
   unit test frameworks for Lua plugins. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4" role="doc-endnote">
+    <li id="fn:4">
       <p>The “gutter” is the sign column to the left of the window. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:5" role="doc-endnote">
+    <li id="fn:5">
       <p>Once again, I am not obsessed with finding Lua solutions just for the
   sake of it. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:7" role="doc-endnote">
+    <li id="fn:7">
       <p>I often see and hear the word “modern” being used in this context. I
   think that word is not rarely misused. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
