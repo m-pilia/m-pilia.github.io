@@ -9,8 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE: martinopilia/m-pilia.github.io
-      DOCKER_TAG: martinopilia/m-pilia.github.io:${{github.sha}}
+      DOCKER_IMAGE: martinopilia/m-pilia.github.io:latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
@@ -21,15 +20,30 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Preapre Docker image
+    - name: Check for Docker image changes
+      id: docker_image_changed
+      uses: dorny/paths-filter@v3
+      with:
+        filters: |
+          input_files:
+            - 'Dockerfile'
+            - 'Gemfile'
+            - 'Gemfile.lock'
+    - name: Pull Docker image
+      if: steps.docker_image_changed.outputs.input_files != 'true'
       shell: bash
       run: |
-        docker pull "${DOCKER_TAG}" || docker build -t "${DOCKER_TAG}" .
+        docker pull "${DOCKER_IMAGE}"
+    - name: Build Docker image
+      if: steps.docker_image_changed.outputs.input_files == 'true'
+      shell: bash
+      run: |
+        docker build -t "${DOCKER_IMAGE}" .
     - name: Build Jekyll site
       run: |
         set -xo pipefail
         rm -rf _site/*
-        docker run --rm -v "$PWD:/srv/jekyll" --user $(id -u):$(id -g) -i "${DOCKER_TAG}" jekyll build
+        docker run --rm -v "$PWD:/srv/jekyll" --user $(id -u):$(id -g) -i "${DOCKER_IMAGE}" jekyll build
         cp CNAME _site/CNAME
     - name: Deploy
       if: github.ref == 'refs/heads/source'
@@ -51,5 +65,4 @@ jobs:
     - name: Push Docker image
       if: github.ref == 'refs/heads/source'
       run: |
-        docker image tag "${DOCKER_TAG}" "${DOCKER_IMAGE}:latest"
-        docker image push "docker.io/${DOCKER_IMAGE}:latest"
+        docker image push "docker.io/${DOCKER_IMAGE}"
