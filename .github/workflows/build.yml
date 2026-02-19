@@ -63,6 +63,6 @@ jobs:
         git commit -m "Build $(git rev-parse source | grep -o '^.\{10\}')"
         git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" master
     - name: Push Docker image
-      if: github.ref == 'refs/heads/source'
+      if: github.ref == 'refs/heads/source' && steps.docker_image_changed.outputs.input_files == 'true'
       run: |
         docker image push "docker.io/${DOCKER_IMAGE}"
