@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Diagnosing a compiler bug</title>
+        <description>
+          When you have eliminated the impossible... - 
+          This post is about a software issue I troubleshot some time ago. What made it interesting is how it turned out not to be a bug in the product, but rather in the C++ compiler used to generate the binary. In all of it, what surprised me the most is...
+        </description>
+        <pubDate>Sun, 01 Mar 2026 00:00:00 +0100</pubDate>
+        <link>https://martinopilia.com/posts/2026/03/01/compiler-bug.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2026/03/01/compiler-bug.html</guid>
+      </item>
+    
+      <item>
         <title>Making a real-world algorithm run twenty times faster</title>
         <description>
           A showcase of optimisation techniques from the trenches - 

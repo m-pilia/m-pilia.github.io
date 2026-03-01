@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Diagnosing a compiler bug</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="When you have eliminated the impossible...">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Diagnosing a compiler bug" />
+  
+
+   
+  <meta property="og:description" content="When you have eliminated the impossible...">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/03/01/compiler-bug.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/03/01/compiler-bug.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Diagnosing a compiler bug" />
+  
+
+  
+  <meta name="twitter:description" content="When you have eliminated the impossible...">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Diagnosing a compiler bug</h1>
+		  
+		    
+			<h2 class="post-subheading">When you have eliminated the impossible...</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on March 1, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+8 minutes
+
+read (1493 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Diagnosing a compiler bug</h1>
+		  
+		    
+			<h2 class="post-subheading">When you have eliminated the impossible...</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on March 1, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>This post is about a software issue I troubleshot some time ago. What made it
+interesting is how it turned out not to be a bug in the product, but rather in
+the C++ compiler used to generate the binary.</p>
+
+<p>In all of it, what surprised me the most is how quick and easy it was to narrow
+down and diagnose the problem. One might assume that bugs caused by incorrect
+machine code generation are tricky and particularly difficult to deal with, but
+it turns out that following best practices and heavily investing in software
+quality can make them simpler than one thinks. For this reason, I saw this as
+an instructive example and a good talking point about codebase robustness.</p>
+
+<h1 id="background">Background</h1>
+
+<p>The story started when I received a request to look at a reported issue
+involving the behaviour of a software feature. I was not a maintainer of said
+feature, but I am knowledgeable about non-trivial C++ subtleties and I also
+have a solid math background, so I assume that explains why the problem ended
+up on my desk. The feature had been around for a while but apparently it broke
+only when running it on a new hardware version.</p>
+
+<p>Executing test suites both on development and target hardware showed no traces
+of the problem and, as usual, convincing the customer to produce logs has been
+by far the slowest and hardest part of the troubleshooting.</p>
+
+<p>Once I got a hold of logs including inputs needed to reproduce the issue, I saw
+no trace of the problem on the development platform. That was odd. Since the
+problem was reported by the customer when switching to a new hardware platform,
+the next obvious step was to get hold of a hardware rig for that platform. And
+then, when running on it, I could finally see the problem for myself.</p>
+
+<h1 id="software-narrow-down">Software narrow-down</h1>
+
+<p>I quickly realized I had an interesting problem at hand, because the software
+was behaving differently across platforms. Moreover, the problem would only
+manifest itself when running an optimized build, but not on a debug build.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
+
+<p>The next step was to narrow down the issue to a specific part of the code. This
+was actually quick and surprisingly straightforward to do. I knew the problem
+originated from a specific system component whose source code was around eight
+thousand lines of C++, and looking at the API entry point and the flow of
+inputs I could quickly trace this down to a single misbehaving line of code.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">auto</span> <span class="k">const</span> <span class="n">result_matrix</span> <span class="o">=</span> <span class="n">identity_matrix</span> <span class="o">+</span> <span class="p">(</span><span class="n">some_scalar</span> <span class="o">*</span> <span class="n">some_matrix</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The culprit statement was performing a pretty mundane operation but for some
+reason, on the failing target platform and system, it was always incorrectly
+producing an identity matrix, regardless of the inputs, as if the right-hand
+side term of the addition was not there. Definitely not what it should be
+doing.</p>
+
+<p>Thankfully I had access to the code of the linear algebra library used there,
+which allowed me to dig further and explain how the scalar-matrix product
+always ended up being an (incorrectly) zero-filled matrix. Looking into how it
+was implemented, I found where the calculations broke, and it was inside a
+capturing lambda.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">op</span><span class="p">,</span> <span class="n">x</span><span class="p">](...)</span> <span class="p">{...}</span>
+</code></pre></div></div>
+
+<p>For some reason, the value of the <code class="language-plaintext highlighter-rouge">x</code> capture variable (captured by value)
+turned into uninitialized garbage inside the lambda and, interestingly,
+changing to a capture by reference would make the problem disappear.</p>
+
+<h1 id="unravelling-the-mystery">Unravelling the mystery</h1>
+
+<p>What I was observing was definitely breaking the rules of the language. The
+fact that it only manifested in optimized builds was also a tell, but not
+necessarily proof of anything. The problem with a language such as C++ is the
+large room for <a href="https://en.wikipedia.org/wiki/Undefined_behavior">undefined
+behaviour</a> within the
+specification of the language itself. Undefined behaviour can easily produce
+hard-to-explain results, and can often produce differing behaviours depending
+on the optimization level in use.</p>
+
+<p>I had, however, run different static analysers, sanitisers, and
+<a href="https://en.wikipedia.org/wiki/Valgrind">Valgrind</a>, and all came back clean.
+You generally cannot easily prove the absence of undefined behaviour in a
+complex piece of software, but this was definitely strong evidence that
+something else was going on and it was not a problem with the C++ code. If the
+cause was “simply” an invalid pointer, good chance the sanitisers or Valgrind
+would have caught it.</p>
+
+<p>Comparing the assembly emitted for that function between the debug and
+optimized builds showed a number of missing store instructions, seemingly
+leaving the capture variable uninitialized. This pointed more and more towards
+a compiler issue.</p>
+
+<p>For me, compiler bugs are usually a last resort explanation, since the compiler
+generally tends to be the most- and best-tested link of the software
+development toolchain. And, one might assume, even more so when talking about a
+safety-certified compiler (such as in this case).<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> But, as the well-known
+Sherlock Holmes quote goes, “when you have eliminated the impossible, whatever
+remains, however improbable, must be the truth” <a class="citation" href="#doyle1890sign">[1]</a>.</p>
+
+<p>I handed over my assessment of the problem to a core team, so that it could be
+reported to the vendor, and indeed it turned out to be caused by a bug in the
+<a href="https://en.wikipedia.org/wiki/Dead_store">dead store</a> elimination performed by
+the compiler.</p>
+
+<p>One might wonder why such a problem was breaking just a very specific feature,
+instead of wrecking widespread havoc. The reason is that the bug manifested
+itself only on sufficiently large capture variables (significantly larger than
+a typical 64-bit numeric or pointer type). This feature was indeed using a very
+large custom arithmetic type not used anywhere else in the product. Typically,
+large types would not be captured by value, and it is also relatively uncommon
+for linear algebra libraries to be instantiated with weird user-defined types
+in place of fundamental numeric types,<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> thus explaining how such bug might
+have escaped testing by both the compiler vendor and the linear algebra
+library developers.</p>
+
+<h1 id="take-home">Take home</h1>
+
+<p>I found this investigation to be an interesting and educational experience. It
+was not the first time I hit bugs in compilers or other elements of the
+software toolchain, but the previous compiler bugs I dealt with were usually
+much more straightforward, as they typically involved the compiler straight up
+refusing to accept valid code.</p>
+
+<p>The whole troubleshooting took only about a couple of hours of my time, which
+was surprisingly quick, and it did not require me to use a debugger at all.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>
+What made this so easy was having all the right tools already in place. When
+you work on a high-quality codebase, troubleshooting issues, even seemingly
+exotic and complicated ones, becomes much simpler.</p>
+
+<p>To make your life more convenient and simplify dealing with complex bugs (or,
+more often, avoid a lot of the bugs to begin with):</p>
+<ul>
+  <li>Make sure you have tests. High-quality tests, extensively verifying
+behaviour, testing negative examples, domain boundaries,
+<a href="https://en.wikipedia.org/wiki/Fuzzing">fuzzing</a>, and property-based testing
+on randomized inputs.</li>
+  <li>Make sure to run your tests on all platforms.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></li>
+  <li>Have automated builds with multiple different compilers. Enable all warnings,
+and treat warnings as errors.</li>
+  <li>Always have an automated sanitiser build where you run your tests under
+sanitisers and Valgrind or similar.</li>
+  <li>Always have an automated static analysis build (better if you can use a
+couple of different static analysers).</li>
+  <li>Make sure you have a high assertion density.</li>
+  <li>Make sure you can enable debug assertions in optimized production builds.</li>
+</ul>
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="doyle1890sign">A. C. Doyle, <i>The Sign of the Four</i>. London: Spencer Blackett, 1890.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>An important downside of working with optimized builds is that, when
+  compared to debug builds, they have a much smaller set of assertions
+  enabled (if any are enabled at all). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Though, to be fair, safety certifications are mostly just paperwork. A
+  niche compiler with a tiny user base is hardly going to be “safer” in
+  practice than a mainstream compiler with orders of magnitude more eyes,
+  tests, and users on it. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>But it should not be unreasonable. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>Debuggers are powerful tools. But I generally find a debugger to be a
+  last resort tool, and “needing” a debugger is usually a symptom of
+  missing steps that should be baked and automated in your development
+  flow. A debugger can make you quick at diagnosing some issues, but even
+  quicker is to not even have to use it to begin with. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>I would argue this was the main issue that let the fault slip through,
+  as this new platform was not sufficiently tested yet. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#C++">C++</a>
+          
+            <a href="/tags#compiler">compiler</a>
+          
+            <a href="/tags#bug">bug</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html&t=Diagnosing+a+compiler+bug"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html&text=Diagnosing+a+compiler+bug"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=Diagnosing+a+compiler+bug&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html&appkey=&title=Diagnosing+a+compiler+bug&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=Diagnosing+a+compiler+bug&text=Diagnosing+a+compiler+bug&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F03%2F01%2Fcompiler-bug.html&title=Diagnosing+a+compiler+bug&description=Diagnosing+a+compiler+bug"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/02/15/runtime-optimization.html" data-toggle="tooltip" data-placement="top" title="Making a real-world algorithm run twenty times faster">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
