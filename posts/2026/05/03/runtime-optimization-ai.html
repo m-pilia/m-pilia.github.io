@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>AI-driven C++ runtime optimization</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Case study of LLM-driven optimization in the wild">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="AI-driven C++ runtime optimization" />
+  
+
+   
+  <meta property="og:description" content="Case study of LLM-driven optimization in the wild">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/05/03/runtime-optimization-ai.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/05/03/runtime-optimization-ai.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="AI-driven C++ runtime optimization" />
+  
+
+  
+  <meta name="twitter:description" content="Case study of LLM-driven optimization in the wild">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>AI-driven C++ runtime optimization</h1>
+		  
+		    
+			<h2 class="post-subheading">Case study of LLM-driven optimization in the wild</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on May 3, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+32 minutes
+
+read (5697 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>AI-driven C++ runtime optimization</h1>
+		  
+		    
+			<h2 class="post-subheading">Case study of LLM-driven optimization in the wild</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on May 3, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>A few weeks ago I wrote a lengthy post about <a href="https://martinopilia.com/posts/2026/02/15/runtime-optimization.html">making a real-world algorithm run
+twenty times
+faster</a>.
+There I talked about a work package performed several years ago, well before
+LLMs were any useful as coding assistance tools. While writing I started asking
+myself: what if, instead of being performed an expert human, this work would
+have been automated with an LLM?</p>
+
+<p>I decided to put that idea to the test.</p>
+
+<h1 id="background">Background</h1>
+
+<p>A bit more than one year ago I <a href="https://martinopilia.com/posts/2025/01/25/ai-oped.html">wrote an op-ed
+post</a> with my vision on
+AI-assisted coding at the time. Long story short, I had been extensively
+experimenting with LLMs for a long time, and while I noted some usefulness I
+was still seeing relatively limited value in the context of high-quality
+engineering of complex and high-integrity systems (which constitutes most of my
+daily work).</p>
+
+<p>In the last year the landscape has evolved. Many people argue that AI
+development has massively accelerated in the last six months or so. My take is
+actually quite different, I think AI development has slowed down and the
+incremental improvement in quality of the trained models themselves is smaller
+compared to a few years ago (where in earlier stages models were showing big
+improvements in short iterations). What has however significantly improved in
+the last 6-12 months is the engineering effort around models to create AI
+assistance solutions that are “smarter” and more effective.</p>
+
+<p>I personally use LLMs quite extensively and I have a good feel for their
+strength and limitations when used as a tool by an expert senior developer. I
+feel the real change for me personally in the last year is how most of these AI
+tools went from being situationally useful<sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> to slowly becoming useful for
+real and started saving time and effort in a more substantial manner, albeit
+with limitations.</p>
+
+<p>In the field of embedded automotive it is harder to consistently get
+high-enough quality output from AI agents, especially in the kind of complex
+domains (with functional safety impacts) on which I regularly work. For this
+reason, often AI agents in my daily work are less useful to write production
+code, and more useful to work on tooling, research, and adjacent problems.</p>
+
+<p>Nonetheless, I am always interested in stepping up the game and finding
+interesting challenges to come up with improvements and new ways in my
+workflow. Lately I have been interested in challenging AI agents with more and
+more complex tasks and try to see how far I can push them in a context where
+code quality is extremely sensitive.</p>
+
+<h1 id="goals-and-non-goals">Goals (and non-goals)</h1>
+
+<p>The idea of this experiment was to get a feel for the state of real-world
+AI-driven C++ code runtime optimization. Emphasis on “driven”, not “assisted”.
+Therefore I am not interested in using the LLM as a crutch to write code
+faster, or in feeding my ideas to the LLM and see how it implements them.</p>
+
+<p>What I really want is to see how the agent would fare if it had to replace the
+human developer in an autonomous fashion, without relying on expert inside from
+the user. It is the agent’s responsibility to figure out what needs to be done
+to make the code run faster.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p>
+
+<p>I am also interested in a complex real-world problem, not in synthetic or
+artificial examples, and in this sense the optimization problem from <a href="https://martinopilia.com/posts/2026/02/15/runtime-optimization.html">my
+previous
+post</a> was
+a very good test bench, as it provided a complex domain problem and allows for
+a very broad range of optimization techniques to be applied.</p>
+
+<p>Another important aspect to stress out: this experiment is <em>not</em> a
+human-vs-machine competition, and the goal is not to pick winners but rather to
+evaluate the current status of AI-driven C++ optimization on real-world
+problems in projects with high quality standards.</p>
+
+<h1 id="experiment-setup">Experiment setup</h1>
+
+<p>I managed to checkout and build the software component in the state it was
+before my previous optimizations. This allowed comparisons with a common
+baseline. I provided the agent with instructions on how to build the software
+and run relevant unit tests, all in a single command.</p>
+
+<p>I also packaged a script that would allow to build and run the runtime
+benchmark under a profiler, producing a robust runtime estimation and clean
+micro-profiling output in a structured JSON format, following what is
+considered best practice for LLM consumption.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"profile"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"samples"</span><span class="p">:</span><span class="w"> </span><span class="mi">183568</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"top_functions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float my_namespace::my_function&lt;float, 256U&gt;(float const x, float const y)"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"samples"</span><span class="p">:</span><span class="w"> </span><span class="mi">7930</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="mf">22.16</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"top_call_paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"stack"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"__start"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"__libc_start_main"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"main"</span><span class="p">,</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+        </span><span class="s2">"float my_namespace::my_function&lt;float, 256U&gt;(float const x, float const y)"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"samples"</span><span class="p">:</span><span class="w"> </span><span class="mi">7930</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="mf">22.16</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"call_graph"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"__start"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"__libc_start_main"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"samples"</span><span class="p">:</span><span class="w"> </span><span class="mi">37963</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>I used Claude Opus 4.6, which was the latest and greatest I had enterprise
+access to at the time, with 200k token context window.</p>
+
+<h2 id="prompt">Prompt</h2>
+
+<p>I structured the experiment in three prompts:</p>
+
+<ul>
+  <li>First I tasked the agent to analyze the code, to prime the context a bit,<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>
+and make a list of potential optimization opportunities, without making any
+changes to the code yet, and creating a markdown file with an analysis
+result.</li>
+  <li>Then I tasked the agent to try implementing and verifying optimizations,
+using the benchmark as a decision criterion on whether to accept or reject an
+optimization attempt (creating a git commit for each accepted change), and
+documenting all attempts into a markdown file.</li>
+  <li>Lastly I tasked the agent to keep iterating to find more optimization
+opportunities driven by micro-profiling data.</li>
+</ul>
+
+<p>In this, I provided the agent with some ground rules:</p>
+<ul>
+  <li>Freely change internal interfaces but do not alter public interfaces (of
+which we have no control), providing some additional indication of what
+constitutes a public interface.</li>
+  <li>Strict binary equality of the results is not needed, there is leeway for
+small differences in floating point output as long as the results are
+reasonably close.</li>
+  <li>I pointed at some useful tools (such as SIMD abstraction library).</li>
+</ul>
+
+<h1 id="speedup">Speedup</h1>
+
+<p>I performed a few runs of the experiment, and picked the one providing the best
+results. Background on the nature of the task and on human made optimization
+approaches can be found in the <a href="https://martinopilia.com/posts/2026/02/15/runtime-optimization.html">previous
+post</a>.</p>
+
+<p>What follows is a table summarizing the optimizations discovered and accepted
+by the AI agent. Of these, two were functionally incorrect from a logical
+standpoint and would break or impair the software functionality, therefore I
+disregarded them from the cumulative speedup.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Change</th>
+      <th style="text-align: center">Runtime reduction<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></th>
+      <th style="text-align: center">Cumulative speedup<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Single precision (partial) + squaring</td>
+      <td style="text-align: center">2.6%</td>
+      <td style="text-align: center">103%</td>
+    </tr>
+    <tr>
+      <td>Logic shortcut</td>
+      <td style="text-align: center">1.3%</td>
+      <td style="text-align: center">104%</td>
+    </tr>
+    <tr>
+      <td>Single pass</td>
+      <td style="text-align: center">30.5%</td>
+      <td style="text-align: center">150%</td>
+    </tr>
+    <tr>
+      <td>Hoisting</td>
+      <td style="text-align: center">3%</td>
+      <td style="text-align: center">154%</td>
+    </tr>
+    <tr>
+      <td><del>Reduce iterations</del></td>
+      <td style="text-align: center"><del>30.1%</del></td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Cache float operations</td>
+      <td style="text-align: center">2.3%</td>
+      <td style="text-align: center">158%</td>
+    </tr>
+    <tr>
+      <td>Arithmetic shortcut</td>
+      <td style="text-align: center">2.3%</td>
+      <td style="text-align: center">162%</td>
+    </tr>
+    <tr>
+      <td>Replace median with mean</td>
+      <td style="text-align: center">48.2%</td>
+      <td style="text-align: center">311%</td>
+    </tr>
+    <tr>
+      <td>Squared norms</td>
+      <td style="text-align: center">4.6%</td>
+      <td style="text-align: center">327%</td>
+    </tr>
+    <tr>
+      <td>Clean up self-created issues</td>
+      <td style="text-align: center">1.2%</td>
+      <td style="text-align: center">331%</td>
+    </tr>
+    <tr>
+      <td><del>Remove least squares</del></td>
+      <td style="text-align: center"><del>33.3%</del></td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Vectorization of secondary loops</td>
+      <td style="text-align: center">7.4%</td>
+      <td style="text-align: center">357%</td>
+    </tr>
+    <tr>
+      <td>Vectorization of main hot loop</td>
+      <td style="text-align: center">21.2%</td>
+      <td style="text-align: center">454%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The final result was a 454% speedup. Quite far from the desired 20x speedup
+needed to be able to bring the code to production. But despite of the failure
+to meet the goal, this experiment was far from uninteresting, and it produced a
+lot of useful insights.</p>
+
+<h1 id="results">Results</h1>
+
+<p>The following is a brief overview of the agent’s findings and adopted
+solutions. The session took about five hours and the whole agent’s “monologue”
+was very long.</p>
+
+<h2 id="single-precision-partial--squaring">Single precision (partial) + squaring</h2>
+
+<p>The first optimization figured out and accepted by the LLM was to switch a
+couple small and simple functions from double to single precision, and replace
+some Euclidean norms with squared norms in a loop. This produced a 2.6% runtime
+reduction from the baseline.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">distance</span><span class="p">(</span><span class="kt">double</span> <span class="k">const</span> <span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="k">const</span> <span class="n">y</span><span class="p">,</span> <span class="p">...)</span>
+
+<span class="c1">// New LLM-generated code</span>
+<span class="kt">float</span> <span class="n">squared_distance</span><span class="p">(</span><span class="kt">float</span> <span class="k">const</span> <span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="k">const</span> <span class="n">y</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre></div></div>
+
+<p>This was a good albeit small optimization, and logically makes sense. My main
+objection is not on the merit but rather on the quality of the implementation,
+as the agent happily added duplicated code in single precision instead of
+refactoring the existing double-precision functions (e.g. into a template).
+This is the low quality and poorly maintainable code that I would expect from a
+fairly clumsy junior rather than any senior developer. Happily creating code
+duplication has been a quite consistent behaviour with LLMs.</p>
+
+<p>One thing to note, and that will be a repeating theme, is how the LLM tried
+repeatedly and in multiple occasions to go from double precision to single
+precision.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> It however never managed to switch the whole component to single
+precision, trying instead to switch piecemeal and unavoidably choking in issues
+due to inconsistency across different parts of the program, and in the end it
+only managed to switch limited pieces of the code to single precision.</p>
+
+<h2 id="logic-shortcut">Logic shortcut</h2>
+
+<p>Part of an algorithm dealt with large inputs, capping the number of samples
+used for each processed input object to a maximum count. The downsampling
+performed to cap the size used an intermediate buffer for calculations.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">object</span> <span class="o">:</span> <span class="n">objects</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="k">const</span> <span class="n">object_area</span><span class="p">{...};</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">object_area</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Downsample</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Continue processing</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>An interesting optimization performed by the LLM was to skip this step
+altogether for objects below the threshold.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">object</span> <span class="o">:</span> <span class="n">objects</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="k">const</span> <span class="n">object_area</span><span class="p">{...};</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">object_area</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Direct copy to output buffer</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// Downsample in intermediate buffer</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Continue processing</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This provided a fairly small speedup (1.3% runtime reduction over the previous
+step), but at the same time it was an interesting idea, and for once it was
+implemented into a reasonably clean manner.</p>
+
+<p>If I had to optimize this myself, I would have probably attacked the problem at
+a deeper level and reworked the logic to refactor out the intermediate buffer
+altogether in all cases, which would have also simplified the code from a
+maintenance standpoint. Nonetheless, this was an underlying reasonable idea and
+implemented in a reasonable manner, without worsening the quality of the code.</p>
+
+<h2 id="single-pass">Single pass</h2>
+
+<p>Similar to the human-performed optimization, the agent identified the
+possibility of switching from double-pass to single-pass, which provides a
+substantial speedup (30.5% incremental speedup in this case).</p>
+
+<h2 id="hoisting">Hoisting</h2>
+
+<p>The next couple optimizations found and accepted by the agent involved
+<a href="https://en.wikipedia.org/wiki/Loop-invariant_code_motion">hoisting some variables out of
+loops</a>. This was
+overall a small improvement (about 3% speedup total) and in some instances I am
+surprised the change actually made any difference at all.</p>
+
+<h2 id="reduce-iterations">Reduce iterations</h2>
+
+<p>The agent tried to reduce the maximum number of allowed least squares
+iterations, it realized it was improving runtime and, by its own admission, it
+decided that remaining iterations were only relevant for “pathological” cases
+and therefore could be discarded.</p>
+
+<p>While this change would reduce runtime by about 30%, it would naturally have a
+negative impact on the quality of the implementation, reason behind my decision
+of discarding such optimization from the results. This example shows a (rather
+unsurprising) lack of common sense in the decision-making from the agent.
+Moreover, a more sensible way to attack this problem would have been to revisit
+the termination criteria rather than bluntly lowering the maximum iteration
+cap.</p>
+
+<p>Perhaps this could have been avoided if automated tests executed by the LLM
+also captured some deeper output quality performance aspects of the algorithm,
+that are often only accounted for by performance KPIs on larger datasets rather
+than at unit test level.</p>
+
+<h2 id="cache-float-operations">Cache float operations</h2>
+
+<p>A clever but ugly optimization performed by the agent was to “cache” some
+operations</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Object</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">compute</span><span class="p">(...)</span>
+    <span class="p">{</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">x</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">object</span><span class="p">.</span><span class="n">x</span><span class="p">)};</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">y</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">object</span><span class="p">.</span><span class="n">y</span><span class="p">)};</span>
+        <span class="p">...</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">residual</span><span class="p">{</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_0</span><span class="p">)</span> <span class="o">+</span> <span class="p">...};</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>by adding a stateful cache to a class and storing some intermediate values</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Object</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">compute</span><span class="p">(...)</span>
+    <span class="p">{</span>
+        <span class="kt">float</span> <span class="k">const</span> <span class="n">residual</span><span class="p">{</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_</span> <span class="o">-</span> <span class="n">x_0</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_</span> <span class="o">-</span> <span class="n">y_0</span><span class="p">)</span> <span class="o">+</span> <span class="p">...};</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+
+    <span class="kt">float</span> <span class="n">x_</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">y_</span><span class="p">;</span>
+    <span class="p">...</span>
+
+    <span class="kt">void</span> <span class="nf">update_cache</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_x</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="n">_y</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>In some sense I admire the wicked idea, but it turns the code into an
+error-prone stateful mess. And the runtime improvement is really small (2.3%
+incremental runtime reduction), not even close to the amount of speedup that
+could be achieved by proper fixes.</p>
+
+<p>But the real problem is another: this is a good example of very shallow changes
+that fix a symptom rather than the cause of a problem. A much better result
+could be achieved by restructuring the calculations to get rid of the casts
+between single- and double-precision, rather than caching them like this, which
+is basically just adding insult to injury.</p>
+
+<p>So technically this makes the program faster, but overall makes the software
+worse (and hard to clean up and optimize later for real).</p>
+
+<h2 id="arithmetic-shortcut">Arithmetic shortcut</h2>
+
+<p>The next optimization to be discovered and accepted was also small (2.3%
+runtime reduction) but reasonable (and, code-quality-wise, poor but not
+completely unhinged).</p>
+
+<p>In a piece of code like this</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="k">const</span> <span class="n">diff_x</span><span class="p">{</span><span class="n">input_x</span> <span class="o">-</span> <span class="p">(</span><span class="n">model_x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">data_x</span> <span class="o">-</span> <span class="n">estimate_x</span><span class="p">))};</span>
+<span class="kt">float</span> <span class="k">const</span> <span class="n">diff_y</span><span class="p">{</span><span class="n">input_y</span> <span class="o">-</span> <span class="p">(</span><span class="n">model_y</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">data_y</span> <span class="o">-</span> <span class="n">estimate_y</span><span class="p">))};</span>
+<span class="k">return</span> <span class="n">diff_x</span> <span class="o">*</span> <span class="n">diff_x</span> <span class="o">+</span> <span class="n">diff_y</span> <span class="o">*</span> <span class="n">diff_y</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>the agent identified that, when the <code class="language-plaintext highlighter-rouge">c</code> factor in the product is zero, some
+calculations can be skipped</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="k">const</span> <span class="n">diff_x</span><span class="p">{</span><span class="n">input_x</span> <span class="o">-</span> <span class="n">model_x</span><span class="p">};</span>
+<span class="kt">float</span> <span class="k">const</span> <span class="n">diff_y</span><span class="p">{</span><span class="n">input_y</span> <span class="o">-</span> <span class="n">model_y</span><span class="p">};</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">!=</span> <span class="mf">0.0F</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">flaot</span> <span class="k">const</span> <span class="n">dx</span><span class="p">{</span><span class="n">input_x</span> <span class="o">-</span> <span class="p">(</span><span class="n">model_x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">data_x</span> <span class="o">-</span> <span class="n">estimate_x</span><span class="p">))};</span>
+    <span class="n">flaot</span> <span class="k">const</span> <span class="n">dy</span><span class="p">{</span><span class="n">input_y</span> <span class="o">-</span> <span class="p">(</span><span class="n">model_y</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">data_y</span> <span class="o">-</span> <span class="n">estimate_y</span><span class="p">))};</span>
+    <span class="k">return</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">dy</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">diff_x</span> <span class="o">*</span> <span class="n">diff_x</span> <span class="o">+</span> <span class="n">diff_y</span> <span class="o">*</span> <span class="n">diff_y</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The agent obviously botched the implementation, as <code class="language-plaintext highlighter-rouge">diff_x</code> and <code class="language-plaintext highlighter-rouge">diff_y</code> are
+not used in the early return path and should therefore not be computed before
+evaluating the <code class="language-plaintext highlighter-rouge">if</code> condition. This code also introduces other problems with
+high-integrity coding, as exact inequality comparison of floating point values
+is not allowed, and therefore would still be rejected by static analysis.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">7</a></sup></p>
+
+<h2 id="replace-median-with-mean">Replace median with mean</h2>
+
+<p>As already seen in the human-performed optimization, getting rid of median
+calculations in favour of mean was a quite important part of the speedup.</p>
+
+<p>The agent struggled for a long time trying to optimize median calculations.
+Most of the failures were due to the fact that one of the unit tests duplicated
+some of the production code logic (testing some parts against a copy of
+itself). This is a type of unit tests that I deem to be of low quality and low
+value, but in this instance it had the additional drawback of confusing the
+agent.</p>
+
+<p>At the end of the lengthy autonomous prompt execution, I gave the agent some
+steering,<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">8</a></sup> hinting it to keep that test’s logic consistent with the tested code,
+which allowed it to unblock itself and finally manage to replace the median
+with a mean estimate (48.2% incremental runtime reduction).</p>
+
+<h2 id="clean-up-self-created-issues">Clean up self-created issues</h2>
+
+<p>An “optimization” devised and accepted by the agent was to remove some unused
+arguments from a function (1.2% runtime reduction).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">/// Construct object, using median estimate as initialization</span>
+<span class="n">FitObject</span><span class="p">(</span><span class="n">InputObject</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">input_object</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">kSize</span><span class="o">&gt;&amp;</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// `buffer` is unused at this point</span>
+    <span class="c1">// Also, no median is used anymore...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The interesting part is that such unused argument was left there, unused, by
+the LLM itself. So this was not a real optimization but rather fixing its own
+mistakes.</p>
+
+<p>Another interesting aspect is how the LLM cleaned up some stale comments which,
+again, were left there by the LLM itself. It is well known how LLMs really like
+to add pleonastic low-value comments that would normally be frowned upon by any
+experienced developer, and an argument often heard to justify this is that LLMs
+are very good at keeping said comments up-to-date. Well, this is a good example
+that it is not always the case.</p>
+
+<h2 id="remove-least-squares">Remove least squares</h2>
+
+<p>The next idea concocted and accepted by the agent was to remove least squares
+altogether from the software component, and use initialization values as final
+result, which would cut runtime by one third. This would however break the
+functionality, and therefore I rejected it from the final results.</p>
+
+<p>This was an interesting display of lack of common sense and a good example of
+ideas that make sense in the “reasoning” of an LLM while they would never cross
+the mind of any reasonably competent human developer. The underlying idea is:
+your feature code will be much faster if you just get rid of the features.</p>
+
+<p>It also shows how the LLM failed to logically understand the code it was trying
+to optimize. Performing the model fitting is critical not only because of
+output quality performance (over a simple rough parameter initialization), but
+also because some of the output parameters are not initialized to meaningful
+values, and they only get a meaningful value out of the model fitting step.</p>
+
+<p>I think however an important reason causing this to slip through is that it was
+not captured well-enough by the unit tests, which had the fault of testing
+parts too piecemeal and failing to capture some overarching aspects of the
+software component.</p>
+
+<h2 id="simd-vectorization">SIMD vectorization</h2>
+
+<p>At the end of the prompts, I was disappointed to see that the agent did not
+attempt any SIMD vectorization. Interestingly, looking at the conversation, I
+noticed how the agent realized this by itself, noting how the <code class="language-plaintext highlighter-rouge">-O2</code> flag used
+in the build configuration would not enable automatic vectorization. The agent
+even ran a very rough command to verify it by looking at the generated
+assembly:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>objdump -d output_binary | grep -c "vadd\|vmul\|vsub"
+</code></pre></div></div>
+
+<p>For this reason, I decided to run an additional prompt, inviting the LLM to try
+manual vectorization of the component. This goes against my own rule of not
+feeding expert input to the LLM and instruct it on what to do, but I really
+wanted to give the agent a better chance at this.</p>
+
+<p>The agent managed to only vectorize a couple secondary loops (7.4% runtime
+reduction), but it failed to attack the main hot loop (once more, it did not
+manage to settle on single vs double precision and perform calculations
+consistently in single precision, once more choking itself and giving up on the
+problem).</p>
+
+<p>The generated code was not very clean nor good in terms of quality.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">SimdFloat</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">ww</span><span class="p">{};</span>
+<span class="k">for</span> <span class="p">(;</span> <span class="n">ww</span> <span class="o">&lt;</span> <span class="n">simd_end</span><span class="p">;</span> <span class="n">ww</span> <span class="o">+=</span> <span class="n">kSimdWidth</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="k">const</span> <span class="n">index</span><span class="p">{</span><span class="n">row_start</span> <span class="o">+</span> <span class="n">ww</span><span class="p">};</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">data_x</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">input_x</span> <span class="o">+</span> <span class="n">index</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">data_y</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">input_y</span> <span class="o">+</span> <span class="n">index</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">diff_x</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">Operator</span><span class="o">::</span><span class="n">Minus</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">estimate_x</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">diff_y</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">Operator</span><span class="o">::</span><span class="n">Minus</span><span class="p">(</span><span class="n">data_y</span><span class="p">,</span> <span class="n">estimate_y</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">residual</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">Operator</span><span class="o">::</span><span class="n">Plus</span><span class="p">(</span>
+        <span class="n">simd_lib</span><span class="o">::</span><span class="n">Operator</span><span class="o">::</span><span class="n">Times</span><span class="p">(</span><span class="n">diff_x</span><span class="p">,</span> <span class="n">diff_x</span><span class="p">),</span>
+        <span class="n">simd_lib</span><span class="o">::</span><span class="n">Operator</span><span class="o">::</span><span class="n">Times</span><span class="p">(</span><span class="n">diff_y</span><span class="p">,</span> <span class="n">diff_y</span><span class="p">)</span>
+    <span class="p">);</span>
+
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It is excessively verbose (e.g. explicitly using <code class="language-plaintext highlighter-rouge">simd_lib::Operator::Minus(x,
+y)</code> and similar, where operator overloading like <code class="language-plaintext highlighter-rouge">x - y</code> would suffice), but
+above that there are some concerns with safety (raw pointer arithmetic, which
+would also fail static analysis) and performance (not taking care of
+alignment). Overall, again, this is the kind of code I would expect from a very
+inexperienced junior, not from anyone anywhere near senior.</p>
+
+<p>I was however unhappy and wanted to see the agent pushing a bit further, so I
+ran yet another prompt asking to vectorize the main hot loop, giving it
+instructions on how to consistently perform calculations in single precision.</p>
+
+<p>With this additional input, the agent was able to vectorize the code in
+question, with an incremental runtime reduction of 21.2%.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">p</span><span class="p">{};</span>
+<span class="k">for</span> <span class="p">(;</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">simd_end</span><span class="p">;</span> <span class="n">p</span> <span class="o">+=</span> <span class="n">kSimdWidth</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">ix</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">input_x</span> <span class="o">+</span> <span class="n">p</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">iy</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">input_y</span> <span class="o">+</span> <span class="n">p</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">data_x</span> <span class="o">+</span> <span class="n">p</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">data_y</span> <span class="o">+</span> <span class="n">p</span><span class="p">);</span>
+
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">rx</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">-</span> <span class="p">(</span><span class="n">est_x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">ix</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">ry</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">-</span> <span class="p">(</span><span class="n">est_y</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">iy</span><span class="p">);</span>
+    <span class="n">SimdFloat</span> <span class="k">const</span> <span class="n">rsq</span> <span class="o">=</span> <span class="n">rx</span> <span class="o">*</span> <span class="n">rx</span> <span class="o">+</span> <span class="n">ry</span> <span class="o">*</span> <span class="n">ry</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">rsq_arr</span><span class="p">[</span><span class="n">kSimdWidth</span><span class="p">];</span>
+    <span class="n">simd_lib</span><span class="o">::</span><span class="n">store_unaligned</span><span class="p">(</span><span class="n">rsq_arr</span><span class="p">,</span> <span class="n">rsq</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">w_arr</span><span class="p">[</span><span class="n">kSimdWidth</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span> <span class="n">k</span><span class="p">{};</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">simdWidth</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">delta</span> <span class="o">+=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rsq_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span>
+        <span class="n">w_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0F</span> <span class="o">/</span> <span class="p">(</span><span class="n">rsq_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">kWeight</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">SimdFloat</span> <span class="n">w_vec</span> <span class="o">=</span> <span class="n">simd_lib</span><span class="o">::</span><span class="n">load_unaligned</span><span class="p">(</span><span class="n">w_arr</span><span class="p">);</span>
+
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="c1">// Scalar tail</span>
+<span class="k">for</span> <span class="p">(;</span> <span class="o">+</span> <span class="o">&lt;</span> <span class="n">total_size</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Process remaining elements in a scalar loop with duplicated logic</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This was also pretty low-quality code, littered with rather gross inadequacies.
+We still see similar problems as the previous vectorization attempts (lack of
+data alignment, unchecked pointer arithmetic), and now also some blunders that
+impair the effectiveness of vectorization and significantly limit performance
+gains.</p>
+
+<p>A first example is in the main loop, where in the middle of calculations the
+vectorized flow is suddenly broken by a scalar loop and a pair of additional
+loads and stores around it. The agent is still trying to senselessly cram
+double-precision operations without clear reason, and it is performing a scalar
+division instead of a vectorized one, which by itself is a significant
+performance killer (on top of not even considering <a href="https://en.wikipedia.org/wiki/Newton-Raphson_division">Newton-Raphson
+division</a>, which would
+give a significant speedup here).</p>
+
+<p>Another interesting point is how the agent decided to add a scalar tail to
+process elements that do not completely fill a SIMD vector. In this particular
+problem this is also unnecessary, as this can be avoided by properly padding
+the input vector (to a multiple of the SIMD vector size) with values that
+cancel out in the calculations, which would not only make the code faster but
+also avoid duplicated logic.</p>
+
+<p>Again, this looked like amateur-level coding rather than senior level.</p>
+
+<h2 id="non-results">Non-results</h2>
+
+<p>What follows is a list of optimization attempts the agent implemented and then
+discarded, which I also found to be rather interesting:</p>
+<ul>
+  <li>Moving variables between automatic storage and static storage.</li>
+  <li>Several botched attempts to optimize the calculation of medians.</li>
+  <li>Copying inputs into data structures that turn out to be slower to process.</li>
+  <li>Trying and failing several times to switch parts of the code to single
+precision.</li>
+</ul>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>This experiment was very interesting and it showed how the AI agent can take
+such an optimization challenge on its own, and albeit the results are
+underwhelming compared to a competent human developer, if the agent is paired
+with an expert it can surely provide useful results to some extent. What this
+shows, however, is that an AI agent is not going to turn anyone into a runtime
+optimization expert out of magic (at least for now).</p>
+
+<p>Interestingly, the agent discovered some optimization opportunities that I
+overlooked, though it should be noted that they were small and low priority
+optimizations. On the other hand, it missed many big opportunities, and overall
+the implementation of most optimizations was low quality when not outright
+hacky.</p>
+
+<p>Another noticeable aspect is how the agent often fumbled with commands, and in
+these kind of very long sessions it would sometimes forget instructions (or
+even just how to use some tools). That is probably one of the aspects that can
+be refined as part of the engineering of agentic systems.</p>
+
+<h1 id="cost-analysis">Cost analysis</h1>
+
+<p>The run took about five hours of LLM “reasoning” time, and what would be about
+a couple weeks worth<sup id="fnref:11"><a href="#fn:11" class="footnote" rel="footnote" role="doc-noteref">9</a></sup> of agent requests “budget”. On top of that, it still
+took a couple days worth of developer time to oversee the agent (even though
+this was mostly an experiment, and arguably that human time could be optimized
+down in a more tailored setup).</p>
+
+<p>This is however also a lower bound, showing results that are well below par in
+terms of quality. Getting the agent to actually produce well-optimized and
+high-quality maintainable production code would require many more iterations,
+and definitely a non-negligible amount of human supervision in the current
+state.</p>
+
+<h1 id="prospectives">Prospectives</h1>
+
+<p>One of the arguments we hear most often about AI-assisted coding is how it is
+supposedly cheap and ready to take over human work, and make developers so many
+more times faster (or maybe completely redundant). My take is that, if you are
+interested in high-quality software products, those arguments are often plainly
+over-selling the technology.</p>
+
+<p>Admittedly, software engineering is a very broad field, with different areas
+that have wildly different levels of complexity and different quality bars. I
+can imagine how other fields with lower stakes, such as app or web development,
+can be more aggressive with “vibe” coding solutions<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">10</a></sup> compared e.g. with most
+realities of embedded development (or realities where functional safety is even
+remotely relevant).</p>
+
+<p>That these ideas are oversold is however quite clear. Big players in the AI
+field talk a lot about automation opportunities created by their products, but
+this does not seem to be aligned with how they themselves use (or do not use)
+such solutions, at least in external-facing products.<sup id="fnref:10"><a href="#fn:10" class="footnote" rel="footnote" role="doc-noteref">11</a></sup> On top of that, so
+many high-impact incidents are happening with increasing frequency in recent
+months (e.g. the recent incidents at
+<a href="https://web.archive.org/web/20260423080619/https://thenextweb.com/news/lovable-vibe-coding-security-crisis-exposed">Lovable</a>,
+<a href="https://web.archive.org/web/20260407055215/https://arstechnica.com/ai/2026/03/entire-claude-code-cli-source-code-leaks-thanks-to-exposed-map-file">Anthropic</a>,
+<a href="https://web.archive.org/web/20260428082515/https://arstechnica.com/ai/2026/03/after-outages-amazon-to-make-senior-engineers-sign-off-on-ai-assisted-changes">Amazon</a>,
+etc., the list would be very long and spin out a whole blog post on its own).
+To the point, such as in the Amazon case, of clearly stating how unsupervised
+AI-made code changes are not allowed within their own organizations.</p>
+
+<p>On most aspects, my personal take has not changed much compared to <a href="https://martinopilia.com/posts/2025/01/25/ai-oped.html">one year
+ago</a>. I still see these
+AI tools as slowly gaining momentum and value, which is likely going to
+steadily progress in the next few years but it is unlikely to explode in ways
+“predicted” by AI boosters. At the same time, the whole field is plagued by an
+avalanche of hype and over-inflated expectations (partially motivated by how
+good these tools are at low value and low quality tasks), and the real question
+is how sustainable the current level of investment around this topic is going
+to be in the next few years.</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:9">
+      <p>And a hindrance or a source of low-quality slop more often than not. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1">
+      <p>The result would be better if the LLM was assisting an expert in code
+  optimization, which can feed strong input ideas to the LLM and provide
+  early feedback to steer the model away from its (unavoidable) bad ideas.
+  But here I was rather interested in understanding to what extent an LLM
+  could replace a developer rather than complement them. After all, we
+  continuously hear bold claims from major LLM vendors of how revolutionary
+  and amazing LLMs are at everything, so why not put some of these claims
+  to the test? <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7">
+      <p>The component is small enough, only a few thousand SLoCs (in the ballpark
+  of a few tens thousands tokens), so it comfortably fits in the context of
+  a model at the time of writing (200k tokens). <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Relative to the previous step. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Relative to the baseline, which is already enabling all applicable
+  compiler optimisation flags. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>Switching to single precision was an important part of the optimization
+  package performed in the past. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>LLMs are pretty bad at following rules. In theory it would have been
+  possible to ask the agent to perform a full static analysis pass at each
+  attempt, to have it figure out these issues the hard way, but that would
+  have made the experiment much slower and more expensive. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6">
+      <p>While my rule was to not feed optimization ideas into the LLM, this type
+  of steering is reasonable, as I think it does not take an optimization
+  expert to realize what is going on and steer the LLM out of its own pit. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11">
+      <p>Based on the default enterprise plan. <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8">
+      <p>Slop is not something new from AI. Well before AI, domains like web or
+  app development were already a big market for sweatshop development of
+  low-quality products for a cheap price. In this sense, AI is only
+  automating the slop sweatshop, not really inventing anything new. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10">
+      <p>For instance, how little automation they use in their own
+   external-facing operations. If AI agents are so good at solving problems
+   automatically and unsupervised, why do their open-source projects have
+   so many open issues on GitHub that are sitting there not being taken
+   care of, and issue handling is still done by humans and in such a
+   limited fashion? <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#C++">C++</a>
+          
+            <a href="/tags#optimization">optimization</a>
+          
+            <a href="/tags#AI">AI</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html&t=AI-driven+C%2B%2B+runtime+optimization"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html&text=AI-driven+C%2B%2B+runtime+optimization"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=AI-driven+C%2B%2B+runtime+optimization&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html&appkey=&title=AI-driven+C%2B%2B+runtime+optimization&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=AI-driven+C%2B%2B+runtime+optimization&text=AI-driven+C%2B%2B+runtime+optimization&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F05%2F03%2Fruntime-optimization-ai.html&title=AI-driven+C%2B%2B+runtime+optimization&description=AI-driven+C%2B%2B+runtime+optimization"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/03/01/compiler-bug.html" data-toggle="tooltip" data-placement="top" title="Diagnosing a compiler bug">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
