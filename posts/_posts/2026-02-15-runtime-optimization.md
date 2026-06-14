@@ -2,7 +2,7 @@
 layout: post
 title: Making a real-world algorithm run twenty times faster
 subtitle: A showcase of optimisation techniques from the trenches
-image: /posts/img/runtime_optimisation/speed.png
+image: /posts/img/runtime_optimisation/speed.jpg
 image-license:
   url: https://commons.wikimedia.org/wiki/File:Hey,_take_it_easy_there,_Al_Unser_Jr!_(5774923418).jpg
   text: "Image: Wikimedia Commons (CC-BY-SA 2.0)"
