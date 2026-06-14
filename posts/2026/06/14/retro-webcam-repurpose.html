@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>From 23-year-old scrap PCB to working webcam module</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Digital archaeology or new project material?">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="From 23-year-old scrap PCB to working webcam module" />
+  
+
+   
+  <meta property="og:description" content="Digital archaeology or new project material?">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/06/14/retro-webcam-repurpose.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/06/14/retro-webcam-repurpose.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="From 23-year-old scrap PCB to working webcam module" />
+  
+
+  
+  <meta name="twitter:description" content="Digital archaeology or new project material?">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>From 23-year-old scrap PCB to working webcam module</h1>
+		  
+		    
+			<h2 class="post-subheading">Digital archaeology or new project material?</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on June 14, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+17 minutes
+
+read (3111 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>From 23-year-old scrap PCB to working webcam module</h1>
+		  
+		    
+			<h2 class="post-subheading">Digital archaeology or new project material?</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on June 14, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Lately I have been thinking about getting a low-resolution image sensor for
+some bare-metal project prototyping, and I was disappointed by the limited
+availability of low-cost low-resolution camera modules. I wanted parts in the
+price range of a few bucks, not a few dozen bucks. I then remembered of a bunch
+of old computer parts I had stored, which includes pieces of an old laptop.
+The laptop had a webcam, so I decided to try reverse-engineering the module and
+see if I could do anything with it.</p>
+
+<h1 id="the-laptop">The laptop</h1>
+
+<p>The parts mentioned above are from a Hyundai P57V laptop from about 2003.
+Equipped with a Pentium IV processor running at 2.8 GHz, 512 MB memory, an
+ATI Radeon 9000 GPU with 64 MB of dedicated memory, a 15” 1400x1050 display,
+40 GB mechanical drive storage, it used a
+<a href="https://en.wikipedia.org/wiki/Clevo">Clevo</a> D470 chassis and came with Windows
+XP pre-installed. Another interesting feature was the presence of an integrated
+webcam, which at the time was not commonplace.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
+
+<p>Today most people will probably not recognise Hyundai as a computer brand, and
+it was a niche brand even back then. Despite of that, however, at the time this
+model was actually a high-end (and relatively expensive) laptop, with good raw
+specs targeting power users. The main drawbacks were weight (~3 kg),
+bulkiness, and low battery life (about one hour), which at the time qualified
+it as a desktop-replacement machine rather than a true portable device.</p>
+
+<p>This was my first laptop, having used and owned only stationary/desktop
+computers before it, and I have some fond memories of it. It carried through a
+lot of schoolwork and at the same time it was an amazing learning platform. It
+has probably been the single most influential electronic device in my personal
+competence development.</p>
+
+<p>Besides the aging compute power during the fast-paced development of consumer
+electronics in the 2000s, and some transient problems with the power circuit
+that drove me to get a replacement, what finally sent the laptop to retirement
+was the fact that its plastic chassis had completely broken down.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> I did not
+however throw it away, but I rather stored it, partly for memory and partly as
+future tinkering material.</p>
+
+<h1 id="the-webcam">The webcam</h1>
+
+<p>Fast forward by many years. Remembering of the old laptop parts, I located the
+box where I kept them stored and fished out the webcam.</p>
+
+<p>The webcam module has an elongated PCB, with the camera module proper (sensor
+chip and lens assembly) in the middle, and two wings of circuitry around it,
+covered by an RF shield (the silver-coloured sheet wrapping the PCB).</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/shield.jpg" />
+</div>
+
+<p>The <code class="language-plaintext highlighter-rouge">0341</code> marking on the RF shield looks like a date (2003 week 41), which
+would be consistent with the time of manufacturing.</p>
+
+<p>The connector is interesting, as it has five wires running inside a fabric
+sheath without shielding, of which one (black with a ring connector) is
+obviously GND. Putting the PCB under the digital microscope and looking at the
+connector, it can be seen how the yellow wire is directly connected to the
+black one, so that has also to be GND.</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/connector.jpg" />
+</div>
+
+<p>Therefore one of the remaining wires has to be the VCC, likely the red one, and
+the remaining two orange wires are probably data lines. I therefore started
+suspecting it might be a USB connection with non-standard wire colours, where
+the orange wires would be the D+ and D- (being twisted together is another
+clue, as USB uses <a href="https://en.wikipedia.org/wiki/Differential_signalling">differential
+signaling</a> for the data
+line).</p>
+
+<p>This could be enough information already to experiment with a USB connection,
+but I wanted to gather more information before trying anything physical. I
+removed the RF shield to take a look at the ICs on the PCB and took a couple
+more pictures of the top side under the microscope. From a cursory look, the
+left side of the PCB is probably mostly wiring and USB PHY front-end:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/left.jpg" />
+</div>
+
+<p>The two data wires go straight into
+<a href="https://en.wikipedia.org/wiki/Surface-mount_technology">SMDs</a>, the two marked
+as <code class="language-plaintext highlighter-rouge">220</code> are probably resistors (used for <a href="https://en.wikipedia.org/wiki/Impedance_matching">impedance
+matching</a> on USB D+ and D-
+lines) and <code class="language-plaintext highlighter-rouge">152</code> might be a pull-up resistor on the D+ line (which would denote
+a full-speed USB device).</p>
+
+<p>The right side is more interesting:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/right.jpg" />
+</div>
+
+<p>The big IC in the middle, easily identifiable by its marking, is a ZC0301Plus
+USB camera controller by <a href="https://en.wikipedia.org/wiki/Vimicro">Vimicro</a> (from
+2002). So this confirms the theory of USB connection. Looking at the
+<a href="https://web.archive.org/web/20260614131724/https://d1.amobbs.com/bbs_upload782111/files_38/ourdev_629796QFQEFX.pdf">datasheet</a>
+we can get some general features:</p>
+
+<ul>
+  <li>3.3V input power</li>
+  <li>15 fps VGA</li>
+  <li>USB 1.1 controller</li>
+  <li>8-9 bit raw Bayer input</li>
+  <li>A programmable <a href="https://en.wikipedia.org/wiki/Image_processor">ISP</a></li>
+  <li>JPEG compression</li>
+  <li>Parameters programmable via EEPROM interface<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">3</a></sup></li>
+</ul>
+
+<p>Other outstanding ICs are a 48 MHz oscillator (marked as <code class="language-plaintext highlighter-rouge">48.00</code>), which
+is consistent with USB 1.1, and a
+<a href="https://en.wikipedia.org/wiki/Small-outline_transistor">SOT-23-5</a> package
+(marked as <code class="language-plaintext highlighter-rouge">4B20</code>) which is a prime candidate for a voltage regulator (as I
+have not yet seen a buck converter nor other circuitry that might be performing
+the step-down from the 5 V USB VCC to the 3.3 V expected by the
+controller).</p>
+
+<p>The back reveals part of the wiring and has a few markings on it:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/back.jpg" />
+    Mirrored image (to simplify comparison with images of the PCB's front).
+</div>
+
+<p>This is however not as informative. The main marking <code class="language-plaintext highlighter-rouge">151CMM313011</code> turns out
+to be the part number of a webcam module used in Clevo D470 laptops,<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> for
+which no documentation is readily available online. Other markings are the
+<a href="https://en.wikipedia.org/wiki/Fire_retardant">fire-retardant</a> rating <code class="language-plaintext highlighter-rouge">KEM
+94V-0</code> and what looks like another date (<code class="language-plaintext highlighter-rouge">0336</code>, probably 2003 week 36).</p>
+
+<h1 id="connection">Connection</h1>
+
+<p>Being now sure about the interface, I wanted to connect the camera and see if I
+could make it work. The upside of USB is that I could try direct connection to
+a PC without needing much upfront implementation work of the physical layer. I
+would only need to possibly implement a working driver. The downside is that
+USB requires a complicated software stack, so it is sub-optimal for some of the
+bare-metal projects I had in mind (but I might still be able to work with it).</p>
+
+<p>I cut off the end connector of the outgoing cable, crimped
+<a href="https://en.wikipedia.org/wiki/JST_connector">JST-XH</a> female pins to the wires,
+and put them in a female connector. I did the same with an old USB cable,
+cutting a piece of cord ending with a USB A connector and crimping another
+female JST-XH connector to it.<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p>
+
+<p>Note that there is still an unknown variable, as I cannot tell apart the D+ and
+D- wires yet, being of the same colour.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> Flipping the two data wires is not
+dangerous but it will result in a device that will not enumerate, so I can just
+try guessing at first, and if it does not work I can try swapping the wires.</p>
+
+<p>Plugging in the USB and having a look at the kernel message buffer:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo dmesg
+...
+[  806.730641] usb 1-1.4: new full-speed USB device number 4 using xhci_hcd
+[  806.730719] usb 1-1.4: Device not responding to setup address.
+[  806.934346] usb 1-1.4: Device not responding to setup address.
+[  807.137562] usb 1-1.4: device not accepting address 19, error -71
+[  807.137846] usb 1-1.4: WARN: invalid context state for evaluate context command.
+[  807.138168] usb 1-1-port4: unable to enumerate USB device
+</code></pre></div></div>
+
+<p>Not good. The device is enumerating, and we see it being recognized as full
+speed,<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">7</a></sup> but it seems to not respond properly. The connection is probably too
+noisy. After checking and steadying the connector:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo dmesg
+...
+[ 5422.650056] usb 1-1: new full-speed USB device number 5 using xhci_hcd
+[ 5422.788583] usb 1-1: New USB device found, idVendor=0ac8, idProduct=301b, bcdDevice= 1.00
+[ 5422.788618] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 5422.788634] usb 1-1: Product: PC Camera
+[ 5422.788647] usb 1-1: Manufacturer: Z-Star Corp.
+[ 5422.794321] gspca_main: gspca_zc3xx-2.14.0 probing 0ac8:301b
+[ 5423.033932] input: gspca_zc3xx as /devices/pci0000:00/0000:00:14.0/usb1/1-1/input/input41
+</code></pre></div></div>
+
+<p>That is better. And, good news, there seems to be a supported driver
+(<code class="language-plaintext highlighter-rouge">gspca_main</code>) in the Linux kernel, and we now know vendor and product id. We
+can confirm with <code class="language-plaintext highlighter-rouge">lsusb</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo lsusb -v -d 0ac8:301b
+
+Bus 001 Device 005: ID 0ac8:301b Z-Star Microelectronics Corp. ZC0301 Webcam
+Negotiated speed: Full Speed (12Mbps)
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass          255 Vendor Specific Class
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0         8
+  idVendor           0x0ac8 Z-Star Microelectronics Corp.
+  idProduct          0x301b ZC0301 Webcam
+  bcdDevice            1.00
+  iManufacturer           1 Z-Star Corp.
+  iProduct                2 PC Camera
+  iSerial                 0
+  bNumConfigurations      1
+  Configuration Descriptor:
+    ...
+Device Status:     0x0000
+  (Bus Powered)
+</code></pre></div></div>
+
+<p>The device class being vendor specific might not sound ideal, as it means that
+the camera uses some non-standard protocol as opposed to a standard <a href="https://en.wikipedia.org/wiki/USB_video_device_class">USB video
+device class</a> (UVC)<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">8</a></sup>
+and therefore might require more integration work. It is not necessarily as bad
+as it sounds however, considering that such an old camera is likely to use a
+simpler protocol than UVC itself, and also the <code class="language-plaintext highlighter-rouge">gspca_main</code> driver already has
+an open-source implementation that can be used as a reference.</p>
+
+<p>We can check what output formats are supported:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ v4l2-ctl -d /dev/video2 --list-formats-ext
+
+ioctl: VIDIOC_ENUM_FMT
+        Type: Video Capture
+
+        [0]: 'JPEG' (JFIF JPEG, compressed)
+                Size: Discrete 320x240
+                Size: Discrete 640x480
+</code></pre></div></div>
+
+<p>Only JPEG, and this checks out with what we gathered from the datasheet. We can
+also verify what parameters can be user-controlled:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ v4l2-ctl -d /dev/video2 --list-ctrls
+
+User Controls
+
+                     brightness 0x00980900 (int)    : min=0 max=255 step=1 default=128 value=128 flags=slider, 0x00001000
+                       contrast 0x00980901 (int)    : min=0 max=255 step=1 default=128 value=128 flags=slider, 0x00001000
+                          gamma 0x00980910 (int)    : min=1 max=6 step=1 default=4 value=4 flags=slider, 0x00001000
+                 gain_automatic 0x00980912 (bool)   : default=1 value=1 flags=0x00001000
+           power_line_frequency 0x00980918 (menu)   : min=0 max=2 default=0 value=1 flags=0x00001000
+                      sharpness 0x0098091b (int)    : min=0 max=3 step=1 default=2 value=2 flags=slider, 0x00001000
+
+JPEG Compression Controls
+
+            compression_quality 0x009d0903 (int)    : min=50 max=87 step=1 default=75 value=75 flags=0x00001000
+</code></pre></div></div>
+
+<h1 id="sensor">Sensor</h1>
+
+<p>So far, none of the information we read from the device offers any clue on what
+sensor the camera uses. There are no obvious markings, and I did not intend to
+disassemble the camera module to try accessing the sensor chip directly
+(installed under the lens assembly), which would likely be a permanent one-way
+operation, probably destructive towards the rest of the PCB.</p>
+
+<p>So I decided to have a look at the source code of the driver in the Linux
+kernel source tree to look for a lead. Grepping for the vendor/device id
+quickly brought me to
+<a href="https://github.com/torvalds/linux/blob/062871f1371b2e02a272ff5279c6479aff0a37ef/drivers/media/usb/gspca/zc3xx.c#L6993">drivers/media/usb/gspca/zc3xx.c</a>, where I can see the device model</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">usb_device_id</span> <span class="n">device_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">...</span>
+	<span class="p">{</span><span class="n">USB_DEVICE</span><span class="p">(</span><span class="mh">0x0ac8</span><span class="p">,</span> <span class="mh">0x301b</span><span class="p">)},</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Looking around at the definition of the
+<a href="https://github.com/torvalds/linux/blob/062871f1371b2e02a272ff5279c6479aff0a37ef/drivers/media/usb/gspca/zc3xx.c#L6480">sd_init</a>
+function, which is called by <code class="language-plaintext highlighter-rouge">struct usb_driver::probe</code> to initialize the
+sub-driver, we can see a switch over the sensor types, where each <code class="language-plaintext highlighter-rouge">case</code> has a
+<code class="language-plaintext highlighter-rouge">gspca_dbg</code> macro that logs the sensor model.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static int sd_init(struct gspca_dev *gspca_dev)
+{
+    ...
+    switch (sensor) {
+		case -1:
+			switch (sd-&gt;sensor) {
+			case SENSOR_MC501CB:
+				gspca_dbg(gspca_dev, D_PROBE, "Sensor MC501CB\n");
+                ...
+</code></pre></div></div>
+
+<p>Enabling debug should add those prints to the kernel message buffer. A quick
+look at the kernel module info shows how it accepts a <code class="language-plaintext highlighter-rouge">debug</code> parameter.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ modinfo gspca_main
+filename:       /lib/modules/6.18.20-1-lts/kernel/drivers/media/usb/gspca/gspca_main.ko.zst
+version:        2.14.0
+...
+parm:           debug:1:probe 2:config 3:stream 4:frame 5:packet 6:usbi 7:usbo (int)
+</code></pre></div></div>
+
+<p>Reloading the driver with a suitable debug level gives the desired information:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo modprobe -r gspca_zc3xx gspca_main
+$ sudo modprobe gspca_main debug=7
+$ sudo modprobe gspca_zc3xx
+$ sudo dmesg
+...
+[ 7978.969572] usb 1-1: new full-speed USB device number 13 using xhci_hcd
+[ 7979.101098] usb 1-1: New USB device found, idVendor=0ac8, idProduct=301b, bcdDevice= 1.00
+[ 7979.101111] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 7979.101118] usb 1-1: Product: PC Camera
+[ 7979.101124] usb 1-1: Manufacturer: Z-Star Corp.
+[ 7979.102443] gspca_main: gspca_zc3xx-2.14.0 probing 0ac8:301b
+[ 7979.336696] gspca_zc3xx 1-1:1.0: probe sensor -&gt; 000c
+[ 7979.336714] gspca_zc3xx 1-1:1.0: Find Sensor ICM105A
+[ 7979.337305] input: gspca_zc3xx as /devices/pci0000:00/0000:00:14.0/usb1/1-1/input/input53
+[ 7979.340156] gspca_zc3xx 1-1:1.0: video2 created
+[ 7979.340178] gspca_zc3xx 1-1:1.0: found int in endpoint: 0x82, buffer_len=8, interval=10
+[ 7980.499089] gspca_zc3xx 1-1:1.0: try fmt cap JPEG 320x240
+[ 7980.504396] gspca_zc3xx 1-1:1.0: try fmt cap JPEG 320x240
+</code></pre></div></div>
+
+<p>The chip is an <code class="language-plaintext highlighter-rouge">ICM105A</code>, a <a href="https://en.wikipedia.org/wiki/Active-pixel_sensor">CMOS
+sensor</a> from 2001 by IC
+Media Corporation, a no longer operating Taiwanese company. From the
+<a href="https://web.archive.org/web/20260613153713/https://datasheet.datasheetarchive.com/originals/library/Datasheet-06/DSA0099730.pdf">datasheet</a>
+we can extract some of the main features:</p>
+
+<ul>
+  <li>Single 3.3 V power supply</li>
+  <li>307,200 (640x480) pixels, VGA format, used with 1/4” optical system</li>
+  <li>Up to 30 fps</li>
+  <li>8-bit raw output with a standard <a href="https://en.wikipedia.org/wiki/Bayer_filter">Bayer pattern</a></li>
+  <li>I2C control interface</li>
+  <li>On-chip 9-bit ADC</li>
+</ul>
+
+<h1 id="testing">Testing</h1>
+
+<p>With the camera connected, I can now capture some test images. Using a
+breadboard as a test target:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/test1.png" />
+</div>
+
+<p>With different light and angle:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/test2.png" />
+</div>
+
+<p>These definitely look like images from non-professional consumer-grade
+electronics from 20+ years ago. Besides obvious low resolution and noise, we
+can see the limits of its range and exposure control. These limitations however
+will make it even more interesting to see what can be done when trying to push
+a device like this to the edge by using it as input source for computer vision
+and signal processing.</p>
+
+<h1 id="power">Power</h1>
+
+<p>One unanswered question is how and where power is converted from 5V (USB) to
+3.3V (microcontroller and image sensor). The main candidate so far has been the
+IC marked as <code class="language-plaintext highlighter-rouge">4B20</code>, a SOT-23-5 package installed besides the microcontroller.</p>
+
+<p>This seems to be consistent with the wiring, and now that the camera is powered
+and working I can confirm it by measuring the voltage on the pins:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/regulator.jpg" />
+</div>
+
+<p>This is consistent with what I would expect from a <a href="https://en.wikipedia.org/wiki/Linear_regulator">linear
+regulator</a>. The three pins on
+the upper side are likely enable pin (3.3 V), ground (0 V), and input
+(~4.6 V, lower than 5 V probably due to input loss), while the two
+pins on the bottom are likely a noise pin (0 V) and the output
+(3.3 V). This layout is compatible with linear regulators from the time
+(like the Micrel MIC5205 or the Toshiba TAR5SBxx, of which this might have been
+a clone).</p>
+
+<p>I was also interested in understanding power consumption, so I first measured
+the voltage on the input pin right out of the USB connector (4.6 V, so
+consistent with the readout from the linear regulator), and then I read the
+input current:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/old_webcam/power.jpg" />
+</div>
+
+<p>The reading was of ~10 mA when idle, and 65~70 mA when recording in
+video mode,<sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">9</a></sup> corresponding to</p>
+
+\[10~\text{mA} \cdot 4.6~\text{V} \approx 46~\text{mW}\]
+
+<p>in idle and</p>
+
+\[70~\text{mA} \cdot 4.6~\text{V} \approx 322~\text{mW}\]
+
+<p>when recording. This measured power usage is surprisingly low compared to
+modern webcams, I was expecting to see higher values, considering how little
+power efficient devices were at the time compared to today. The result is easy
+to interpret though as, compared to modern devices, this camera module has much
+lower resolution, lower frame rate, and minimal on-board ISP, so the lower
+power usage is due to the sheer low volume of operations and calculations
+rather than any power efficiency aspect.</p>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>This was a quick fun dive in the past. Starting from an anonymous laptop module
+with only a few PCB markings, it allowed reconstruction of chipset, sensor,
+wiring, USB interface, and power requirements. I then managed to connect it to
+a modern PC and get it in working order.</p>
+
+<p>The task was definitely simplified by the presence of a working Linux driver,
+meaning I did not have to also implement a kernel module in order to get it
+working, and it is a testament of how good Linux hardware compatibility lasts
+with time.</p>
+
+<p>I am not sure yet if this piece of hardware will be a good fit for some of the
+projects I have in mind, as it requires a USB stack for connection, which is a
+large and complex dependency for the minimal bare metal experiments I was
+planning to make. But it surely remains an interesting item to experiment with.</p>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Indeed I remember no one else having one, among the few laptop-owners in
+  my circle at the time. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>This seems to have been a common issue, as I noticed it frequently in
+  pictures of used Hyundai P57 laptops. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>However, no EEPROM chip is obviously visible on the PCB. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Hardly a surprise, considering that Hyundai ImageQuest laptops were based
+  on Clevo models. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6">
+      <p>Having two female connectors allows me to either directly connect them
+  to each other (using a male connector for PCB-mount as a joint), or to
+  connect both of them to a breadboard (using two male sockets), or
+  connecting the two cables with each other using DuPont jumpers if I want
+  to attach measurement instruments on some of the wires. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>I could have told them apart if I unsheathed the cable and unwrapped the
+  two orange wires, and then made an assumption based on the wire ordering
+  in the PCB and the presence of what looks like a pull-up resistor. But I
+  did not want to remove the cable from its sheath (yet). <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7">
+      <p>Which, for USB 1.1, means 12 Mbps. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8">
+      <p>This is hardly surprising, considering that this camera module is older
+  than the UVC specification itself. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9">
+      <p>Using it as a webcam in a Proton Meet call. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#embedded">embedded</a>
+          
+            <a href="/tags#usb">usb</a>
+          
+            <a href="/tags#image processing">image processing</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html&t=From+23-year-old+scrap+PCB+to+working+webcam+module"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html&text=From+23-year-old+scrap+PCB+to+working+webcam+module"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=From+23-year-old+scrap+PCB+to+working+webcam+module&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html&appkey=&title=From+23-year-old+scrap+PCB+to+working+webcam+module&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=From+23-year-old+scrap+PCB+to+working+webcam+module&text=From+23-year-old+scrap+PCB+to+working+webcam+module&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F06%2F14%2Fretro-webcam-repurpose.html&title=From+23-year-old+scrap+PCB+to+working+webcam+module&description=From+23-year-old+scrap+PCB+to+working+webcam+module"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/05/03/runtime-optimization-ai.html" data-toggle="tooltip" data-placement="top" title="AI-driven C++ runtime optimization">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
