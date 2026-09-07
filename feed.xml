@@ -12,9 +12,9 @@
           As a fully AI-driven project - 
           Some time ago I encountered a situation at work where I needed high-resolution real-time image encoding on a constrained device. My first suggestion was to use a temporal video codec (like H.264), but the customer wanted to be able to encode and decode still images independently. Since the platform had...
         </description>
-        <pubDate>Wed, 26 Aug 2026 00:00:00 +0200</pubDate>
-        <link>https://martinopilia.com/posts/2026/08/26/gpu-jpegxl-codec.html</link>
-        <guid isPermaLink="true">https://martinopilia.com/posts/2026/08/26/gpu-jpegxl-codec.html</guid>
+        <pubDate>Mon, 07 Sep 2026 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2026/09/07/gpu-jpegxl-codec.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2026/09/07/gpu-jpegxl-codec.html</guid>
       </item>
     
       <item>
