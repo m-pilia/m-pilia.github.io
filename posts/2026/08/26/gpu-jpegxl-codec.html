@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Implementing a GPU-accelerated JPEG XL encoder</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="As a fully AI-driven project">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Implementing a GPU-accelerated JPEG XL encoder" />
+  
+
+   
+  <meta property="og:description" content="As a fully AI-driven project">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/08/26/gpu-jpegxl-codec.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/08/26/gpu-jpegxl-codec.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Implementing a GPU-accelerated JPEG XL encoder" />
+  
+
+  
+  <meta name="twitter:description" content="As a fully AI-driven project">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Implementing a GPU-accelerated JPEG XL encoder</h1>
+		  
+		    
+			<h2 class="post-subheading">As a fully AI-driven project</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on August 26, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+22 minutes
+
+read (3882 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Implementing a GPU-accelerated JPEG XL encoder</h1>
+		  
+		    
+			<h2 class="post-subheading">As a fully AI-driven project</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on August 26, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Some time ago I encountered a situation at work where I needed high-resolution real-time image encoding on a constrained device. My first suggestion was to use a temporal video codec (like H.264), but the customer wanted to be able to encode and decode still images independently. Since the platform had no hardware-accelerated encoder blocks and state-of-the-art compression algorithms like WebP and JPEG XL are CPU-bound and too slow for such an application, the only feasible solution was to fall back to a GPU-accelerated JPEG codec.</p>
+
+<p>During this whole exercise, I realized that there is no GPU-accelerated implementation of the JPEG XL codec, and so I asked myself why not make one myself. This post is the answer to that question and the project (<a href="https://github.com/m-pilia/cujpegxl">cujpegxl</a>) that came out of it.</p>
+
+<h1 id="jpeg-xl-in-a-nutshell">JPEG XL in a nutshell</h1>
+
+<p><a href="https://en.wikipedia.org/wiki/JPEG_XL">JPEG XL</a> is a compressed image format standardized in 2021-2022, based on two algorithms (FUIF and PIK) initially developed in 2015-2017. It supports both lossless and lossy compression, but my focus is primarily on the lossy one. The latter is a conceptual extension of JPEG compression, using a variable-block-size <a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform">discrete cosine transform</a> (VarDCT) in <a href="https://en.wikipedia.org/wiki/XYB">XYB colour space</a>. At higher effort settings, the algorithm iteratively evaluates the <a href="https://en.wikipedia.org/wiki/Guetzli#Butteraugli">Butteraugli</a> distance between input and encoded image and uses it to tune the quantization settings. Another improvement over JPEG is the use of both <a href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman</a> and <a href="https://en.wikipedia.org/wiki/Asymmetric_numeral_systems">Asymmetric Numeral System (ANS)</a> for entropy coding, letting the encoder pick the most suitable on a case-by-case basis.</p>
+
+<p>The algorithm is standardized in ISO/IEC 18181, but an outline is available in freely accessible resources including the whitepaper <a class="citation" href="#alakuijala2023jpegxl">[1]</a> and the open-source reference implementation <a href="https://github.com/libjxl/libjxl/">libjxl</a>.</p>
+
+<p>The algorithm is more complicated (and expensive) than JPEG and some parts of it require some effort to optimize for GPU execution, but overall it looked possible to get a GPU implementation going.</p>
+
+<h2 id="algorithm-anatomy">Algorithm anatomy</h2>
+
+<p>The JPEG XL algorithm has two main alternative frame coding methods, based on VarDCT (lossy) or on modular coding (can be lossless).<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> In the following I focus on the lossy VarDCT path, which is the most relevant to my use case. The skeleton of the encoding algorithm is roughly the following:</p>
+
+<div class="center-block" style="width: 60%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/gpu_jpegxl/algo_overview.svg" />
+</div>
+
+<p>The algorithm starts by setting up the so-called codestream (i.e. the stream of encoded image data) with all metadata needed to render the image frames correctly. The word “frames” sounds confusing, but indeed JPEG XL supports multi-frame representation, even for still images, making the container quite flexible by allowing e.g. to store arbitrary channels with arbitrary semantics.</p>
+
+<p>The encoder can then optionally perform a step to extract image features that can be encoded separately and then rendered on top of the decoded image, including patches of repeated image elements, splines of curvilinear features, and modelled intensity-dependent noise.</p>
+
+<p>What comes next is the main part of the encoder. If we follow the VarDCT lossy branch, the key idea (compression in the frequency domain) is analogous to JPEG, but it is pushed way further. The image is first converted into XYB space<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> to better exploit perceptual information, and is subjected to some preconditioning.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> The encoder then chooses a dynamic grid<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">4</a></sup> to partition the image into blocks. Unlike JPEG, which uses a fixed-size 8x8 grid, JPEG XL is allowed to use variable-sized blocks ranging from 2x2 to 256x256, allowing e.g. larger blocks to exploit flat regions, and smaller blocks to preserve details of more complex regions.</p>
+
+<div class="center-block" style="width: 100%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/gpu_jpegxl/cujpegxl_vardct_overlay.jpg" />
+    Example VarDCT grid selected by cujpegxl (720p) with 8 &le; s &le; 32.<br />
+    Akranes lighthouse by Diego Delso <a href="https://commons.wikimedia.org/wiki/File:Antiguo_faro_de_Akranes,_Vesturland,_Islandia,_2014-08-14,_DD_008.JPG">on Wikimedia Commons</a>, CC-BY-SA 4.0.
+</div>
+
+<p>Blocks are then independently transformed with a <a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform">discrete cosine transform</a>. Like in JPEG, this allows to concentrate proportionally more information into low-frequency coefficients, allowing for more effective coding of the mostly small and low-entropy high-frequency coefficients.</p>
+
+<p>Only the coefficients for the Y channel are effectively stored. The luminance channel encodes structural information and the chrominance is strongly correlated with it, so the X and B channels are reconstructed by predicting them with a simple linear transform from Y plus a residual (hence the name of chroma-from-luma prediction). If the prediction is good, the residuals will be small and therefore highly compressible.</p>
+
+<p>Adaptive quantization is then performed on the coefficients. This is the real irreversible part that makes the algorithm truly lossy. Quantization is “adaptive” because it is weighted per transform \(t\), block \(b\), and channel \(c\), using both global information \(G\) and a per-block spatial field \(F_b\). A quantization of the \(k\)-th coefficient roughly looks like</p>
+
+\[q_{b,c,k} = \operatorname{round} \left( C_{b,c,k} \frac{G F_b}{W_{t,c,k}} \right) \\\]
+
+<p>where \(\boldsymbol{W}\) is a weight matrix.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">5</a></sup> The “step size” \(\Delta_{b,c,k} = \frac{W_{t,c,k}}{G F_b}\) roughly determines how lossy the quantization is.</p>
+
+<p>A subsequent step organizes the encoded information to allow for efficient decoding. This step does not affect the image content but only the order in which the content itself is processed. Frames are divided into independent groups that can be processed in parallel in a progressive fashion. The DC coefficients<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">6</a></sup> are gathered in a low-frequency (LF) image at \(\frac{1}{8}\) of the resolution, and AC coefficients are organized in high-frequency (HF) passes that can be decoded progressively. In this fashion, the LF image alone provides a low-resolution preview of the whole image, and each HF pass adds more detail to it. This enables progressive and responsive image decoding from a still partially loaded/downloaded image, instead of a traditional monolithic decoding operation.</p>
+
+<p>The last main algorithmic step is <a href="https://en.wikipedia.org/wiki/Entropy_coding">entropy coding</a>, which provides lossless compression of the coefficients by deriving an optimal code to express them. While JPEG uses <a href="https://en.wikipedia.org/wiki/Entropy_coding">Huffman coding</a>, JPEG XL uses both <a href="https://en.wikipedia.org/wiki/Entropy_coding">rANS</a> and Huffman coding, choosing on a per-stream basis according to some heuristic, typically using Huffman coding for shorter streams (to avoid the overhead of rANS table construction), and rANS for larger streams where the higher compression rate makes a significant difference.</p>
+
+<h2 id="gpu-notes">GPU notes</h2>
+
+<p>JPEG XL is overall less GPU friendly than JPEG. While the latter has a more regular, fixed-size grid, fixed quantization tables, and overall fewer dynamic/moving parts, JPEG XL has a variable size DCT grid that can cause uneven work and thread divergence, as well as spatially adaptive quantization with weights that change per channel and block. Entropy coding has a more complex histogram clustering, and rANS has a state that needs to be updated on every symbol. Transform selection, adaptive quantization, and perceptual optimizations involve many small decisions with irregular feedback loops.</p>
+
+<p>While the bulk of image operations and filters can be mapped to GPU kernels, all this complexity makes it more challenging to come up with a well-optimized implementation that can effectively take advantage of the GPU architecture to its full extent. The task looked therefore non-trivial, but I decided to tackle it nonetheless.</p>
+
+<h1 id="approach">Approach</h1>
+
+<p>JPEG XL is a fairly complex algorithm. A clean implementation would require months of developer work, and it would start with days of work just to read up and fully understand the algorithm. An interesting aspect of this project, however, is that there already is a complete open source reference implementation. This shifts the problem from a blank-slate implementation to primarily a CUDA port, and having a reference to both translate from and at the same time to be able to test against simplifies the problem significantly.</p>
+
+<p>Given the complexity of the project, I used a mix of large models (GLM 5.3 and 5.2, GPT-5.6 Sol, Claude Opus 4.8), as with smaller models I have generally experienced their inability to properly deal with tasks of this complexity. Some people argue that larger models are only needed for the planning, and implementation can be delegated to smaller ones, but for tasks of this complexity, in my experience, implementation is also tricky and often smaller models cannot figure out solutions, when they don’t simply end up in a doom loop of bad decisions and become unable to make progress.</p>
+
+<h2 id="prompting">Prompting</h2>
+
+<p>This was nonetheless a large and complex software project, even for AI agents,<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">7</a></sup> and especially with an underspecified framing it would be hard for the AI to come up with a consistent implementation that solves the right problem. I approached the project through an initial planning session to define the scope and implementation milestones, and then proceeded with AI agents implementing the relevant steps in the roadmap graph, following the dependency order.</p>
+
+<p>I used my typical AI coding approach by first having an agent define a high-level plan document specifying the goals (and non-goals), scope, constraints, requirements, and high-level milestone roadmap. This is accomplished by what in my skills I call an “<a href="https://github.com/m-pilia/dotfiles/blob/develop/home/.agents/skills/inquisition/SKILL.md">inquisition</a>”<sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">8</a></sup> session, by having the agent relentlessly asking me questions until nothing is left ambiguous or unspecified.</p>
+
+<p>Each milestone got in turn a dedicated document that specifies in more detail its scope, tasks, and exit criteria checklist. Each task can be implemented within an AI agent session, and each session ends by updating the status in the documents, so that the next fresh agent can pick up the next task directly. If a task ends up being too large or complex for a session, I let the agent write a handover document, so that a fresh agent can pick up the work by just reading it.</p>
+
+<p>For this project, as I normally do for complex projects where I require high quality of the results, I reviewed the outcome of each task<sup id="fnref:11"><a href="#fn:11" class="footnote" rel="footnote" role="doc-noteref">9</a></sup> rather than letting the AI continue unsupervised for many tasks in a row, and I did not let the agents make key decisions autonomously, but rather instructed them to stop and ask for my input when a design decision or a key trade-off was needed. Even with a good plan, AI agents easily get off-track, and their bad decisions quickly compound, so early feedback is particularly useful to keep the project on track and avoid a lot of unnecessary work.<sup id="fnref:10"><a href="#fn:10" class="footnote" rel="footnote" role="doc-noteref">10</a></sup> This I think is more relevant for high-complexity projects, more mainstream software tasks are manageable by today’s AI agents in a more autonomous fashion.</p>
+
+<h2 id="planning">Planning</h2>
+
+<p>I baked in the plan the key goals of my project:</p>
+<ul>
+  <li>Conformance: the encoded images should be decodable by the reference <code class="language-plaintext highlighter-rouge">djxl</code> and by any conforming JPEG XL decoder.</li>
+  <li>Determinism: when encoding the same input on the same platform, output must be byte-identical.</li>
+  <li>Performance: the encoder should use the GPU efficiently and meet real-time performance (≥ 15 fps @ 4K on low-end devices, ideally only using a slice of the resource budget).</li>
+</ul>
+
+<p>I incorporated in the planning phase some critical scope and trade-off decisions. The JPEG XL algorithm is fairly complex and not all parts are easy to optimize on GPU. After basic work to establish an evaluation framework, build system scaffolding, and quality checks, the milestones started by first implementing a minimal conforming encoder, and alter iteratively adding to it more and more parts to improve compression rate and quality. Completeness of the JPEG XL algorithm is a non-goal and, due to the high performance runtime goal, parts can be omitted if they are too expensive and I conclude that they are not worth the quality/speed trade-off.</p>
+
+<p>I also included some other scope limitations in the initial plan, for instance restricting support to 2160p/1080p/720p <a href="https://en.wikipedia.org/wiki/Y%E2%80%B2UV">Y’UV</a> 420 NV12 input. These constraints were aimed purely at speeding up the project ramp-up, by reducing the need for scaffolding and boilerplate for purely technical input/output marshalling, and can be very easily lifted later, after higher priority goals have been met.</p>
+
+<h2 id="timeline">Timeline</h2>
+
+<p>The first working encoder only implemented a fixed-size 8x8 DCT with a fixed quantization field. As one might imagine, this did not perform well in terms of image compression, but it produced a valid codestream that could be decoded with libjxl. Subsequent milestones added adaptive quantization, variable block size (to a limited set of sizes \(8 \le s \le 32\) that can be expanded later),<sup id="fnref:12"><a href="#fn:12" class="footnote" rel="footnote" role="doc-noteref">11</a></sup> chroma-from-luma prediction, and entropy optimization.</p>
+
+<p>I interleaved the milestones with a few rounds of runtime optimization. AI agents tend to write poorly optimized code by default, and even when instructed with clear runtime goals, they tend to require some iterations to actually drop naive solutions and write more optimized code.<sup id="fnref:14"><a href="#fn:14" class="footnote" rel="footnote" role="doc-noteref">12</a></sup> One of the benefits of AI-generated code is that it is much easier to achieve optimizations such as kernel fusion, which is code-heavy and would be much more annoying to handwrite (and then maintain). In this project I fused the whole image front-end into a large kernel, which on top of allowing some compute savings has the benefit of substantially reducing DRAM traffic by skipping intermediate stores.</p>
+
+<p>The first complete and functional version took just about a calendar week of weekend-and-evenings (after)work, to which I added a few more evenings of cleanup and optimizations. Something like this would have been impossible to accomplish in such a short timespan without AI; a work package of this size would have definitely been in the order of several developer-months <a href="https://en.wikipedia.org/wiki/Full-time_equivalent">FTE</a>.</p>
+
+<p>Some additions proved to be too expensive in terms of quality-speed trade-off and were therefore rejected. An example is rANS coding: the AIs struggled to come up with a fast-enough implementation either in pure GPU form<sup id="fnref:13"><a href="#fn:13" class="footnote" rel="footnote" role="doc-noteref">13</a></sup> or in a pipelined CPU-GPU hybrid. I am planning to come back to rANS coding in a later iteration, with a narrower and better-specified scope and closer human feedback, to see if I can get the AI to produce a more sustainable implementation.</p>
+
+<h1 id="evaluation">Evaluation</h1>
+
+<p>Before even starting any work on feature implementation, the very first thing I set up was a framework for evaluation, creating a tool that takes as input a manifest with a collection of input images, runs compression and decompression, and evaluates compression loss using a few different metrics. <a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> is not particularly representative of perceived quality, but it is a useful reference, alongside two more reliable perceptual distances, <a href="https://github.com/cloudinary/ssimulacra2">SSIMULACRA2</a> and <a href="https://github.com/google/butteraugli">Butteraugli</a>. JPEG XL is, however, biased towards optimizing Butteraugli distance and therefore it is not a fully fair metric when comparing JPEG XL with other algorithms.</p>
+
+<p>As for the data, I used CC-BY-SA images from Wikimedia Commons’ featured images category for testing and evaluation purposes. The Commons database can be queried e.g. <a href="https://commons-query.wikimedia.org/#%23defaultView%3AImageGrid%0A%0ASELECT%20DISTINCT%20%3Ffile%20%3Fimage%20%3Fwidth%20%3Fheight%20WHERE%20%7B%0A%20%20%3Ffile%0A%20%20%20%20wdt%3AP6731%20wd%3AQ63348049%20%3B%0A%20%20%20%20wdt%3AP275%20%20wd%3AQ18199165%20%3B%0A%20%20%20%20wdt%3AP2049%20%3Fwidth%20%3B%0A%20%20%20%20wdt%3AP2048%20%3Fheight%20%3B%0A%20%20%20%20schema%3Aurl%20%3Fimage%20.%0A%0A%20%20FILTER%28%3Fwidth%20%3E%3D%203840%29%0A%20%20FILTER%28%3Fheight%20%3E%3D%202160%29%0A%7D%0A">with SPARQL</a> or via the REST API and it easily allows a constrained search to specific categories and image resolutions. I picked a small set of four 4K images to use for testing and benchmarking in the development cycle<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">14</a></sup> and a larger dataset for numerical evaluation.</p>
+
+<h1 id="results">Results</h1>
+
+<p>Evaluating on a dataset of 100 images and comparing PSNR and perceptual quality shows that cujpegxl is halfway between JPEG and the reference JPEG XL. It performs especially better at midrange quality/compression, while it falls off closer to JPEG at lower quality settings.</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/gpu_jpegxl/bpp_vs_butteraugli.png" />
+    <img src="/posts/img/gpu_jpegxl/bpp_vs_psnr.png" />
+    <img src="/posts/img/gpu_jpegxl/bpp_vs_ssimulacra2.png" />
+    cujpegxl and libjxl sweep over target Butteraugli distances 0.5, 0.7, 1.0, 1.3, 1.6, 2.0, 2.5, 3.0, 4.0. nvJPEG sweeps over quality levels 20, 30, 40, 50, 60, 70, 75, 80, 85, 90, 95, 100.
+</div>
+
+<p>While all three metrics agree that in general <code class="language-plaintext highlighter-rouge">libjxl</code> &gt; <code class="language-plaintext highlighter-rouge">cujpegxl</code> &gt; <code class="language-plaintext highlighter-rouge">nvJPEG</code>, the difference in perceptual metrics bears more importance than PSNR. In simple terms, PSNR gives an idea of the total signal distortion, while perceptual metrics also account for how that distortion is allocated in ways that minimize the impact on visual quality.</p>
+
+<p>Considering the following input image:</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Antiguo_faro_de_Akranes%2C_Vesturland%2C_Islandia%2C_2014-08-14%2C_DD_008.JPG?utm_source=commons.wikimedia.org&amp;utm_campaign=index&amp;utm_content=original" />
+    <p>Akranes lighthouse by Diego Delso <a href="https://commons.wikimedia.org/wiki/File:Antiguo_faro_de_Akranes,_Vesturland,_Islandia,_2014-08-14,_DD_008.JPG">on Wikimedia Commons</a>, CC-BY-SA 4.0.</p>
+</div>
+
+<p>At high quality settings (distance 0.7, quality 90)<sup id="fnref:17"><a href="#fn:17" class="footnote" rel="footnote" role="doc-noteref">15</a></sup> there are limited perceivable differences. Especially at full resolution, it is hard to notice substantial visual differences, what sets the algorithms apart is especially the achieved bits-per-pixel level of compression.</p>
+
+<div class="center-block" style="width: 100%; text-align: center; font-size: 80%;">
+    <p>Top to bottom: nvJPEG (quality 90, 2.35 bpp), cujpegxl (distance 0.7, 2.04 bpp), libjxl (distance 0.7, 2.00 bpp).</p>
+    <p><img src="/posts/img/gpu_jpegxl/akranes_lighthouse_2160p_nvjpeg_q=90.png" /></p>
+    <p><img src="/posts/img/gpu_jpegxl/akranes_lighthouse_2160p_cujpegxl_d=0.7.png" /></p>
+    <p><img src="/posts/img/gpu_jpegxl/akranes_lighthouse_2160p_libjxl_d=0.7.png" /></p>
+    <p>Detail of Akranes lighthouse (by Diego Delso <a href="https://commons.wikimedia.org/wiki/File:Antiguo_faro_de_Akranes,_Vesturland,_Islandia,_2014-08-14,_DD_008.JPG">on Wikimedia Commons</a>, CC-BY-SA 4.0).</p>
+</div>
+
+<p>The difference in quality becomes more noticeable with higher compression settings. Looking at the same example (distance 3.0, quality 40), JPEG shows more noticeable artifacts, and in particular it is possible to clearly see the 8x8 DCT grid. The result from cujpegxl, at roughly the same compression rate, has substantially higher visual quality and it is noticeably less distorted. The output from libjxl looks even better and at the same time it achieves a higher compression rate.</p>
+
+<div class="center-block" style="width: 100%; text-align: center; font-size: 80%;">
+    <p>Top to bottom: nvJPEG (quality 40, 0.88 bpp), cujpegxl (distance 3.0, 0.86 bpp), libjxl (distance 3.0, 0.65 bpp).</p>
+    <p><img src="/posts/img/gpu_jpegxl/akranes_lighthouse_2160p_nvjpeg_q=40.png" /></p>
+    <p><img src="/posts/img/gpu_jpegxl/akranes_lighthouse_2160p_cujpegxl_d=3.0.png" /></p>
+    <p><img src="/posts/img/gpu_jpegxl/akranes_lighthouse_2160p_libjxl_d=3.0.png" /></p>
+    <p>Detail of Akranes lighthouse (by Diego Delso <a href="https://commons.wikimedia.org/wiki/File:Antiguo_faro_de_Akranes,_Vesturland,_Islandia,_2014-08-14,_DD_008.JPG">on Wikimedia Commons</a>, CC-BY-SA 4.0).</p>
+</div>
+
+<h1 id="performance">Performance</h1>
+
+<p>The encoder meets my initial requirement of &gt;15 fps @ 4K (I measured ~21 fps on a 1080Ti), but it is still behind my final goal of sustained 15 fps on a constrained device, using maybe 5 to 10 times less resources than the current version. I think this goal should be achievable but it will require more effort and iterations.</p>
+
+<p>Towards the end of this first implementation phase, the LLMs had difficulty discovering more optimization opportunities on their own (and made many inconclusive or counterproductive attempts), but I think it should be possible to work on the code structure to better exploit parallelism.<sup id="fnref:16"><a href="#fn:16" class="footnote" rel="footnote" role="doc-noteref">16</a></sup> There are also some platform-specific optimizations, such as using tensor cores and FP16 arithmetic,<sup id="fnref:15"><a href="#fn:15" class="footnote" rel="footnote" role="doc-noteref">17</a></sup> that were not supported on the GPU I used for initial development, but I would like to add later and that would yield significant improvements on newer platforms.</p>
+
+<p>Another important issue was the lack of <code class="language-plaintext highlighter-rouge">ncu</code> support on the development GPU, meaning the AI agents were limited to custom instrumentation instead of e.g. being able to use NVTX. Giving them access to a development platform with finer-grained and more detailed microprofiling would help them in their autonomous optimization discovery.</p>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>This has been an interesting project, on a problem that is complex enough to still be challenging at this scale, yielding good results. It has however hit some limitations, and I am planning to further iterate on it later on to achieve even better results. I think an AI system with a larger budget (thousands of USD in usage credits) could probably chew through it with more satisfactory results and in a much more autonomous fashion, working at a smaller and cheaper scale requires instead to be smarter and more focused.</p>
+
+<p>As a future direction, it will be interesting to look into an efficient GPU implementation of rANS (which is probably the biggest remaining source of lossless compression rate improvement), a broader range of VarDCT sizes and shapes, and cost-driven group clustering. Quality at a fixed compression can also probably be increased with better quantization calibration and better chroma-from-luma estimation.</p>
+
+<p>The implementation is freely available <a href="https://github.com/m-pilia/cujpegxl/">on GitHub</a>. Enjoy!</p>
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="alakuijala2023jpegxl">J. Alakuijala, J. Sneyers, L. Versari, and J. Wassenberg, “JPEG White Paper: JPEG XL Image Coding System,” 2023.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:5">
+      <p>Interestingly, modular mode can also take as input the coefficients of a JPEG-encoded image. This makes it possible to use JPEG XL to perform an additional lossless compression on top of an already (lossy) compressed JPEG image. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1">
+      <p>Unlike JPEG, which normally operates in <a href="https://en.wikipedia.org/wiki/YCbCr">Y’CbCr</a>. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>The decoder generally applies a Gaborish transform (a small symmetric 3x3 convolution) to smoothen out compression artifacts. Pre-sharpening the input with an inverse Gaborish transform cancels out the loss due to the Gaborish in the decoder. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>That the encoder can estimate, usually with a mix of global and local information. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>A default perceptually-tuned weight matrix is defined, but the encoder could customize it. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6">
+      <p>In an analogy with direct and alternating current in electrodynamics, the zero-order coefficient is called “DC” and the higher-order ones are called “AC”. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8">
+      <p>Hilariously, sometimes agents would comment with “the complexity is immense” when picking up some implementation tasks. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9">
+      <p>I chose the name because it is recognisable while at the same time it is unlikely to be ambiguous with built-in skills from various AI vendors. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11">
+      <p>It should be noted, however, that I have not been reviewing the output line-by-line (as in a regular code review). I only reviewed high-level structure, design, and results, and used more AI agents to do in-detail code review. This allowed the project to move much faster. <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10">
+      <p>It would be possible to let the AI work more autonomously and have it self-decide via trial-and-error and by letting it experiment a lot more. I believe that approach would lead to potentially better results and would require less supervision, but it would also require orders of magnitude more tokens of model inference. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:12">
+      <p>JPEG XL supports \(2 \le s \le 256\). <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:14">
+      <p>I have <a href="https://martinopilia.com/posts/2026/05/03/runtime-optimization-ai.html">quite some experience</a> dealing with AI optimization of high-performance code, so I am generally aware of its limitations. <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:13">
+      <p>Which is unsurprising, as entropy coding is not a particularly GPU-friendly algorithm. <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7">
+      <p>It is a small set, but that is intentional to capture enough diversity while allowing for fast iteration. This set is used only for development purposes, not for evaluation nor to make any statistical conclusions. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:17">
+      <p>Note that there is no direct meaningful mapping between the JPEG 0-100 quality knob and the JPEG XL target Butteraugli distance. In these showcased examples I picked pairs of settings to compare visual quality at a roughly equivalent compression rate. <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:16">
+      <p>Given the size and complexity of the project, and its very fast pace, I did not have time to look at all the code in great detail, and I could use some time to analyze the code structure more in depth to be able to provide the AI agents with more specific instructions and guidance. <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:15">
+      <p>On a Pascal GPU like the GTX 1080Ti, FP16 arithmetic is several times slower than FP32, while on more recent architectures it has roughly twice the throughput of FP32. <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#image processing">image processing</a>
+          
+            <a href="/tags#AI">AI</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html&t=Implementing+a+GPU-accelerated+JPEG+XL+encoder"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html&text=Implementing+a+GPU-accelerated+JPEG+XL+encoder"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=Implementing+a+GPU-accelerated+JPEG+XL+encoder&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html&appkey=&title=Implementing+a+GPU-accelerated+JPEG+XL+encoder&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=Implementing+a+GPU-accelerated+JPEG+XL+encoder&text=Implementing+a+GPU-accelerated+JPEG+XL+encoder&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F08%2F26%2Fgpu-jpegxl-codec.html&title=Implementing+a+GPU-accelerated+JPEG+XL+encoder&description=Implementing+a+GPU-accelerated+JPEG+XL+encoder"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/06/14/retro-webcam-repurpose.html" data-toggle="tooltip" data-placement="top" title="From 23-year-old scrap PCB to working webcam module">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+
+  
+  </body>
+</html>
