@@ -142,7 +142,7 @@ The back reveals part of the wiring and has a few markings on it:
 This is however not as informative. The main marking `151CMM313011` turns out
 to be the part number of a webcam module used in Clevo D470 laptops,[^3] for
 which no documentation is readily available online. Other markings are the
-[fire-retardant](https://en.wikipedia.org/wiki/Fire_retardant) rating `KEM
+[fire-retardant](https://en.wikipedia.org/wiki/Fire_retardant) rating `KBM
 94V-0` and what looks like another date (`0336`, probably 2003 week 36).
 
 # Connection
