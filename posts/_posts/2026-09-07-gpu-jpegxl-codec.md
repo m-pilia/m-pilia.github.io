@@ -5,7 +5,7 @@ subtitle: As a fully AI-driven project
 image: /posts/img/gpu_jpegxl/spring.jpg
 image-license:
   text: "Image: Qz10 (CC-BY-SA 3.0)"
-  link: https://commons.wikimedia.org/wiki/File:Springs_009.jpg
+  url: https://commons.wikimedia.org/wiki/File:Springs_009.jpg
 show-avatar: false
 mathjax: true
 tags: [image processing, AI]
