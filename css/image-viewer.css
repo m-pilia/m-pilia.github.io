@@ -1,0 +1,49 @@
+.blog-post img:not(a img) {
+  cursor: zoom-in;
+}
+
+body:has(.image-viewer[open]) {
+  overflow: hidden;
+}
+
+.image-viewer {
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.image-viewer::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.image-viewer img {
+  display: block;
+  max-width: 90vw;
+  max-height: 90vh;
+  /* Keep transparent images readable against the dark backdrop */
+  background: white;
+}
+
+/* Vector images are upscaled to fill the available space */
+.image-viewer img[src$=".svg"] {
+  width: min(90vw, 90vh * var(--aspect-ratio));
+}
+
+.image-viewer button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: white;
+  font-size: 2em;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.image-viewer button:hover {
+  opacity: 1;
+}
