@@ -31,4 +31,10 @@
   {% endfor %}
 {% endif %}
 
+{% if layout.layout-js %}
+  {% for js in layout.layout-js %}
+    <script src="{{ js | prepend: site.baseurl | replace: '//', '/' }}"></script>
+  {% endfor %}
+{% endif %}
+
 {% include google_analytics.html %}

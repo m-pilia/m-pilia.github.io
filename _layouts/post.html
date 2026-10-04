@@ -1,5 +1,9 @@
 ---
 layout: base
+layout-css:
+  - "/css/image-viewer.css"
+layout-js:
+  - "/js/image-viewer.js"
 ---
 
 {% include header.html type="post" %}
@@ -73,3 +77,8 @@ layout: base
     </div>
   </div>
 </div>
+
+<dialog class="image-viewer">
+  <button type="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <img alt="">
+</dialog>
