@@ -126,7 +126,15 @@
   <macro name="title">
     <choose>
       <if type="bill book graphic legal_case legislation motion_picture song" match="any">
-        <text variable="title" font-style="italic"/>
+        <choose>
+          <if variable="URL">
+            <text variable="URL" prefix="&lt;a href=&quot;" suffix="&quot;&gt;"/>
+            <text variable="title" font-style="italic" suffix="&lt;/a&gt;"/>
+          </if>
+          <else>
+            <text variable="title" font-style="italic"/>
+          </else>
+        </choose>
       </if>
       <else>
         <choose>
