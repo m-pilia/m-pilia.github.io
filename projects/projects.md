@@ -10,6 +10,39 @@ What follows is a selection of some of my open source projects.
 
 {% tiles %}
 
+{% tile pico-ethernet, https://github.com/m-pilia/pico-ethernet %}
+<div class="center-block"
+     style="width: 60%; text-align: center; font-size: 80%;">
+    <img src="/projects/img/previews/pico-ethernet.jpg" markdown="1"/>
+</div>
+Fully functional full-duplex 10BASE-T Ethernet NIC built on top of a Raspberry
+Pi Pico 2.
+{% endtile %}
+
+{% tile cujpegxl, https://github.com/m-pilia/cujpegxl %}
+<div class="center-block"
+     style="width: 60%; text-align: center; font-size: 80%;">
+    <img src="/projects/img/previews/cujpegxl.png" markdown="1"/>
+</div>
+CUDA-accelerated JPEG XL encoder.
+{% endtile %}
+
+{% tile dazelisk, https://github.com/m-pilia/dazelisk %}
+<div class="center-block"
+     style="width: 60%; text-align: center; font-size: 80%;">
+    <img src="/projects/img/previews/dazelisk.svg" markdown="1"/>
+</div>
+Containerized bazelisk wrapper.
+{% endtile %}
+
+{% tile Facturization, https://github.com/m-pilia/facturization %}
+<div class="center-block"
+     style="width: 60%; text-align: center; font-size: 80%;">
+    <img src="/projects/img/previews/facturization.png" markdown="1"/>
+</div>
+High-quality PDF invoice generator from a YAML specification.
+{% endtile %}
+
 {% tile Disptools, https://github.com/m-pilia/disptools %}
 <div class="center-block"
      style="width: 60%; text-align: center; font-size: 80%;">
