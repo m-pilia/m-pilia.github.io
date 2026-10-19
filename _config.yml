@@ -25,6 +25,7 @@ description: Personal Website
 navbar-links:
   Home: "index"
   Blog: "posts"
+  Consulting: "consulting"
   Projects: "projects/projects"
   GitHub: "https://github.com/m-pilia"
   Links: "links"
