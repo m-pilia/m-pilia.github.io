@@ -8,7 +8,7 @@ image-license:
   url: https://commons.wikimedia.org/wiki/File:Springs_009.jpg
 show-avatar: false
 mathjax: true
-tags: [image processing, AI]
+tags: [JPEG XL, image processing, AI, GPGPU]
 ---
 
 Some time ago I encountered a situation at work where I needed high-resolution real-time image encoding on a constrained device. My first suggestion was to use a temporal video codec (like H.264), but the customer wanted to be able to encode and decode still images independently. Since the platform had no hardware-accelerated encoder blocks and state-of-the-art compression algorithms like WebP and JPEG XL are CPU-bound and too slow for such an application, the only feasible solution was to fall back to a GPU-accelerated JPEG codec.
