@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>A small libjxl ablation study</title>
+        <description>
+          Finding out what makes a JPEG XL encoder good - 
+          Despite it being a very busy period, lately I have been spending a bit of background time thinking about how to improve cujpegxl, the GPU-accelerated JPEG XL encoder I described in a previous post. My next planned step involves three phases: a runtime optimization of the current version, followed by...
+        </description>
+        <pubDate>Tue, 20 Oct 2026 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html</guid>
+      </item>
+    
+      <item>
         <title>Implementing a GPU-accelerated JPEG XL encoder</title>
         <description>
           As a fully AI-driven project - 
@@ -213,17 +224,6 @@
         <pubDate>Sun, 23 Sep 2018 00:00:00 +0200</pubDate>
         <link>https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html</guid>
-      </item>
-    
-      <item>
-        <title>GPU-accelerated single-pass volumetric raycasting in Qt and OpenGL</title>
-        <description>
-          Implementing a simple, yet easy to extend visualiser - 
-          Visualisation is a complementary but very important part of my work on image analysis. And since I work mainly with tridimensional volume images, visualisation is inherently a more complicated task compared to image analysis in only two dimensions. To help my work, I decided to implement a small tool for...
-        </description>
-        <pubDate>Mon, 17 Sep 2018 00:00:00 +0200</pubDate>
-        <link>https://martinopilia.com/posts/2018/09/17/volume-raycasting.html</link>
-        <guid isPermaLink="true">https://martinopilia.com/posts/2018/09/17/volume-raycasting.html</guid>
       </item>
     
   </channel>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>A small libjxl ablation study</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Finding out what makes a JPEG XL encoder good">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/image-viewer.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="A small libjxl ablation study" />
+  
+
+   
+  <meta property="og:description" content="Finding out what makes a JPEG XL encoder good">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="A small libjxl ablation study" />
+  
+
+  
+  <meta name="twitter:description" content="Finding out what makes a JPEG XL encoder good">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/consulting">Consulting</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>A small libjxl ablation study</h1>
+		  
+		    
+			<h2 class="post-subheading">Finding out what makes a JPEG XL encoder good</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on October 20, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+10 minutes
+
+read (1844 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>A small libjxl ablation study</h1>
+		  
+		    
+			<h2 class="post-subheading">Finding out what makes a JPEG XL encoder good</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on October 20, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Despite it being a very busy period, lately I have been spending a bit of
+background time thinking about how to improve
+<a href="https://github.com/m-pilia/cujpegxl/">cujpegxl</a>, the GPU-accelerated JPEG XL
+encoder I described in a <a href="https://martinopilia.com/posts/2026/09/07/gpu-jpegxl-codec.html">previous
+post</a>. My next
+planned step involves three phases: a runtime optimization of the current
+version, followed by a feature extension to improve bit-per-pixel (bpp) at
+fixed quality (or vice versa), then again followed by a further runtime
+optimization of the extended code.</p>
+
+<p>A useful lever for this project is the existence of a mature and robust
+open-source reference implementation of the JPEG XL algorithm in
+<a href="https://github.com/libjxl/libjxl">libjxl</a>. In order to decide which features
+to prioritize, I conducted a small ablation study on the libjxl encoder to see
+the impact of various parts of the algorithm on the resulting bpp, whose
+results are described in this post.</p>
+
+<p>Note that cujpegxl is an AI-heavy project, and most of the code and tooling
+around it is AI-generated. It is not vibe-coding however, but rather a
+seriously engineered project.</p>
+
+<h1 id="background">Background</h1>
+
+<p>cujpegxl is a JPEG XL encoder that runs entirely on the GPU and its main
+ambition is speed, aimed at real-time applications on (relatively) constrained
+devices. In its first<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> iteration, it compresses 4K frames in about 50 ms on
+a GTX 1080 Ti, which is still far from the desired performance.</p>
+
+<p>Given the complexity of the JPEG XL algorithm, speed here comes at a price. At
+equal visual quality, the cujpegxl output can be up to 40–50% larger than
+libjxl’s, since the latter runs a complete (and slower) version of the
+algorithm. In the current version of cujpegxl, notable exclusions include:</p>
+<ul>
+  <li>Entropy coding is prefix-only. rANS coding is not implemented.</li>
+  <li>LZ77 pre-pass is omitted.</li>
+  <li>No non-square, &lt;8 and &gt;32 transforms.</li>
+  <li>No iterative Butteraugli rate control.</li>
+  <li>No optimized coefficient orders.</li>
+</ul>
+
+<p>Some numerical approximations and simplifications are also made for performance
+reasons, trading a bit of quality for speed:</p>
+<ul>
+  <li>Huffman codes limited to 15 bit.</li>
+  <li>Transform selection uses a simpler heuristic.</li>
+  <li>Fuzzy erosion is local (clamped to a 32px tile) as opposed to global.</li>
+  <li>Fixed-size 32-cluster map, with one histogram per group, as opposed to the
+full greedy cost-driven clustering of 7425 contexts performed by libjxl.</li>
+  <li>DCT coefficients stored as FP16.</li>
+  <li>Uniform field quant calibration.</li>
+  <li>Fixed-strength inverse Gaborish pre-sharpening.</li>
+  <li>Simplified CfL estimation.</li>
+</ul>
+
+<h1 id="study-setup">Study setup</h1>
+
+<p>Since cujpegxl already implements a subset of libjxl, the study targets a
+limited subset of algorithm parts, using as baseline libjxl at effort 7. Each
+experiment disables a specific feature, and measures the difference in bpp with
+respect to the baseline.</p>
+
+<p>Since not all features are directly controllable through the libjxl API, this
+experiment uses a <a href="https://github.com/m-pilia/libjxl/commit/5d4a659cf9c850afe50d52919713d47d7c4c2648">small
+patch</a>
+adding some toggles to disable the algorithm’s parts of interest.</p>
+
+<p>The study sweeps over nine quality values, from Butteraugli distance 0.5 to 4.0 and
+experiments with 20 variants, for a total of 720 image encodings.</p>
+
+<h2 id="dataset">Dataset</h2>
+
+<p>The dataset used here is the <a href="https://github.com/m-pilia/cujpegxl/tree/bffb5c167f7e9e1ea3f36eea9067ae76593d9e16/data">four 4K image
+set</a>
+used for iterative development in cujpegxl. It is admittedly small and does not
+give strong statistical significance to the results, but it allows for fast
+iteration, which greatly helps.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p>
+
+<h2 id="ablation-variants">Ablation variants</h2>
+
+<p>The ablated parts in the experiments can be roughly grouped into four categories.</p>
+<ul>
+  <li>Entropy coding:
+    <ul>
+      <li>Forcing Huffman coding over rANS.</li>
+      <li>Number of context clusters.</li>
+      <li>Coefficient ordering.</li>
+      <li>LZ77 pre-pass.</li>
+      <li>Block context map size.</li>
+    </ul>
+  </li>
+  <li>Filters and quantization:
+    <ul>
+      <li>Per-block quantization adjustment.</li>
+      <li>Quantization deadzone.</li>
+      <li>Gaborish smooting/pre-sharpening.</li>
+      <li>Edge-preserving filter (EPF).</li>
+      <li>Adaptive EPF strength.</li>
+      <li>Adaptive chroma-from-luma (CfL)</li>
+    </ul>
+  </li>
+  <li>Transforms and their block sizes:
+    <ul>
+      <li>Limit block size to 8x8, 16x16, or 32x32.</li>
+      <li>Include rectangular blocks.</li>
+      <li>Include smaller blocks (2x2, 4x4, 4x8).</li>
+      <li>Include alternative transforms (identity, AFV).</li>
+      <li>Include larger blocks (64x32, 64x64).</li>
+    </ul>
+  </li>
+  <li>Perceptual rate control
+    <ul>
+      <li>Butteraugli feedback.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="metrics">Metrics</h2>
+
+<p>The metrics used for evaluation are the usual: Butteraugli (which libjxl is
+tuned for, and therefore inherently biased), SSIMULACRA2 (a state-of-the-art
+perceptual metric), and PSNR (non-perceptive, but a widely used metric that
+gives us some measure of pixel-level error).</p>
+
+<p>For each variant and metric, the bpp-vs-quality curve is drawn, then compared
+with the baseline curve (from libjxl effort 7). The Bjøntegaard Delta rate
+(BD-rate) <a class="citation" href="#bjontegaard2001calculation">[1]</a> is then computed and reported
+for each metric. A positive change of +x % means that removing the ablated
+feature makes the compressed codestream x % larger (and therefore worse
+compression rate), while a negative change means an improvement in compression
+rate.</p>
+
+<h2 id="results">Results</h2>
+
+<p>The plot below shows the BD-rate change for each ablated part. Here the
+whiskers denote minimum and maximum, given the small dataset sample. Note that
+each variant is tested in isolation, so interaction between parts is not
+accounted for in this study (as testing the full matrix of combinations would
+take too much time).</p>
+
+<p>When reading the BD-rate plot, a positive change represents a worsening of the
+compression rate over the baseline (libjxl effort 7), a negative change
+represents an improvement. Since we are removing features from the encoder, we
+expect changes to be on the positive side (regressions), except for the
+addition of Butteraugli loop control (from libjxl effort 8), which instead adds
+a feature not present on the baseline and is therefore expected to be an
+improvement.</p>
+
+<div class="center-block" style="width: 100%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/jpegxl_ablation/plot_1.png" />
+</div>
+
+<h2 id="entropy-coding">Entropy coding</h2>
+
+<p>Entropy coding immediately strikes as the dominant source of bpp improvement,
+where both rANS and increasing the number of context clusters give comparable
+improvements. This is expected, as Huffman coding allocates at least one bit
+per symbol, while rANS allows allocating sub-bit amounts per symbol. It is also
+valuable as it represents a purely lossless source of compression rate
+improvement. The risk coming with it is the complexity of optimizing it on GPU,
+and making sure that the implementation comes without completely blowing up the
+runtime budget.</p>
+
+<p>libjxl tracks thousands of contexts, defining sets of properties characterizing
+a block, and it groups them into clusters that share a probability table.
+Allowing for a finer-grained clustering allows for a substantial bpp
+improvement. However, falling back to a simpler search method over the default
+one makes no difference on this dataset.</p>
+
+<p>Compared to the two changes above, coefficient order makes a much smaller but
+consistent improvement, while LZ77 pre-pass and adaptive context map made no
+meaningful difference.</p>
+
+<p>We can also visualize how the effect of these features is more pronounced at
+lower quality (i.e. higher target compression rate), where it is therefore
+possible to achieve substantially larger wins:</p>
+
+<div class="center-block" style="width: 100%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/jpegxl_ablation/plot_2.png" />
+</div>
+
+<h2 id="quantization-and-filters">Quantization and filters</h2>
+
+<p>Playing with quantization and filter features shows some interesting results,
+albeit smaller and less straightforward as we start seeing the different
+metrics diverge.</p>
+
+<p>A feature of libjxl is the so-called deadzone quantization, which rounds small
+values to zero a bit more eagerly than ordinary rounding. It is a consistent
+win of 0.5-3%, and should be a cheap addition to cujpegxl (which currently only
+uses regular rounding).</p>
+
+<p>Per-block adaptive quantization gives a relatively large improvement to
+Butteraugli and a smaller one to the PSNR, but it does not seem to improve
+SSIMULACRA2 on these data.</p>
+
+<p>JPEG XL uses a Gaborish smoothing filter in the decoder, and the encoder
+compensates for it by pre-sharpening the image (for which cujpegxl uses a fixed
+pre-sharpening strength). Ablating the Gaborish pre-sharpening indicates that
+the feature is improving both Butteraugli and PSNR, but actually has the
+opposite effect on SSIMULACRA2 (at least on this dataset).</p>
+
+<p>JPEG XL also uses a separate edge-preserving filter (EPF) to smooth the
+compression artifacts. The filter itself is actually applied by the decoder,
+but the encoder is responsible for deciding how many filter passes to run and
+for building a per-block sharpness map. Ablation suggests that on this dataset
+the EPF has a small positive impact on Butteraugli but not a significant one on
+the other metrics. Moreover, adaptive EPF strength seems to have only a very
+limited impact.</p>
+
+<h2 id="block-sizes">Block sizes</h2>
+
+<p>JPEG XL can choose from about a few dozen transform block sizes and shapes,
+ranging from 2x2 to 256x256. Restricting libjxl to just 8x8, 16x16 and 32x32
+(as cujpegxl currently does) worsens file sizes by less than 1 %. Adding back
+any single family of shapes among the ones under test improves the result by at
+most ±1.5 %. That is a rather limited change and within the variation among
+individual images.</p>
+
+<p>Adding extra shapes is a relatively low hanging fruit, but also a relatively
+low value one.</p>
+
+<h2 id="butteraugli-feedback-loop">Butteraugli feedback loop</h2>
+
+<p>The impact of adding Butteraugli loop control (libjxl effort 8) gives an
+interesting albeit expected result. It gives a big improvement in BD-rate on
+the Butteraugli distance (the metric it is optimizing, and therefore biased
+towards), and a measurable but much smaller improvement for other metrics.</p>
+
+<p>It however adds a huge runtime cost, making the libjxl encoder over six times
+slower compared to effort 7, so it is unlikely to be viable on a high
+performance implementation, short maybe of a single-shot approach rather than
+an iterative one like in libjxl.</p>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>The results are quite telling, and suggest a way to prioritize additions to
+cujpegxl. Most of the bpp gain is in entropy coding, where rANS addition and
+higher context cluster count alone represent most of the attainable overall
+improvement. The caveat is that rANS has a fair share of complexity and it is
+non-trivial to make GPU friendly. Increasing the number of context clusters can
+potentially be a lower hanging fruit if sticking to a static fixed number of
+clusters, while switching to a dynamic count would require a bit more
+implementation work and an additional runtime cost. Quantization fixes should
+then follow, especially considering how most of them are fairly cheap and easy
+to implement. Increasing the variety of block sizes is also quite easy but
+likely to give lower gains, especially on unbiased metrics. Finally,
+Butteraugli rate control is very expensive and can be considered last, if at
+all.</p>
+
+<p>Note that this study is not meant as a general evaluation of the libjxl
+encoding front-end. The results are intentionally limited to a small dataset
+and therefore they do not correctly represent the performance of libjxl
+features in the general case. Moreover, features that only seem to give minor
+contributions can still be relevant for a general purpose codec for a format
+with a very high scope and domain of application such as JPEG XL. In fact this
+study has a very specific and narrow scope, being solely aimed at identifying
+and prioritizing candidates for extension and optimization of cujpegxl.</p>
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="bjontegaard2001calculation">G. Bjøntegaard, <a href="https://web.archive.org/web/20261020070850/https://eclass.uoa.gr/modules/document/file.php/D221/%CE%A3%CE%B7%CE%BC%CE%B5%CE%B9%CF%8E%CF%83%CE%B5%CE%B9%CF%82/VCEG-M33%20%28Bjontegaard%20Delta%29.pdf">“Calculation of Average PSNR Differences
+                 between RD-Curves,”</a> ITU-T Video Coding Experts Group (VCEG), Austin, Texas, USA, Technical contribution VCEG-M33, Apr. 2001.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>And self-admittedly still immature. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Even on such a small dataset size, the study took about half an hour of
+compute. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#JPEG XL">JPEG XL</a>
+          
+            <a href="/tags#image processing">image processing</a>
+          
+            <a href="/tags#GPGPU">GPGPU</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html&t=A+small+libjxl+ablation+study"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html&text=A+small+libjxl+ablation+study"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=A+small+libjxl+ablation+study&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html&appkey=&title=A+small+libjxl+ablation+study&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=A+small+libjxl+ablation+study&text=A+small+libjxl+ablation+study&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F20%2Fjpegxl-ablation-study.html&title=A+small+libjxl+ablation+study&description=A+small+libjxl+ablation+study"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/09/07/gpu-jpegxl-codec.html" data-toggle="tooltip" data-placement="top" title="Implementing a GPU-accelerated JPEG XL encoder">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<dialog class="image-viewer">
+  <button type="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <img alt="">
+</dialog>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+  
+    <script src="/js/image-viewer.js"></script>
+  
+
+
+
+
+  
+  </body>
+</html>
