@@ -22,7 +22,7 @@ Pi Pico 2.
 {% tile cujpegxl, https://github.com/m-pilia/cujpegxl %}
 <div class="center-block"
      style="width: 60%; text-align: center; font-size: 80%;">
-    <img src="/projects/img/previews/cujpegxl.png" markdown="1"/>
+    <img src="/projects/img/previews/cujpegxl.svg" markdown="1"/>
 </div>
 CUDA-accelerated JPEG XL encoder.
 {% endtile %}
