@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Entropy coding improvements in cujpegxl</title>
+
+  <meta name="author" content="Martino Pilia" />
+
+  
+  <meta name="description" content="Increasing compression rate while making runtime faster">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Martino Pilia - Personal Website" href="/feed.xml" />
+
+  
+
+  
+    
+      
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.10.1/css/v4-shims.css" />
+
+    
+      
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/image-viewer.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="Entropy coding improvements in cujpegxl" />
+  
+
+   
+  <meta property="og:description" content="Increasing compression rate while making runtime faster">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="https://martinopilia.com/posts/2026/10/24/cujpegxl-entropy-improvement.html" />
+  <link rel="canonical" href="https://martinopilia.com/posts/2026/10/24/cujpegxl-entropy-improvement.html" />
+  
+
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="Entropy coding improvements in cujpegxl" />
+  
+
+  
+  <meta name="twitter:description" content="Increasing compression rate while making runtime faster">
+  
+
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="https://martinopilia.com">Martino Pilia</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/index">Home</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/posts">Blog</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/consulting">Consulting</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/projects/projects">Projects</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="https://github.com/m-pilia">GitHub</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/links">Links</a>
+
+          </li>
+        
+        
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+  <div id="header-big-imgs" data-num-img=23
+    
+	  
+	  
+	    
+		  data-img-src-1="/img/trehorningen.jpg"
+		  data-img-desc-1="Lake Trehörningen, Marielund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-2="/img/lund-stortorget.jpg"
+		  data-img-desc-2="Stortorget, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-3="/img/suomenlinna.jpg"
+		  data-img-desc-3="Suomenlinna, Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-4="/img/malaren-2.jpg"
+		  data-img-desc-4="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-5="/img/lindholmen.jpg"
+		  data-img-desc-5="Lindholmen, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-6="/img/frozen-fyrisan.jpg"
+		  data-img-desc-6="Fyrisån during winter"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-7="/img/lund-adelgatan.jpg"
+		  data-img-desc-7="Adelgatan, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-8="/img/majorna.jpg"
+		  data-img-desc-8="Majorna, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-9="/img/malaren-3.jpg"
+		  data-img-desc-9="Lake Mälaren"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-10="/img/lund-universitetshuset.jpg"
+		  data-img-desc-10="Universitetshuset, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-11="/img/helsinki.jpg"
+		  data-img-desc-11="Helsinki"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-12="/img/storvreta.jpg"
+		  data-img-desc-12="Storvreta"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-13="/img/granby.jpg"
+		  data-img-desc-13="Gränby"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-14="/img/lund-stadsparken-vatten.jpg"
+		  data-img-desc-14="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-15="/img/riksdagshuset.jpg"
+		  data-img-desc-15="Riksdagshuset"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-16="/img/gamla-uppsalagatan.jpg"
+		  data-img-desc-16="Gamla Uppsalagatan"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-17="/img/helsinki-bay.jpg"
+		  data-img-desc-17="Helsinki bay"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-18="/img/gottsunda-3.jpg"
+		  data-img-desc-18="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-19="/img/lund-stadsparken.jpg"
+		  data-img-desc-19="Stadsparken, Lund"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-20="/img/gula-stigen.jpg"
+		  data-img-desc-20="Gula stigen, Uppsala"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-21="/img/kungsportsbron.jpg"
+		  data-img-desc-21="Kungsportsbron, Göteborg"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-22="/img/gottsunda-1.jpg"
+		  data-img-desc-22="Gottsunda"
+		
+	  
+    
+	  
+	  
+	    
+		  data-img-src-23="/img/tampere-forest.jpg"
+		  data-img-desc-23="Hallila, Tampere"
+		
+	  
+    
+  ></div>
+
+
+<header class="header-section has-img">
+
+<div class="big-img intro-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Entropy coding improvements in cujpegxl</h1>
+		  
+		    
+			<h2 class="post-subheading">Increasing compression rate while making runtime faster</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">
+              <i class="fas fa-calendar-alt"></i> Posted on October 24, 2026
+              <br/>
+              <i class="far fa-clock"></i> <!-- Credits: Carlos Becker (https://carlosbecker.com/posts/jekyll-reading-time-without-plugins) -->
+
+
+15 minutes
+
+read (2624 words)
+
+          </span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class='img-desc'></span>
+</div>
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Entropy coding improvements in cujpegxl</h1>
+		  
+		    
+			<h2 class="post-subheading">Increasing compression rate while making runtime faster</h2>
+			
+		  
+
+		  
+		  <span class="post-meta">Posted on October 24, 2026</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>Following up on the ablation study presented in a <a href="https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html">previous
+post</a>, I
+worked on integrating additional parts of the JPEG XL algorithm in cujpegxl,
+especially around entropy coding. This post presents an outline of the changes,
+and shows the improvements in BD-rate and runtime speed.</p>
+
+<p>Moreover, last week a new and promising GPU-accelerated JPEG XL encoder called
+<a href="https://github.com/yunho-c/gjxl">gjxl</a> was published <a class="citation" href="#yunho2026gjxl">[1]</a>,
+so I decided to take a look at it and perform some quick comparative analysis.</p>
+
+<h1 id="background">Background</h1>
+
+<p><a href="https://github.com/m-pilia/cujpegxl">cujpegxl</a> is a GPU-accelerated JPEG XL
+encoder that I developed to support some real-time use cases on constrained
+devices, where the slow runtime of existing JPEG XL implementations would be
+completely unviable. Unlike other projects, cujpegxl does not aim for either
+feature parity or byte-equality with libjxl, but rather aims to build a GPU-
+and real-time-friendly version of the algorithm, where approximations that
+trade small amounts of compression rate are acceptable if they bring
+substantial speed-up.</p>
+
+<p>cujpegxl started from a limited subset of the JPEG XL algorithm that placed
+itself roughly halfway between libjxl and nvJPEG in the quality/compression
+space, and a still relatively slow runtime.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> Next steps in my work aim at
+moving the curve towards full JPEG XL, while at the same time making the
+runtime closer to nvJPEG.</p>
+
+<p>In a sense, cujpegxl is not really directly competing with libjxl, as the
+latter is not tailored for real-time applications. It rather aims to be a
+replacement for nvJPEG with much better compression rate at equal quality while
+still being competitive with it in terms of runtime.</p>
+
+<h1 id="implemented-optimizations">Implemented optimizations</h1>
+
+<p>The already presented <a href="https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html">ablation
+study</a>
+dissected the main algorithmic knobs that were still missing from the early
+cujpegxl implementation:</p>
+
+<div class="center-block" style="width: 100%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/jpegxl_ablation/plot_1.png" />
+</div>
+
+<p>As evident from the plots, entropy coding is the biggest and most immediate and
+consistent source of potential BD-rate improvement, and was therefore the
+main focus of this iteration. Deadzone quantization is also a cheap and simple
+improvement, that I selected as starting point.</p>
+
+<h2 id="deadzone-quantization">Deadzone quantization</h2>
+
+<p>Deadzone quantization is a technique used in libjxl to make the encoder
+more keen on discarding small quantization coefficients. The name comes from
+the fact that a “dead zone” is used to extend the range of coefficients that
+are rounded down compared to standard rounding (half a quantization step). For
+instance, in libjxl the Y channel quantization uses two thresholds, 0.56 at
+lower frequencies (more conservative) and 0.62 at higher frequencies.</p>
+
+<p>Rounding down more eagerly increases the number of zeros and therefore makes
+the coefficients more compressible. It also affects the quality in a slightly
+negative way, but overall the trade-off is around 2-8% lower bit rate at
+equivalent quality.</p>
+
+<p>Runtime-wise, it makes the quantization kernel very slightly slower, but thanks
+to reducing the amount of downstream work (due to more coefficients being
+zeroed) the overall impact is a nice 1.5-3% speedup of the encoder.</p>
+
+<h2 id="epf-leaf">EPF leaf</h2>
+
+<p>JPEG XL stores per-block settings alongside the coefficients, and these
+settings include a field for the edge-preserving filter (EPF) strength.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>
+cujpegxl currently uses a constant strength, therefore it wastes one bit to
+store a constant. Hard-coding a dedicated split in the decision tree allows to
+have a dedicated leaf for the EPF strength (as opposed to the data-driven
+learned split in libjxl), with a negligible change in runtime and an easy
+lossless reduction of compressed output size by 0.8-3%.</p>
+
+<h2 id="ans-coding">ANS coding</h2>
+
+<p>The use of <a href="https://en.wikipedia.org/wiki/Asymmetric_numeral_systems">Asymmetric Numerical Systems
+(ANS)</a> is one of the
+key improvements of JPEG XL over JPEG, and allows for a substantial (and
+lossless) compression improvement over <a href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman
+coding</a>. The initial cujpegxl
+implementation was limited to Huffman coding only, because ANS is rather
+GPU-unfriendly and some attempts to implement it on the GPU were not
+satisfactory.</p>
+
+<p>Huffman coding assigns to each symbol a code that is at least one bit long,
+while ANS allows codes to be smaller than one bit when working over sequences,
+therefore enabling compression levels unattainable with Huffman coding. The
+downside is that ANS requires a state for each group (an independently encoded
+region), and since at 4K resolution only 135 groups exist, this does not allow
+to efficiently saturate a large GPU.</p>
+
+<p>I therefore decided to switch to a hybrid GPU/CPU processing model, with
+front-end image processing and Huffman coding happening on the GPU, while ANS
+coding is performed on the CPU. The GPU prepares tokens and histograms, with
+each CPU worker then process two interleaved streams at a time.</p>
+
+<p>One quality/speed trade-off is to only use ANS for AC coefficients,<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> using
+Huffman-only encoding for DC coefficients and metadata, as moving them to the
+CPU would only offer a small compression improvement at the price of increased
+runtime.</p>
+
+<p>While the addition of ANS, with a preliminarily optimized implementation, adds
+a substantial amount of runtime (45-90% slower if executed sequentially), this
+pipelined approach allows to run the whole ANS coding in parallel on the
+previously idle CPU cores, with pipelined parallelism compensating for both the
+additional device-to-host traffic and the new CPU calculations, basically
+keeping the throughput at the same level as the previous approach.<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></p>
+
+<h2 id="data-driven-clustering">Data-driven clustering</h2>
+
+<p>In JPEG XL, a context is a description of some characteristics of a symbol to
+be encoded, such as colour channel, frequency, nearby non-zero coefficients,
+etc., and since different contexts can have very different symbol frequencies,
+clustering them allows ANS to have significantly better probability models.
+libjxl performs a greedy data-driven clustering of the 7425 possible AC
+contexts, while cujpegxl previously used only 32 fixed groups with shared
+probability tables.</p>
+
+<p>Now cujpegxl adds a data-driven and GPU-based clustering, and it uses a new
+approach that differs from libjxl. It starts with a greedy idea analogous to
+libjxl to populate the 32 starting models (still fewer than the 128 used by
+libjxl). It then performs parallel assignment of contexts on the GPU in
+parallel, using two refinement rounds of k-means clustering with <a href="https://en.wikipedia.org/wiki/Lloyd%27s_algorithm">Lloyd’s
+algorithm</a>, which allows to
+avoid the sequential dependencies across contexts.</p>
+
+<p>The addition of data-driven clustering granted a 4-5% reduction in compressed
+output size, very close to the effectiveness of libjxl’s own clustering method
+despite of using fewer models and an approximate heuristic.</p>
+
+<h1 id="quality">Quality</h1>
+
+<p>I ran an evaluation of the new cujpegxl version, using the same 100
+high-quality images from the previous evaluation, but this time running in
+2160p instead of 1080p.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p>
+
+<p>In this evaluation I report the three metrics (Butteraugli, SSIMULACRA2, and
+PSNR) as usual, but I consider SSIMULACRA2 to be the most representative one,
+as PSNR only considers raw pixel-level error without any perceptual aspects
+(even if the pixel error is overall low, the error itself might be distributed
+in ways that worsen quality compared to other algorithms), and Butteraugli is a
+biased metric (because it is explicitly targeted for optimization by JPEG XL,
+thus making comparison with other algorithms unfair).</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/jpegxl_entropy/bpp_vs_ssimulacra2.png" />
+    <img src="/posts/img/jpegxl_entropy/bpp_vs_butteraugli.png" />
+    <img src="/posts/img/jpegxl_entropy/bpp_vs_psnr.png" />
+    cujpegxl and libjxl (effort 7) sweep over target Butteraugli distances 0.5, 0.7, 1.0, 1.3, 1.6, 2.0, 2.5, 3.0, 4.0. nvJPEG sweeps over quality levels 20, 30, 40, 50, 60, 70, 75, 80, 85, 90, 95, 100.
+</div>
+
+<p>We can observe how the quality/compression curve is now much closer to libjxl,
+and substantially better than nvJPEG. At Butteraugli distance level 1 cujpegxl
+is very close to reference libjxl, and it falls off a bit at lower quality
+settings, while still remaining significantly better than nvJPEG.</p>
+
+<p>The overall BD-rate:<sup id="fnref:10"><a href="#fn:10" class="footnote" rel="footnote" role="doc-noteref">6</a></sup></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Reference</th>
+      <th style="text-align: right">SSIMULACRA2</th>
+      <th style="text-align: right">Butteraugli</th>
+      <th style="text-align: right">PSNR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>libjxl</td>
+      <td style="text-align: right">+21.6%</td>
+      <td style="text-align: right">+33.9%</td>
+      <td style="text-align: right">+18.9%</td>
+    </tr>
+    <tr>
+      <td>nvJPEG</td>
+      <td style="text-align: right">−30.1%</td>
+      <td style="text-align: right">−26.7%</td>
+      <td style="text-align: right">−24.8%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>And a breakdown by compression settings:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>cujpegxl distance range</th>
+      <th>Reference</th>
+      <th style="text-align: right">SSIMULACRA2</th>
+      <th style="text-align: right">Butteraugli</th>
+      <th style="text-align: right">PSNR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.5–1 (higher bitrate)</td>
+      <td>libjxl</td>
+      <td style="text-align: right">+16.0%</td>
+      <td style="text-align: right">+51.5%</td>
+      <td style="text-align: right">+14.7%</td>
+    </tr>
+    <tr>
+      <td>0.5–1</td>
+      <td>nvJPEG</td>
+      <td style="text-align: right">−32.6%</td>
+      <td style="text-align: right">−20.4%</td>
+      <td style="text-align: right">−22.5%</td>
+    </tr>
+    <tr>
+      <td>1–2 (middle)</td>
+      <td>libjxl</td>
+      <td style="text-align: right">+15.6%</td>
+      <td style="text-align: right">+28.4%</td>
+      <td style="text-align: right">+16.6%</td>
+    </tr>
+    <tr>
+      <td>1–2</td>
+      <td>nvJPEG</td>
+      <td style="text-align: right">−30.4%</td>
+      <td style="text-align: right">−32.0%</td>
+      <td style="text-align: right">−25.2%</td>
+    </tr>
+    <tr>
+      <td>2–4 (lower bitrate)</td>
+      <td>libjxl</td>
+      <td style="text-align: right">+30.5%</td>
+      <td style="text-align: right">+37.0%</td>
+      <td style="text-align: right">+28.4%</td>
+    </tr>
+    <tr>
+      <td>2–4</td>
+      <td>nvJPEG</td>
+      <td style="text-align: right">−29.4%</td>
+      <td style="text-align: right">−24.2%</td>
+      <td style="text-align: right">−25.7%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="the-new-kid-on-the-block-gjxl">The new kid on the block: gjxl</h1>
+
+<p>Yesterday, while doing a bit of literature review, I stumbled upon a preprint
+by Yunho Cho and Sangeon Jeon at Georgia Tech <a class="citation" href="#yunho2026gjxl">[1]</a>, who
+have also been working on GPU acceleration of JPEG XL.</p>
+
+<p>gjxl was published about two months later than the first public version of
+cujpegxl but, ironically, development of the two projects started about at the
+same time (with cujpegxl being just one day older, having been started <a href="https://github.com/m-pilia/cujpegxl/commit/2d5e7405d64ab1050648206b89d21e4d5dedfb83">on the
+9th of August
+2026</a>,<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">7</a></sup>
+while gjxl <a href="https://github.com/yunho-c/gjxl/commit/69a2caab8dd1daf8bcf2321b5725d28057ae0769">dates to the
+10th</a>).<sup id="fnref:7"><a href="#fn:7" class="footnote" rel="footnote" role="doc-noteref">8</a></sup></p>
+
+<p>gjxl is a very interesting project, with broader scope and different goals
+compared to cujpegxl, and it shows some very good results. It targets both CUDA
+and Metal backends. The key innovation in the paper over libjxl is CPU-GPU
+pipelining, evaluating candidate DCT blocks in parallel on the GPU. The
+Butteraugli rate control happens on the GPU. The design is overall quite
+similar to cujpegxl.<sup id="fnref:11"><a href="#fn:11" class="footnote" rel="footnote" role="doc-noteref">9</a></sup></p>
+
+<p>gjxl not only improves speed over reference libjxl by a substantial 2.8x at
+default effort (can be more, depending on the effort) but it also improves the
+BD-rate (the authors report from -0.71% to -9.14% BD-rate, depending on the
+effort setting, with -3.83% at the default effort 7):</p>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/jpegxl_entropy/gjxl.png" />
+    Figure 2 from Cho and Jeon <a class="citation" href="#yunho2026gjxl">[1]</a>.
+</div>
+
+<div class="center-block" style="width: 80%; text-align: center; font-size: 80%;">
+    <img src="/posts/img/jpegxl_entropy/gjxl_efforts.jpg" />
+    Table 3 from Cho and Jeon <a class="citation" href="#yunho2026gjxl">[1]</a>.
+</div>
+
+<p>On the other hand, cujpegxl has slightly worse BD-rate compared to libjxl, but
+it targets massively higher execution speed than gjxl<sup id="fnref:8"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">10</a></sup> and intentionally
+trades off small amounts of BD-rate for very large runtime improvements.</p>
+
+<p>Another important difference is in scope. gjxl implements a more or less
+complete version of JPEG XL (minus modular mode), targets multiple platforms,
+and, as already seen, it even strives to improve the BD-rate over the reference
+implementation, potentially targeting a wide range of applications. On the
+other hand, cujpegxl implements only a curated subset of JPEG XL and primarily
+targets runtime speed for real-time execution on constrained devices. No effort
+setting is provided: only what is strictly useful to fulfill the goal is
+implemented,<sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">11</a></sup> also to minimize maintenance cost (after all, this is a side
+project I developed in just about two weeks of full-time equivalent work so
+far), and the design willfully trades small losses in BD-rate in order to gain
+runtime speed, as for my applications not being fast enough makes the
+difference between being usable and being completely unviable.</p>
+
+<h1 id="runtime">Runtime</h1>
+
+<p>I benchmarked the runtime of cujpegxl, taking as references three other
+solutions:</p>
+<ul>
+  <li>nvJPEG as a main direct competitor for high performance applications</li>
+  <li>libjxl as the reference JPEG XL implementation</li>
+  <li>gjxl as an alternative GPU-accelerated JPEG XL encoder</li>
+</ul>
+
+<p>I ran the benchmark on a box equipped with a GTX 1080Ti, Ryzen 7 2700X, 64 GB
+DDR4 memory, PCIe Gen3, trying to match compression settings that give roughly
+the same output image quality.</p>
+
+<p>At medium/high quality (SSIMULACRA2 ≈ 82):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>codec</th>
+      <th>fps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>cujpegxl (d=1)</td>
+      <td>251.57</td>
+    </tr>
+    <tr>
+      <td>nvJPEG (q=90)</td>
+      <td>890.28</td>
+    </tr>
+    <tr>
+      <td>gjxl (d=1.3)</td>
+      <td>4.71</td>
+    </tr>
+    <tr>
+      <td>libjxl (d=1.3)</td>
+      <td>1.19</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>At low quality (SSIMULACRA2 ≈ 65):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>codec</th>
+      <th>fps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>cujpegxl (d=3)</td>
+      <td>295.96</td>
+    </tr>
+    <tr>
+      <td>nvJPEG (q=50)</td>
+      <td>1238.38</td>
+    </tr>
+    <tr>
+      <td>gjxl (d=4)</td>
+      <td>5.47</td>
+    </tr>
+    <tr>
+      <td>libjxl (d=4)</td>
+      <td>0.69</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As we can see, cujpegxl is still significantly slower than nvJPEG, but it is
+now in the same order of magnitude in terms of speed.</p>
+
+<h1 id="future-work">Future work</h1>
+
+<p>There is still quite a bit of work ahead, and I am hoping to schedule more effort
+in the near future. Quality-wise, there are still some of the levers from the
+ablation study to reduce bpp that I have not implemented yet, and I am hoping
+to figure out more improvements by re-evaluating some of the current solutions.
+On the runtime front, I still need to review and optimize several parts of both
+CPU and GPU code.</p>
+
+<p>Moreover, a big and important slice of work that I have not even started
+tackling is platform-specific optimizations targeting e.g. RTX or Tegra. So far
+I have been optimizing only for basic architectural aspects, that are available
+in older cards, but offloading work to tensor cores and moving to narrower math
+width has potential to provide important benefits. 16-bit math alone has the
+potential to almost double the throughput of some compute-intensive kernels,
+while for instance it would worsen performance on older card families.</p>
+
+<h1 id="references">References</h1>
+
+<ol class="bibliography"><li><span id="yunho2026gjxl">Y. Cho and S. Jeon, <a href="https://github.com/yunho-c/gjxl/blob/main/assets/gjxl-paper-v1.pdf">“gjxl: GPU-Accelerated JPEG XL Encoder.”</a> Pre-print, Oct-2026.</span></li></ol>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>The initial runtime was already significantly faster than libjxl, but the
+compression/quality values were different enough to make it hard to draw
+meaningful comparisons in terms of just runtime. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>A brief description of what the EPF does is present in the <a href="https://martinopilia.com/posts/2026/10/20/jpegxl-ablation-study.html">previous
+post</a>
+on the ablation study. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>To be clear, both ANS and Huffman are used, with a simple heuristic
+similar to libjxl that Huffman is only selected for degenerate cases. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Latency is obviously increased, but throughput (with a reasonable
+latency) is the main metric for the kind of real-time applications I am
+targeting, as long as the latency remains well below the period for the
+target frame rate (15-30 Hz). <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>The whole evaluation took almost five hours of compute on my box. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10">
+      <p>Positive means cujpegxl uses more bits per pixel at equivalent quality,
+negative means the opposite. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6">
+      <p>Interestingly, the very first piece of the project I implemented was the
+data and evaluation framework, before starting anything at all related to
+the feature code. This reflects a career working on numerical methods in
+industrial products. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7">
+      <p>Both projects are younger than
+<a href="https://github.com/imazen/jxl-gpu">jxl-gpu</a>, the earliest open-source GPU
+port of JPEG XL I am aware of. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11">
+      <p>Some of the cujpegxl design features were implemented after the gjxl
+preprint was made available. However, cujpegxl has been developed
+independently and not inspired by it, I discovered the gjxl project only
+yesterday. <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8">
+      <p>Currently cujpegxl is over fifty times faster than gjxl and it is still
+far from being complete: there are many parts in need of further
+optimization (including GPU front-end kernel, quantization, and entropy
+coding), and I have not even started at all to implement
+architecture-specific optimizations, like tensor core math or FP16 math. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9">
+      <p>In a typical
+<a href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">YAGNI</a> way,
+which I live by. I might potentially expand the scope of the project later,
+but that will happen if new use cases arise in my target usage
+applications. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#JPEG XL">JPEG XL</a>
+          
+            <a href="/tags#image processing">image processing</a>
+          
+            <a href="/tags#GPGPU">GPGPU</a>
+          
+          
+        </div>
+      
+
+      
+        <style>.fa-douban:before { content: "豆"; }</style>
+
+<!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+    <a href="https://bsky.app/intent/compose?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-bluesky" title="Share on Bluesky">
+      <span class="fa fa-brands fa-bluesky" aria-hidden="true"></span>
+      <span class="sr-only">Bluesky</span>
+    </a>
+  
+
+  
+    <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html&t=Entropy+coding+improvements+in+cujpegxl"
+      class="btn btn-social-icon btn-hackernews" title="Share on Hacker News">
+      <span class="fa fa-fw fa-hacker-news" aria-hidden="true"></span>
+      <span class="sr-only">Hacker News"</span>
+    </a>
+  
+
+  
+    <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-reddit" title="Share on Reddit">
+      <span class="fa fa-fw fa-reddit" aria-hidden="true"></span>
+      <span class="sr-only">Reddit</span>
+    </a>
+  
+
+  
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html&text=Entropy+coding+improvements+in+cujpegxl"
+      class="btn btn-social-icon btn-telegram" title="Share on Telegram">
+      <span class="fa fa-fw fa-telegram" aria-hidden="true"></span>
+      <span class="sr-only">Telegram</span>
+    </a>
+  
+
+  
+    <a href="https://wa.me/?text=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-whatsapp" title="Share on WhatsApp">
+      <span class="fa fa-fw fa-whatsapp" aria-hidden="true"></span>
+      <span class="sr-only">WhatsApp</span>
+    </a>
+  
+
+  
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+  
+    <a href="https://vk.com/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-vk" title="Share on VK">
+      <span class="fa fa-fw fa-vk" aria-hidden="true"></span>
+      <span class="sr-only">VK</span>
+    </a>
+  
+
+  
+    <a href="https://share.diasporafoundation.org/?title=Entropy+coding+improvements+in+cujpegxl&url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-diaspora" title="Share on Diaspora">
+      <span class="fa fa-brands fa-diaspora" aria-hidden="true"></span>
+      <span class="sr-only">Diaspora</span>
+    </a>
+  
+
+  
+    <a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html&appkey=&title=Entropy+coding+improvements+in+cujpegxl&pic=&ralateUid="
+      class="btn btn-social-icon btn-weibo" title="Share on Weibo">
+      <span class="fa fa-fw fa-weibo" aria-hidden="true"></span>
+      <span class="sr-only">Weibo</span>
+    </a>
+  
+
+
+  
+    <a href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-okru" title="Share on OKru">
+      <span class="fa fa-fw fa-odnoklassniki" aria-hidden="true"></span>
+      <span class="sr-only">OKru</span>
+    </a>
+  
+
+  
+    <a href="http://www.douban.com/recommend/?name=Entropy+coding+improvements+in+cujpegxl&text=Entropy+coding+improvements+in+cujpegxl&comment=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html&href=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html"
+      class="btn btn-social-icon btn-douban" title="Share on Douban">
+      <span class="fa fa-fw fa-douban" aria-hidden="true"></span>
+      <span class="sr-only">Douban</span>
+    </a>
+  
+
+  
+    <a href="http://widget.renren.com/dialog/share?resourceUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html&srcUrl=https%3A%2F%2Fmartinopilia.com%2Fposts%2F2026%2F10%2F24%2Fcujpegxl-entropy-improvement.html&title=Entropy+coding+improvements+in+cujpegxl&description=Entropy+coding+improvements+in+cujpegxl"
+      class="btn btn-social-icon btn-renren" title="Share on RenRen">
+      <span class="fa fa-fw fa-renren" aria-hidden="true"></span>
+      <span class="sr-only">RenRen</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/posts/2026/10/20/jpegxl-ablation-study.html" data-toggle="tooltip" data-placement="top" title="A small libjxl ablation study">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<dialog class="image-viewer">
+  <button type="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <img alt="">
+</dialog>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:martino.pilia@proton.me" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/m-pilia" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      Martino Pilia
+      &nbsp;&bull;&nbsp;
+      2026
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://martinopilia.com">martinopilia.com</a>
+      
+
+      
+      </p>
+        <div style="text-align: center; margin: 10px 0 -10px;">
+            The content of this website is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> license. 
+        </div>
+          <!-- Please don't remove this, keep my open source work credited :) -->
+    <p class="theme-by text-muted">
+      Theme by
+      <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+  
+    <script src="/js/image-viewer.js"></script>
+  
+
+
+
+
+  
+  </body>
+</html>

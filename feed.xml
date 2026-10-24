@@ -7,6 +7,17 @@
     <atom:link href="https://martinopilia.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Entropy coding improvements in cujpegxl</title>
+        <description>
+          Increasing compression rate while making runtime faster - 
+          Following up on the ablation study presented in a previous post, I worked on integrating additional parts of the JPEG XL algorithm in cujpegxl, especially around entropy coding. This post presents an outline of the changes, and shows the improvements in BD-rate and runtime speed. Moreover, last week a new...
+        </description>
+        <pubDate>Sat, 24 Oct 2026 00:00:00 +0200</pubDate>
+        <link>https://martinopilia.com/posts/2026/10/24/cujpegxl-entropy-improvement.html</link>
+        <guid isPermaLink="true">https://martinopilia.com/posts/2026/10/24/cujpegxl-entropy-improvement.html</guid>
+      </item>
+    
+      <item>
         <title>A small libjxl ablation study</title>
         <description>
           Finding out what makes a JPEG XL encoder good - 
@@ -213,17 +224,6 @@
         <pubDate>Wed, 30 Jan 2019 00:00:00 +0100</pubDate>
         <link>https://martinopilia.com/posts/2019/01/30/command-line-tools.html</link>
         <guid isPermaLink="true">https://martinopilia.com/posts/2019/01/30/command-line-tools.html</guid>
-      </item>
-    
-      <item>
-        <title>Landmark-based groupwise registration with SGD and B-splines</title>
-        <description>
-          Implementing a simple extension to Elastix - 
-          Currently, I work mostly on image registration algorithms, and I devoted quite some time looking into groupwise registration techniques. In its essence, groupwise registration is a process that aligns multiple images, mapping them to a common reference space, without having to explicitly define such reference space (e.g. without manually selecting...
-        </description>
-        <pubDate>Sun, 23 Sep 2018 00:00:00 +0200</pubDate>
-        <link>https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html</link>
-        <guid isPermaLink="true">https://martinopilia.com/posts/2018/09/23/goupwise-landmark-registration.html</guid>
       </item>
     
   </channel>
